@@ -1,0 +1,683 @@
+# ColdIQ Marketplace API — raw endpoint catalog (pasted from api.coldiq.com/admin)
+# PROVENANCE FILE — DO NOT EDIT. Normalized into ../catalog.json.
+# Source: pasted by user 2026-06-08. Known issues: garbled "Cost" column values,
+# a few truncated paths (e.g. "compach", "datas/page-intersection", "Pupapi").
+
+POST /v1/ai-ark/companies — Company Search API — Search 70M+ enriched company profiles using flexible filters: industry, location, employee size, revenue, funding… — per result
+POST /v1/ai-ark/people — People Search API — Search 500M+ enriched people profiles using contact and company filters: name, title, seniority, skills, education… — per result
+POST /v1/ai-ark/people/reverse-lookup — Reverse People Lookup API — Look up a person profile by email address or phone number. Returns the full profile if found. Costs 5 credits. — flat
+POST /v1/ai-ark/people/mobile-phone-finder — Mobile Phone Finder API — Find a person's mobile phone number by LinkedIn URL or name + company domain. Costs 10 credits per call. — free
+POST /v1/ai-ark/people/export/single — Export Single Person with Email — Export a single person's full profile with verified email. Provide either the AI Ark person ID or a LinkedIn URL. — free
+POST /v1/ai-ark/people/export — Export People with Email — Export up to 10,000 people profiles with vemails based on company and contact filters. Returns a trackId. — per result
+POST /v1/ai-ark/people/email-finder — Find Emails by Track ID — Find emails for all people in a previous People Search result, identified by its trackId. — per result
+GET /v1/ai-ark/people/export/{trackId} — Get Export People Results — Retrieve the result of an Export People job. — (poll)
+GET /v1/ai-ark/people/email-finder/{trackId} — Get Email Finder Results — Retrieve the result of a Find Emails job. — (poll)
+
+POST /v1/apollo/people/match — People Enrichment — Enrich a person by name, email, LinkedIn URL, or company. — Cost 2,832 (garbled)
+POST /v1/apollo/people/bulk-match — Bulk People Enrichment — Enrich up to 10 people in a single request. Costs 1 credit per person. — per result
+POST /v1/apollo/organizations/enrich — Organization — Enrich an organization by domain. Costs 1 credit. — Cost 2,832 (garbled)
+POST /v1/apollo/organizations/bulk-enrich — Bulk Organization Enrichment — Enrich up to 10 organizations by domain. Costs 1 credit per organization. — Cost 2,832 (garbled)
+POST /v1/apollo/people/search — People API Search — Search for people in Apollo's global database with filters like title, seniority, location, company. Costs 1 cr. — Cost 2,832 (garbled)
+POST /v1/apollo/organizations/search — Organization Search — Search for organizations in Apollo's global database. Costs 1 credit. — Cost 2,832 (garbled)
+POST /v1/apollo/organizations/info — Get Complete Organization Info — Get detailed information about a specific organization by its Apollo ID. Costs 1 credit. — Cost 2,832 (garbled)
+
+POST /v1/attio/people/query — List person records — free
+POST /v1/attio/people — Create a person record — free
+PUT /v1/attio/people — Assert a person record — free
+GET /v1/attio/people/{record_id} — Get a person record — free
+PATCH /v1/attio/people/{record_id} — Update a person record — free
+DELETE /v1/attio/people/{record_id} — Delete a person record — free
+POST /v1/attio/companies/query — List company records — free
+POST /v1/attio/companies — Create a company record — free
+PUT /v1/attio/companies — Assert a company record — free
+GET /v1/attio/companies/{record_id} — Get a company record — free
+PATCH /v1/attio/companies/{record_id} — Update a company record — free
+DELETE /v1/attio/companies/{record_id} — Delete a company record — free
+POST /v1/attio/notes — Create a note — free
+GET /v1/attio/notes — List notes — free
+GET /v1/attio/notes/{note_id} — Get a note — free
+DELETE /v1/attio/notes/{note_id} — Delete a note — free
+POST /v1/attio/tasks — Create a task — free
+GET /v1/attio/tasks — List all tasks — free
+GET /v1/attio/tasks/{task_id} — Get a task — free
+PATCH /v1/attio/tasks/{task_id} — Update a task — free
+DELETE /v1/attio/tasks/{task_id} — Delete a task — free
+POST /v1/attio/records/search — Search records — free
+
+POST /v1/blitzapi/search/waterfall-icp-keyword — Waterfall ICP Search — Search for people matching an ICP at a company using a cascading waterfall of title/location. — Cost 2,994 (garbled)
+POST /v1/blitzapi/search/employee-finder — Employee Finder — Browse all employees at a company with optional filters for location, job level, job function, connections. — Cost 2,994 (garbled)
+POST /v1/blitzapi/search/companies — Company Search — Search for companies by name, industry, type, size, location, keywords. Cursor-based pagination. — Cost 2,994 (garbled)
+POST /v1/blitzapi/enrichment/find-work-email — Find Work Email — Find the work email address for a person given their LinkedIn profile URL. — Cost 2,994 (garbled)
+POST /v1/blitzapi/enrichment/reverse-email-lookup — Reverse Email Lookup — Look up a person's profile and professional details from their work email address. — Cost 2,994 (garbled)
+POST /v1/blitzapi/enrichment/company — Company Enrichment — Enrich a company profile from a LinkedIn URL. — Cost 2,994 (garbled)
+POST /v1/blitzapi/enrichment/domain-to-linkedin — Domain to LinkedIn URL — Convert a website domain to the corresponding LinkedIn company URL. — Cost 2,994 (garbled)
+POST /v1/blitzapi/enrichment/linkedin-to-domain — LinkedIn URL to Domain — Resolve a company's email domain from its LinkedIn profile URL. — Cost 2,994 (garbled)
+
+POST /v1/builtwith/domain — Domain API — Returns the full technology stack detected on a domain. — flat
+
+GET /v1/career-site-jobs/search — List Career Site Job Listing API jobs — Returns your most recent career site job search jobs (newest first). — (list)
+POST /v1/career-site-jobs/search — Career Site Job Listing API — Start an async job to search real job postings scraped from 175k+ company career sites across 54 ATS. — (async)
+GET /v1/career-site-jobs/search/{jobId} — Get Career Site Job Listing API result — Poll the status. 202 while in progress, 200 with results. — free (poll)
+
+POST /v1/coldiq/enrich/person — Enrich Person — Enrich a person's professional profile using email, LinkedIn URL, or name+company. Variable credit cost (1-5). — free / 5
+POST /v1/coldiq/enrich/company — Enrich Company — Enrich a company profile using domain or LinkedIn URL. Returns firmographics, funding, tech stack, traffic. — 1
+POST /v1/coldiq/person — Person — Retrieve person data by LinkedIn profile URL. Cached by default (30-60 days). live=true for fresh. — 3
+POST /v1/coldiq/company — Company — Get company data by LinkedIn profile URL. live=true for fresh (3 credits instead of 1). — 3
+POST /v1/coldiq/company/insights — Company Insights — Get detailed company insights from Crunchbase, Semrush, IPqwery and others. Costs 5 credits. — 5
+POST /v1/coldiq/company/workplace-benefits — Workplace Benefits — Get workplace benefits for a company by Glassdoor ID. Costs 3 credits. — 3
+POST /v1/coldiq/workplace-ratings — Workplace Ratings — Get workplace ratings for a company by Glassdoor ID. Costs 3 credits. — 3  (NOTE dump said /v1/colany/ — likely /v1/coldiq/)
+POST /v1/coldiq/find/hashed-email — Hashed Email — Find SHA-256 hashed email addresses for ad audience targeting. LinkedIn URL or work email. Costs 1 cr. — 1
+POST /v1/coldiq/find/personal-email — Personal Email — Find personal email from LinkedIn, GitHub, X, or work email. Costs 5 credits (only charged when found). — 5
+POST /v1/coldiq/find/work-email — Work Email — Find business email from full name and company domain. Costs 1 credit (only charged when found). — 1
+POST /v1/coldiq/find/work-email-linkedin — Work Email from LinkedIn — Find business email from LinkedIn profile URL. Costs 3 credits (only charged when found). — 3
+POST /v1/coldiq/find/company-linkedin — Company LinkedIn — Find the LinkedIn page of a company from its domain. — 1
+POST /v1/coldiq/find/phone — Phone Number — Find phone numbers from LinkedIn profile or name+company. Costs 10 credits (only when found). — free / 10
+POST /v1/coldiq/find/identity-resolution — Identity Resolution — Find social profile URLs (LinkedIn, etc.) by name and company/domain/email. Costs 2 credits. — 2
+POST /v1/coldiq/find/reverse-email-lookup — Reverse Email Lookup — Find LinkedIn, GitHub, and X profiles from an email address. Costs 5 credits (only when found). — 5
+POST /v1/coldiq/find/glassdoor-company — Company Glassdoor ID — Find the Glassdoor ID for a company from its domain. Costs 1 credit. — 1
+POST /v1/coldiq/jobs — Company Jobs — Get LinkedIn job listings for a company page. 20 results per page. Costs 2 credits. — 2
+POST /v1/coldiq/jobs/details — Job Details — Get detailed information about a LinkedIn job posting by its ID. — 1
+POST /v1/coldiq/posts — Posts — Get LinkedIn posts of a person or company profile. Supports pagination. Costs 2 credits. — 2
+POST /v1/coldiq/posts/comments — Post Comments — Get comments for a LinkedIn post using comments_urn from /posts. Costs 2 credits. — 2
+POST /v1/coldiq/posts/details — Post Details — Get details of a single LinkedIn post by its URL. — 1
+POST /v1/coldiq/posts/reactions — Post Reactions — Get reactions for a LinkedIn post using reactions_urn from /posts. Costs 2 credits. — 2
+POST /v1/coldiq/search/people — Search People — Search people by keywords with optional filters for title, company, location. Costs 2 credits. — 2
+POST /v1/coldiq/search/companies — Search Companies — Search companies by keywords with optional filters for size, location, industry. Costs 2 credits. — 2
+POST /v1/coldiq/search/jobs — Search Jobs — Search jobs by keywords with optional filters. Costs 2 credits. — 2
+POST /v1/coldiq/search/posts — Search Posts — Search LinkedIn posts by keywords with optional filters. Costs 2 credits. — 2
+POST /v1/coldiq/search/web — Web Search — Perform a Google web search. Costs 0.1 credits per request. — ~0.1
+POST /v1/coldiq/research/ai-search — AI Search — AI-powered web search that retrieves and synthesizes information. Costs 0.3 credits per search. — ~0.3
+POST /v1/coldiq/research/extract — Extract — Extract clean markdown content from web pages (1-10 URLs). Costs 0.1 credits per URL. — per result ~0.1
+POST /v1/coldiq/references/autocomplete — Autocomplete — Get autocomplete results for prospect filter types. Free endpoint. — free
+POST /v1/coldiq/prospect/people/search-url — Prospect People by URL — Prospect people using a LinkedIn Sales Navigator search URL. Up to 25 results per page. Costs 25 credits. — 25
+POST /v1/coldiq/prospect/people/filter — Prospect People — Prospect people using filter criteria. Costs 25 credits. — 25
+POST /v1/coldiq/prospect/employees — Prospect Employees — Prospect employees of a company with optional title, location, seniority filters. Costs 25 credits. — 25
+POST /v1/coldiq/prospect/companies/filter — Prospect Companies — Prospect companies using filter criteria. Costs 25 credits. — 25
+POST /v1/coldiq/prospect/companies/search-url — Prospect Companies by URL — Prospect companies using a LinkedIn Sales Navigator company search URL. Costs 25 credits. — 25
+POST /v1/coldiq/batch/people — Batch People Profiles — Batch retrieve LinkedIn people profiles. Costs 1 credit per URL. — per result
+POST /v1/coldiq/batch/companies — Batch Company Profiles — Batch retrieve LinkedIn company profiles. Costs 1 credit per URL. — per result
+POST /v1/coldiq/batch/prospect-people — Batch Prospect People — Batch prospect people with filters. Costs 1 credit per entity. — per result
+POST /v1/coldiq/batch/prospect-companies — Batch Prospect Companies — Batch prospect companies with filters. Costs 1 credit per entity. — per result
+POST /v1/coldiq/batch/list — Batch Operations List — List all batch operations. Free endpoint. — free
+POST /v1/coldiq/batch/results — Batch Operation Results — Get results of a batch operation by ID. Free endpoint. — free
+POST /v1/coldiq/watch — Create a Watch — Create a watch subscription to monitor people or companies for changes (PersonJobChanges, PersonProfile…). — free
+POST /v1/coldiq/watch/list — List Watches — List all watch subscriptions. Free endpoint. — free
+POST /v1/coldiq/watch/get — Get Watch by ID — Get a specific watch subscription by ID. Free endpoint. — free
+POST /v1/coldiq/watch/update — Update Watch — Update a watch subscription (name, notification_url, frequency_days, is_active, external_id). — free
+POST /v1/coldiq/watch/mock-payload — Mock Webhook Payload — Get sample webhook payloads for testing your integration. Free endpoint. — free
+
+GET /v1/companyenrich/companies/enrich — Enrich by Domain — Enrich a company by domain. Costs 1 credit. — flat 3
+POST /v1/companyenrich/companies/enrich — Enrich by Properties — Enrich a company by domain, name, or LinkedIn URL. — flat 3
+POST /v1/companyenrich/companies/enrich/batch — Batch Enrich — Enrich multiple companies by domain. — per result 3
+POST /v1/companyenrich/companies/enrich/bulk — Create Job — Create a bulk enrichment job. — per result 3
+GET /v1/companyenrich/companies/enrich/bulk/{jobId} — Get Job — Get bulk enrichment job status and results. Free. — free (poll)
+GET /v1/companyenrich/companies/enrich/bulk/jobs — List Jobs — List all bulk enrichment jobs. Free. — free
+POST /v1/companyenrich/companies/search — Search Companies — Search for companies using filters. — per result 3
+POST /v1/companyenrich/companies/search/preview — Preview Search — Preview company search results. — per result 3
+POST /v1/companyenrich/companies/search/count — Count Companies — Count companies matching filters. — flat 3
+POST /v1/companyenrich/companies/search/scroll — Scroll Companies — Scroll through company search results using a cursor. — per result 3
+POST /v1/companyenrich/companies/search/async — Create Export — Create an async company search export. — per result 3
+GET /v1/companyenrich/companies/search/async/{jobId} — Get Export — Get export status and results. Free. — free (poll)
+GET /v1/companyenrich/companies/search/async/jobs — List Exports — List all async company search exports. Free. — free
+POST /v1/companyenrich/companies/similar — Find Similar — Find companies similar to a given company. — per result 15
+POST /v1/companyenrich/companies/similar/preview — Preview Similar — per result 15
+POST /v1/companyenrich/companies/similar/count — Count Similar — flat 15
+POST /v1/companyenrich/companies/similar/scroll — Scroll Similar — per result 15
+GET /v1/companyenrich/companies/autocomplete — Autocomplete — Autocomplete company names. Free. — free
+GET /v1/companyenrich/companies/workforce — Workforce — Get workforce data for a company. — 15
+GET /v1/companyenrich/companies/{id} — Get by ID — Get a company by its ID. — 3  (dump truncated "compach")
+POST /v1/companyenrich/people/lookup — Lookup Person — Look up a person by LinkedIn URL, email, or name + company. — 15
+POST /v1/companyenrich/people/search — Search People — per result 6
+POST /v1/companyenrich/people/search/preview — Preview People — per result 6
+POST /v1/companyenrich/people/search/scroll — Scroll People — per result 6
+GET /v1/companyenrich/people/{id} — Get Person — 6
+POST /v1/companyenrich/people/search/async — Create People Export — per result 3
+GET /v1/companyenrich/people/search/async/{jobId} — Get People Export — free (poll)
+GET /v1/companyenrich/people/search/async/jobs — List People Exports — free
+GET /v1/companyenrich/industries — List Industries — free
+GET /v1/companyenrich/keywords/autocomplete — Autocomplete Keywords — free
+GET /v1/companyenrich/technologies/autocomplete — Autocomplete Technologies — free
+GET /v1/companyenrich/positions/autocomplete — Autocomplete Positions — free
+GET /v1/companyenrich/geo/regions — List Regions — free
+GET /v1/companyenrich/geo/countries/{countryCode} — Get Country — free
+POST /v1/companyenrich/geo/countries — Search Countries — free
+POST /v1/companyenrich/geo/states — Search States — free  (dump truncated "POrich/geo/states")
+POST /v1/companyenrich/geo/cities — Search Cities — free
+
+GET /dashboard/connections/providers — List connectable BYOK providers — free
+GET /dashboard/connections — List your connected tools — free
+PUT /dashboard/connections/{provider} — Connect or update a tool — free
+DELETE /dashboard/connections/{provider} — Disconnect a tool — free
+POST /dashboard/connections/{provider}/validate — Re-validate a stored connection — free
+GET /dashboard/billing/products — List credit packages — free
+POST /dashboard/billing/checkout — Create checkout session — free
+POST /dashboard/billing/portal — Create billing portal session — free
+GET /dashboard/billing/subscriptions — List active subscriptions — free
+GET /dashboard/me — Get user profile — free
+GET /dashboard/api-keys — List API keys — free
+POST /dashboard/api-keys — Create API key — free
+DELETE /dashboard/api-keys/{id} — Revoke API key — free
+GET /dashboard/credits — Get credit balance — free
+GET /dashboard/usage — Get usage history — free
+GET /dashboard/usage/summary — Get usage summary — free
+
+# dataforseo group (SERP, Labs, on-page, domain analytics) — many endpoints, cost ~per result / flat
+POST /v1/dataforseo/serp/youtube/locations — YouTube Locations — flat
+POST /v1/dataforseo/serp/youtube/organic — YouTube Organic Search — per result
+POST /v1/dataforseo/serp/youtube/video-info — YouTube Video Info — flat
+POST /v1/dataforseo/serp/youtube/video-comments — YouTube Video Comments — per result
+POST /v1/dataforseo/serp/youtube/video-subtitles — YouTube Video Subtitles — flat
+POST /v1/dataforseo/serp/{search_engine}/locations — SERP Locations — flat
+POST /v1/dataforseo/serp/{search_engine}/organic — Organic SERP — per result
+POST /v1/dataforseo/keywords/google-ads/locations — Google Ads Locations — flat
+POST /v1/dataforseo/keywords/google-ads/search-volume — Google Ads Search Volume — per result
+GET /v1/dataforseo/keywords/google-trends/categories — Google Trends Categories — free
+POST /v1/dataforseo/keywords/google-trends/explore — Google Trends Explore — flat
+POST /v1/dataforseo/labs/ranked-keywords — Ranked Keywords — per result
+POST /v1/dataforseo/labs/competitors-domain — Competitors Domain — per result
+POST /v1/dataforseo/labs/domain-rank-overview — Domain Rank Overview — flat
+POST /v1/dataforseo/labs/keyword-ideas — Keyword Ideas — per result
+POST /v1/dataforseo/labs/related-keywords — Related Keywords — per result
+POST /v1/dataforseo/labs/keyword-suggestions — Keyword Suggestions — per result
+POST /v1/dataforseo/labs/historical-serp — Historical SERP — flat
+POST /v1/dataforseo/labs/serp-competitors — SERP Competitors — per result
+POST /v1/dataforseo/labs/bulk-keyword-difficulty — Bulk Keyword Difficulty — per result
+POST /v1/dataforseo/labs/subdomains — Subdomains — per result
+POST /v1/dataforseo/labs/keyword-overview — Keyword Overview — per result
+POST /v1/dataforseo/labs/top-searches — Top Searches — per result
+POST /v1/dataforseo/labs/search-intent — Search Intent — per result
+POST /v1/dataforseo/labs/keywords-for-site — Keywords for Site — per result
+POST /v1/dataforseo/labs/domain-intersection — Domain Intersection — per result
+POST /v1/dataforseo/labs/historical-rank-overview — Historical Rank Overview — flat
+POST /v1/dataforseo/labs/page-intersection — Page Intersection — per result  (dump truncated "datas/page-intersection")
+POST /v1/dataforseo/labs/bulk-traffic-estimation — Bulk Traffic Estimation — per result
+GET /v1/dataforseo/labs/available-filters — Available Filters — free
+POST /v1/dataforseo/labs/historical-keyword-data — Historical Keyword Data — per result
+POST /v1/dataforseo/labs/relevant-pages — Relevant Pages — per result
+POST /v1/dataforseo/domain-analytics/whois — WHOIS Overview — per result
+GET /v1/dataforseo/domain-analytics/whois/available-filters — WHOIS Available Filters — free
+POST /v1/dataforseo/domain-analytics/technologies — Domain Technologies — flat
+GET /v1/dataforseo/domain-analytics/technologies/available-filters — Technologies Available Filters — free
+POST /v1/dataforseo/on-page/content-parsing — Content Parsing — flat
+POST /v1/dataforseo/on-page/instant-pages — Instant Pages — flat
+POST /v1/dataforseo/on-page/lighthouse — Lighthouse — flat
+
+POST /v1/exa/search — Search — Neural or deep web search. — per result ~0.3
+POST /v1/exa/find-similar — Find similar links — per result ~0.3
+POST /v1/exa/contents — Get Contents — Crawl and extract content from a list of URLs. — per result ~0.3
+POST /v1/exa/answer — Generate an answer from search results — Costs 2 credits. stream:true supported. — flat ~3
+POST /v1/exa/research — Create a new research request — Async research task. Costs ~6. — flat ~6
+GET /v1/exa/research — List research requests — free
+GET /v1/exa/research/{researchId} — Get a research request by id — ?stream=true for SSE. — free (poll)
+
+POST /v1/findymail/verify — Verify an email for potential bounce — Costs 1 credit. — flat ~1
+POST /v1/findymail/search/name — Find from name — Find an email using name + company domain. Costs 1 credit if found. — ~1
+POST /v1/findymail/search/domain — Find from domain — Find email addresses for specific roles at a company domain. — per result ~1
+POST /v1/findymail/search/business-profile — Find from business profile — Find an email from a LinkedIn profile URL. Costs 1 credit if found. — ~1
+POST /v1/findymail/search/reverse-email — Reverse email lookup — Look up a person by email. 1 credit (2 with profile enrichment). — ~1
+POST /v1/findymail/search/company — Get company information — Get info about a company by domain. — ~1
+POST /v1/findymail/search/employees — Find employees — Find employees at a company by job titles. — per result ~1
+POST /v1/findymail/search/phone — Find phone — Find a phone number from a LinkedIn profile URL. Costs 10 credits if found. — free
+GET /v1/findymail/lists — Get the list of contact lists — free
+POST /v1/findymail/lists — Create a new list — free
+PUT /v1/findymail/lists/{id} — Update a contact list — free
+DELETE /v1/findymail/lists/{id} — Delete a given list — free
+GET /v1/findymail/contacts/{id} — Get contacts saved — free
+POST /v1/findymail/intellimatch/search — Search leads — Initiate an Intellimatch lead search. Returns a hash to poll. — free (init)
+GET /v1/findymail/intellimatch/status — Get export status — free (poll)
+GET /v1/findymail/intellimatch/data — Get results — per result ~1
+GET /v1/findymail/intellimatch/exclusion-lists — Get all exclusion lists — free
+POST /v1/findymail/intellimatch/exclusion-lists — Create a new exclusion list — free
+GET /v1/findymail/intellimatch/exclusion-lists/{id} — Get exclusion list details — free
+PUT /v1/findymail/intellimatch/exclusion-lists/{id} — Update an exclusion list — free
+DELETE /v1/findymail/intellimatch/exclusion-lists/{id} — Delete an exclusion list — free
+GET /v1/findymail/intellimatch/domains — Get excluded domains — free
+POST /v1/findymail/intellimatch/domains — Add excluded domains — free
+DELETE /v1/findymail/intellimatch/domains — Remove excluded domains — free
+GET /v1/findymail/signals — List signals — free
+GET /v1/findymail/signals/monitors — List monitors — free
+POST /v1/findymail/signals/monitors — Create a monitor — free
+PATCH /v1/findymail/signals/monitors/{id} — Update a monitor — free
+DELETE /v1/findymail/signals/monitors/{id} — Delete a monitor — free
+POST /v1/findymail/lookalike/search — Search for lookalike companies — Costs 1 credit per 10 results. — per result
+GET /v1/findymail/technologies/search — Search available technologies — free
+POST /v1/findymail/technologies — Look up technologies by domain — Costs 1 credit if a match. — ~1
+GET /v1/findymail/signals/{id} — Get a signal — free
+
+POST /v1/fullenrich/contact/enrich/bulk — Enrich Contacts In Bulk — Submit up to 100 contacts. Returns enrichment_id; results async. Rates: emails 4, phones 34, personal_emails 1. — per result
+GET /v1/fullenrich/contact/enrich/bulk/{enrichmentId} — Get Bulk Enrich Results — (poll)
+POST /v1/fullenrich/contact/reverse/email/bulk — Reverse Contact Lookup In Bulk — Submit up to 100 emails. — per result
+GET /v1/fullenrich/contact/reverse/email/bulk/{enrichmentId} — Get Bulk Reverse Email Results — (poll)
+POST /v1/fullenrich/people/search — Search people — Synchronous people search. — per limit
+POST /v1/fullenrich/company/search — Search company — Synchronous company search. — per limit
+
+POST /v1/google-ads/search — Google Ads — Start an async job to scrape Google Ads from the Ads Transparency Center. — flat (async)
+GET /v1/google-ads/search/{jobId} — Get Google Ads job result — free (poll)
+POST /v1/google-maps/reviews — Scrape Google Maps reviews — Async job from one or more Google Maps place URLs. — (async)
+GET /v1/google-maps/reviews/{jobId} — Get Google Maps reviews job result — free (poll)
+POST /v1/google-maps/scraper — Google Maps Scraper — Async job to extract places using search terms or direct URLs. — (async)
+GET /v1/google-maps/scraper/{jobId} — Get Google Maps Scraper job result — free (poll)
+
+POST /v1/icypeas/email-search — Single Search: Email Discovery — firstname, lastname, company domain. Async — returns _id to poll. — ~0.3
+POST /v1/icypeas/domain-scan — Single Search: Domain Scan — Async. — ~0.3
+POST /v1/icypeas/email-verification — Single Search: Email Verification — Async. ~0.1 cr. — ~0.3
+POST /v1/icypeas/bulk-search — Bulk search — email-search, domain-search, email-verification tasks. — ~0.3
+POST /v1/icypeas/scrape/profile — Single profile scraping — Scrape a LinkedIn profile by URL. 1.5 cr per found. — ~0.3
+POST /v1/icypeas/scrape/profiles — Bulk profiles scraping — Max 50. — ~0.3
+POST /v1/icypeas/scrape/company — Single company scraping — 0.5 cr per found. — ~0.3
+POST /v1/icypeas/scrape/companies — Bulk companies scraping — Max 50. — ~0.3
+POST /v1/icypeas/url-search/profile — Search for profile page one at a time — From name and company/job title. — ~0.3
+POST /v1/icypeas/url-search/profiles — Search for profile pages in bulk — Max 50. — ~0.3
+POST /v1/icypeas/url-search/company — Search for company page one at a time — ~0.3
+POST /v1/icypeas/url-search/companies — Search for company pages in bulk — Max 50. — ~0.3
+POST /v1/icypeas/find-people/count — Count people matching query — free
+POST /v1/icypeas/find-people — Find people — per result ~0.3
+POST /v1/icypeas/find-companies/count — Count companies matching query — free
+POST /v1/icypeas/find-companies — Find companies — per result ~0.3
+POST /v1/icypeas/reverse-email-lookup — Single reverse email lookup — free / ~0.3
+POST /v1/icypeas/reverse-email-lookups — Bulk reverse email lookups — Min 2, max 50. — free / ~0.3
+POST /v1/icypeas/search-results — Retrieve your results — free (poll)
+POST /v1/icypeas/search-files — Fetch info/stats about bulk searches — free
+
+POST /v1/influencers-club/creators/enrich/email — Enrich by Email — Look up a creator by email. 40+ data points. — (cost n/a in dump)
+POST /v1/influencers-club/creators/enrich/handle/full — Enrich by Handle - Full — 40+ enriched data points. — n/a
+POST /v1/influencers-club/creators/enrich/handle/raw — Enrich by Handle - Raw — Unprocessed raw data. — n/a
+POST /v1/influencers-club/discovery — Discovery — Search/filter creators by audience demographics, engagement, location, AI. — n/a
+POST /v1/influencers-club/discovery/creators/similar — Find Lookalikes — Find creators similar to a given handle. — n/a
+
+# instantly group — full campaign/lead/account/inbox API (all free, BYOK) — partial list (~150 endpoints)
+POST /v1/instantly/accounts — Create Account — free
+GET /v1/instantly/accounts — List Accounts — free
+POST /v1/instantly/accounts/warmup/enable — Enable Warmup — free
+POST /v1/instantly/accounts/warmup/disable — Disable Warmup — free
+GET /v1/instantly/accounts/ctd/status — Get Custom Tracking Domain Status — free
+POST /v1/instantly/accounts/move — Move Account — free
+POST /v1/instantly/accounts/warmup-analytics — Get Warmup Analytics — free
+GET /v1/instantly/accounts/analytics/daily — Get Daily Account Analytics — free
+POST /v1/instantly/accounts/test/vitals — Test Account Vitals — free
+GET /v1/instantly/accounts/{email} — Get Account — free
+PATCH /v1/instantly/accounts/{email} — Patch Account — free
+DELETE /v1/instantly/accounts/{email} — Delete Account — free
+POST /v1/instantly/accounts/{email}/pause — Pause Account — free
+POST /v1/instantly/accounts/{email}/resume — Resume Account — free
+POST /v1/instantly/accounts/{email}/mark-fixed — Mark Account Fixed — free
+GET /v1/instantly/account-campaign-mappings/{email} — Get Account Campaign Mappings — free
+POST /v1/instantly/campaigns — Create Campaign — free
+GET /v1/instantly/campaigns — List Campaigns — free
+GET /v1/instantly/campaigns/count-launched — Get Launched Campaign Count — free
+GET /v1/instantly/campaigns/search-by-contact — Search Campaigns by Contact — free
+GET /v1/instantly/campaigns/analytics — Get Campaign Analytics — free
+GET /v1/instantly/campaigns/analytics/overview — Get Campaign Analytics Overview — free
+GET /v1/instantly/campaigns/analytics/daily — Get Campaign Analytics Daily — free
+GET /v1/instantly/campaigns/analytics/steps — Get Campaign Analytics Steps — free
+GET /v1/instantly/campaigns/{id} — Get Campaign — free
+PATCH /v1/instantly/campaigns/{id} — Patch Campaign — free
+DELETE /v1/instantly/campaigns/{id} — Delete Campaign — free
+POST /v1/instantly/campaigns/{id}/activate — Activate Campaign — free
+POST /v1/instantly/campaigns/{id}/pause — Pause Campaign — free
+POST /v1/instantly/campaigns/{id}/share — Share Campaign — free
+POST /v1/instantly/campaigns/{id}/export — Export Campaign — free
+POST /v1/instantly/campaigns/{id}/duplicate — Duplicate Campaign — free
+POST /v1/instantly/campaigns/{id}/variables — Add Campaign Variables — free
+GET /v1/instantly/campaigns/{id}/sending-status — Get Campaign Sending Status — free
+POST /v1/instantly/subsequences — Create Subsequence — free
+GET /v1/instantly/subsequences — List Subsequences — free
+GET /v1/instantly/subsequences/{id} — Get Subsequence — free
+PATCH /v1/instantly/subsequences/{id} — Patch Subsequence — free
+DELETE /v1/instantly/subsequences/{id} — Delete Subsequence — free
+POST /v1/instantly/subsequences/{id}/duplicate — Duplicate Subsequence — free
+POST /v1/instantly/subsequences/{id}/pause — Pause Subsequence — free
+POST /v1/instantly/subsequences/{id}/resume — Resume Subsequence — free
+GET /v1/instantly/subsequences/{id}/sending-status — Get Subsequence Sending Status — free
+POST /v1/instantly/leads — Create Lead — free
+DELETE /v1/instantly/leads — Bulk Delete Leads — free
+POST /v1/instantly/leads/list — List Leads — free
+POST /v1/instantly/leads/merge — Merge Leads — free
+POST /v1/instantly/leads/add — Bulk Add Leads — free
+POST /v1/instantly/leads/move — Move Leads — free
+POST /v1/instantly/leads/bulk-assign — Bulk Assign Leads — free
+POST /v1/instantly/leads/update-interest-status — Update Lead Interest Status — free
+POST /v1/instantly/leads/subsequence/move — Move Lead to Subsequence — free
+POST /v1/instantly/leads/subsequence/remove — Remove Lead from Subsequence — free
+GET /v1/instantly/leads/{id} — Get Lead — free
+PATCH /v1/instantly/leads/{id} — Patch Lead — free
+DELETE /v1/instantly/leads/{id} — Delete Lead — free
+POST /v1/instantly/lead-labels — Create Lead Label — free
+GET /v1/instantly/lead-labels — List Lead Labels — free
+POST /v1/instantly/lead-labels/ai-reply-label — Test AI Reply Label Prediction — free
+GET /v1/instantly/lead-labels/{id} — Get Lead Label — free
+PATCH /v1/instantly/lead-labels/{id} — Patch Lead Label — free
+DELETE /v1/instantly/lead-labels/{id} — Delete Lead Label — free
+POST /v1/instantly/lead-lists — Create Lead List — free
+GET /v1/instantly/lead-lists — List Lead Lists — free
+GET /v1/instantly/lead-lists/{id} — Get Lead List — free
+PATCH /v1/instantly/lead-lists/{id} — Patch Lead List — free
+DELETE /v1/instantly/lead-lists/{id} — Delete Lead List — free
+GET /v1/instantly/lead-lists/{id}/verification-stats — Get Lead List Verification Stats — free
+GET /v1/instantly/emails/unread/count — Get Unread Email Count — free
+POST /v1/instantly/emails/test — Send Test Email — free
+POST /v1/instantly/emails/reply — Reply to Email — free
+POST /v1/instantly/emails/forward — Forward Email — free
+POST /v1/instantly/emails/threads/{thread_id}/mark-as-read — Mark Thread as Read — free
+GET /v1/instantly/emails — List Emails — free
+GET /v1/instantly/emails/{id} — Get Email — free
+PATCH /v1/instantly/emails/{id} — Update Email — free
+DELETE /v1/instantly/emails/{id} — Delete Email — free
+POST /v1/instantly/email-verification — Create Email Verification — free
+GET /v1/instantly/email-verification/{email} — Get Email Verification Status — free
+POST /v1/instantly/block-lists-entries — Create Block List Entry — free
+GET /v1/instantly/block-lists-entries — List Block List Entries — free
+DELETE /v1/instantly/block-lists-entries — Delete All Block List Entries — free
+POST /v1/instantly/block-lists-entries/bulk-create — Bulk Create Block List Entries — free
+POST /v1/instantly/block-lists-entries/bulk-delete — Bulk Delete Block List Entries — free
+GET /v1/instantly/block-lists-entries/download — Download Block List — free
+GET /v1/instantly/block-lists-entries/{id} — Get Block List Entry — free
+PATCH /v1/instantly/block-lists-entries/{id} — Patch Block List Entry — free
+DELETE /v1/instantly/block-lists-entries/{id} — Delete Block List Entry — free
+POST /v1/instantly/custom-tags — Create Custom Tag — free
+GET /v1/instantly/custom-tags — List Custom Tags — free
+POST /v1/instantly/custom-tags/toggle-resource — Toggle Tag Resource — free
+GET /v1/instantly/custom-tags/{id} — Get Custom Tag — free
+PATCH /v1/instantly/custom-tags/{id} — Patch Custom Tag — free
+DELETE /v1/instantly/custom-tags/{id} — Delete Custom Tag — free
+GET /v1/instantly/custom-tag-mappings — List Custom Tag Mappings — free
+POST /v1/instantly/webhooks — Create Webhook — free
+GET /v1/instantly/webhooks — List Webhooks — free
+GET /v1/instantly/webhooks/event-types — List Webhook Event Types — free
+GET /v1/instantly/webhooks/{id} — Get Webhook — free
+PATCH /v1/instantly/webhooks/{id} — Patch Webhook — free
+DELETE /v1/instantly/webhooks/{id} — Delete Webhook — free
+POST /v1/instantly/webhooks/{id}/test — Test Webhook — free
+POST /v1/instantly/webhooks/{id}/resume — Resume Webhook — free
+GET /v1/instantly/webhook-events — List Webhook Events — free
+GET /v1/instantly/webhook-events/summary — Get Webhook Event Summary — free
+GET /v1/instantly/webhook-events/summary-by-date — Get Webhook Event Summary by Date — free
+GET /v1/instantly/webhook-events/{id} — Get Webhook Event — free
+GET /v1/instantly/background-jobs — List Background Jobs — free
+GET /v1/instantly/background-jobs/{id} — Get Background Job — free
+GET /v1/instantly/audit-logs — List Audit Logs — free
+POST /v1/instantly/inbox-placement-tests — Create Inbox Placement Test — free
+GET /v1/instantly/inbox-placement-tests — List Inbox Placement Tests — free
+GET /v1/instantly/inbox-placement-tests/email-service-provider-options — Get ESP Options — free
+GET /v1/instantly/inbox-placement-tests/{id} — Get Inbox Placement Test — free
+PATCH /v1/instantly/inbox-placement-tests/{id} — Patch Inbox Placement Test — free
+DELETE /v1/instantly/inbox-placement-tests/{id} — Delete Inbox Placement Test — free
+GET /v1/instantly/inbox-placement-analytics — List Inbox Placement Analytics — free
+POST /v1/instantly/inbox-placement-analytics/stats-by-test-id — Stats by Test ID — free
+POST /v1/instantly/inbox-placement-analytics/deliverability-insights — Deliverability Insights — free
+POST /v1/instantly/inbox-placement-analytics/stats-by-date — Stats by Date — free
+GET /v1/instantly/inbox-placement-analytics/{id} — Get Inbox Placement Analytics — free
+GET /v1/instantly/inbox-placement-reports — List Inbox Placement Reports — free
+GET /v1/instantly/inbox-placement-reports/{id} — Get Inbox Placement Report — free
+POST /v1/instantly/supersearch-enrichment — Create SuperSearch Enrichment — free
+POST /v1/instantly/supersearch-enrichment/enrich-leads-from-supersearch — Enrich Leads from SuperSearch — free
+POST /v1/instantly/supersearch-enrichment/run — Run SuperSearch Enrichment — free
+POST /v1/instantly/supersearch-enrichment/count-leads-from-supersearch — Count Leads from SuperSearch — free
+POST /v1/instantly/supersearch-enrichment/preview-leads-from-supersearch — Preview Leads from SuperSearch — free
+POST /v1/instantly/supersearch-enrichment/ai — Create AI Enrichment — free
+GET /v1/instantly/supersearch-enrichment/{resource_id} — Get SuperSearch Enrichment Status — free
+GET /v1/instantly/supersearch-enrichment/ai/{resource_id}/in-progress — Get AI Enrichment In-Progress Status — free
+GET /v1/instantly/supersearch-enrichment/history/{resource_id} — Get SuperSearch Enrichment History — free
+PATCH /v1/instantly/supersearch-enrichment/{resource_id}/settings — Update SuperSearch Enrichment Settings — free
+POST /v1/instantly/oauth/google/init — Initialize Google OAuth — free
+POST /v1/instantly/oauth/microsoft/init — Initialize Microsoft OAuth — free
+GET /v1/instantly/oauth/session/status/{sessionId} — Get OAuth Session Status — free
+POST /v1/instantly/api-keys — Create API Key — free
+GET /v1/instantly/api-keys — List API Keys — free
+DELETE /v1/instantly/api-keys/{id} — Delete API Key — free
+POST /v1/instantly/dfy-email-account-orders — Place DFY Email Account Order — free
+GET /v1/instantly/dfy-email-account-orders — List DFY Email Account Orders — free
+POST /v1/instantly/dfy-email-account-orders/domains/check — Check Domain Availability — free
+POST /v1/instantly/dfy-email-account-orders/domains/similar — Generate Similar Available Domains — free
+POST /v1/instantly/dfy-email-account-orders/domains/pre-warmed-up-list — Get Pre-Warmed Up Domains — free
+GET /v1/instantly/dfy-email-account-orders/accounts — List DFY Email Accounts — free
+POST /v1/instantly/dfy-email-account-orders/accounts/cancel — Cancel DFY Email Accounts — free
+PATCH /v1/instantly/workspace — Patch Workspace — free
+
+POST /v1/jina/reader — Read URL — Fetch any URL → clean LLM-ready markdown. Handles JS, PDFs. — flat
+POST /v1/jina/search — Search — Web search → structured markdown. Costs 2 cr. — flat
+POST /v1/jina/embeddings — Create embeddings — flat
+POST /v1/jina/rerank — Rerank documents — flat
+POST /v1/jina/classify — Classify text — flat
+POST /v1/jina/grounding — Ground a statement — Fact-check a claim against real-time web data. — flat
+POST /v1/jina/segment — Tokenize and segment text — flat
+POST /v1/jina/deepsearch — DeepSearch — Multi-step reasoning engine. — free
+
+POST /v1/jungler/workbooks — Create Collection Task — Extract comments and/or reactions from a LinkedIn post. Returns task_id. — free (async)
+GET /v1/jungler/tasks/{task_id}/status — Get Task Status — Returns workbook_id once SUCCESS. — (poll)
+GET /v1/jungler/workbooks/{workbook_id}/contacts — Get Contacts — Deduplicated contact information. —
+GET /v1/jungler/workbooks/{workbook_id}/comments — Get Comments —
+GET /v1/jungler/workbooks/{workbook_id}/reactions — Get Reactions —
+GET /v1/jungler/searches — List Searches —
+GET /v1/jungler/searches/{search_id} — Get Search —
+GET /v1/jungler/posts — List Posts — Paginated posts filtered by search IDs. —
+
+POST /v1/leadsfactory/contact-finder/searches — Find People — Create Search — Find contacts by job title and seniority across a list of company LinkedIn URLs. — per result
+GET /v1/leadsfactory/contact-finder/searches/{search_id} — Find People — Get Search Status — (poll)
+POST /v1/leadsfactory/sn-scraper/jobs — Sales Navigator Scraper — Start Job — Scrape a LinkedIn Sales Navigator search URL via shared infra. —
+GET /v1/leadsfactory/sn-scraper/jobs/{job_id} — Sales Navigator Scraper — Get Job Status — (poll)
+
+GET /v1/lemlist/campaigns — List Campaigns — free
+POST /v1/lemlist/campaigns — Create Campaign — free
+GET /v1/lemlist/campaigns/{campaignId} — Get Campaign — free
+PATCH /v1/lemlist/campaigns/{campaignId} — Update Campaign — free
+POST /v1/lemlist/campaigns/{campaignId}/duplicate — Duplicate Campaign — free
+POST /v1/lemlist/campaigns/{campaignId}/start — Start Campaign — free
+POST /v1/lemlist/campaigns/{campaignId}/pause — Pause Campaign — free
+GET /v1/lemlist/campaigns/{campaignId}/stats — Get Campaign Stats — free
+POST /v1/lemlist/campaigns/{campaignId}/export — Export Campaign Stats — free
+GET /v1/lemlist/campaigns/{campaignId}/export-status — Get Campaign Export Status — free
+POST /v1/lemlist/campaigns/{campaignId}/leads — Create Lead in Campaign — free
+GET /v1/lemlist/campaigns/{campaignId}/leads — List Campaign Leads — free
+GET /v1/lemlist/leads/{leadId} — Get Lead — free
+DELETE /v1/lemlist/leads/{leadId} — Delete Lead — free
+PATCH /v1/lemlist/campaigns/{campaignId}/leads/{leadId} — Update Lead in Campaign — free
+POST /v1/lemlist/leads/{leadId}/variables — Add Lead Variable — free
+PATCH /v1/lemlist/leads/{leadId}/variables — Update Lead Variable — free
+DELETE /v1/lemlist/leads/{leadId}/variables — Delete Lead Variable — free
+POST /v1/lemlist/leads/{leadId}/interested — Mark Lead as Interested — free
+POST /v1/lemlist/leads/{leadId}/not-interested — Mark Lead as Not Interested — free
+POST /v1/lemlist/leads/{leadId}/pause — Pause Lead — free
+POST /v1/lemlist/leads/{leadId}/resume — Resume Lead — free
+GET /v1/lemlist/contacts — Get Contacts — free
+GET /v1/lemlist/contacts/{contactId} — Get Contact — free
+GET /v1/lemlist/database/filters — Get Database Filters — free
+POST /v1/lemlist/enrich — Enrich Entity — free
+POST /v1/lemlist/enrich/bulk — Bulk Enrich Entities — free
+POST /v1/lemlist/leads/{leadId}/enrich — Enrich Lead — free
+GET /v1/lemlist/enrich/{enrichId} — Get Enrichment Results — free
+GET /v1/lemlist/unsubscribes — List Unsubscribes — free
+POST /v1/lemlist/unsubscribes — Add Unsubscribe — free
+GET /v1/lemlist/unsubscribes/{email} — Get Unsubscribe Status — free
+DELETE /v1/lemlist/unsubscribes/{email} — Remove Unsubscribe — free
+POST /v1/lemlist/unsubscribes/export — Export Unsubscribes — free
+GET /v1/lemlist/activities — List Activities — free
+GET /v1/lemlist/team — Get Team — free
+GET /v1/lemlist/team/credits — Get Team Credits — free
+GET /v1/lemlist/team/senders — List Team Senders — free
+
+POST /v1/linkedin-ad-library/search — LinkedIn Ad Library Scraper — Async job to extract ads from the LinkedIn Ad Library. Returns jobId. — flat (async)
+GET /v1/linkedin-ad-library/search/{jobId} — Get LinkedIn Ad Library job result — free (poll)
+GET /v1/linkedin-jobs-api/search — List Advanced LinkedIn Job Search jobs — (list)
+POST /v1/linkedin-jobs-api/search — Advanced LinkedIn Job Search — Async job to search LinkedIn job postings with advanced filters. — free (async)
+GET /v1/linkedin-jobs-api/search/{jobId} — Get Advanced LinkedIn Job Search result — free (poll)
+
+POST /v1/linkupapi/data/profile/enrich — Profile Enrichment — Find and enrich a person's LinkedIn profile using name + company. —
+POST /v1/linkupapi/data/search/profiles — Search Profiles — Search LinkedIn profiles by job title, location, company, industry, school, keywords. —
+POST /v1/linkupapi/data/company/info — Company Info — Full LinkedIn company profile from a company URL. —
+POST /v1/linkupapi/data/company/info-by-domain — Company Info By Domain — Company intelligence from a domain. —
+POST /v1/linkupapi/data/search/companies — Company Search — Search companies by keyword, industry, location, size, founding. 1 cr per 10. —
+POST /v1/linkupapi/data/mail/finder — Email Finder — Find professional email from LinkedIn URL or name + company domain. —
+POST /v1/linkupapi/data/mail/reverse — Email Reverse — Identify the person behind an email. —
+POST /v1/linkupapi/data/mail/validate — Email Validation — Validate deliverability + catch-all. —
+POST /v1/linkupapi/data/fundraising-companies — Fundraising Companies — Companies that recently received funding. —
+POST /v1/linkupapi/data/hiring-companies — Hiring Companies — Companies actively hiring for roles (Indeed + LinkedIn). —
+
+POST /v1/meta-ads/search — Search ads — Async job to search the Facebook Ads Library by keyword or URL. Returns jobId. — flat (async)
+GET /v1/meta-ads/search/{jobId} — Get Meta Ads search job result — free (poll)
+
+POST /v1/openmart/search — Search — Retrieve leads data. 1 cr per result. — per result
+POST /v1/openmart/search/only_ids — Search Ids — Returns only IDs. Free. — free
+POST /v1/openmart/business_records/list/{id_type} — List By Ids — By openmart_id or google_place_id (up to 100). — per record
+POST /v1/openmart/enrich_company — Enrich Company — Additional retailer details. — per result
+POST /v1/openmart/task/batch/find_people — Submit Batch (Find People) — 1–100 items. Credits reserved upfront. — (async)
+POST /v1/openmart/task/batch/find_tech — Submit Batch (Find Tech) — 1–100 items. 2 cr per task. — (async)
+POST /v1/openmart/task/batch/lookup_people — Submit Batch (Lookup People) — 1–100 items. — (async)
+POST /v1/openmart/task/batch/lookup_business_email — Submit Batch (Lookup Business Email) — 1–100 items. 1 cr per task. — (async)
+GET /v1/openmart/task/{task_id} — Get Task — free (poll)
+GET /v1/openmart/task/batch/{batch_id}/status — Check Batch — free
+GET /v1/openmart/task/batch/{batch_id}/task_ids — Get Task Ids — free
+
+POST /v1/pdl/person/enrich — Person Enrichment — Match a person against PDL ~3B profiles using email, LinkedIn URL, phone, or name + contact. — flat
+POST /v1/pdl/person/identify — Person Identify — Up to 20 person profiles with match scores (1–99). — flat
+POST /v1/pdl/person/search — Person Search — Query PDL person dataset using Elasticsearch DSL or SQL. —
+GET /v1/pdl/company/enrich — Company Enrichment — Enrich a company by website, name, LinkedIn URL, or stock ticker. — flat
+POST /v1/pdl/company/search — Company Search — Query PDL company dataset (ES DSL/SQL). —
+POST /v1/pdl/ip/enrich — IP Enrichment — Match an IP against ~2B IPs. — flat
+GET /v1/pdl/autocomplete — Autocomplete — Suggestions for a field type. — free
+
+GET /v1/predictleads/companies/{idOrDomain} — Retrieve Company — ~0.18
+GET /v1/predictleads/discover/companies — Retrieve Companies — Discover companies by location and size. — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/similar_companies — Retrieve Company's Similar Companies — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/job_openings — Retrieve Company's Job Openings — ~0.18
+GET /v1/predictleads/job_openings/{id} — Retrieve a Job Opening — ~0.18
+GET /v1/predictleads/discover/job_openings — Retrieve Job Openings — By O*NET codes and/or location. — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/technology_detections — Retrieve Company's Technology Detections — ~0.18
+GET /v1/predictleads/discover/technologies/{technologyIdOrFuzzyName}/technology_detections — Companies Using a Technology — ~0.18
+GET /v1/predictleads/technologies — Retrieve All Technologies — ~0.18
+GET /v1/predictleads/technologies/{idOrFuzzyName} — Retrieve a Technology — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/news_events — Retrieve Company's News Events — ~0.18
+GET /v1/predictleads/news_events/{id} — Retrieve a News Event — ~0.18
+GET /v1/predictleads/discover/news_events — Retrieve News Events — By category and/or company location. — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/financing_events — Retrieve Company's Financing Events — ~0.18
+GET /v1/predictleads/discover/financing_events — Retrieve Financing Events — By type and/or location. — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/connections — Retrieve Company's Connections — partnerships, integrations. — ~0.18
+GET /v1/predictleads/discover/portfolio_companies/connections — Retrieve Portfolio Companies Connections — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/website_evolution — Retrieve Company's Website Evolution — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/github_repositories — Retrieve Company's GitHub Repositories — ~0.18
+GET /v1/predictleads/companies/{companyIdOrDomain}/products — Retrieve Company's Products — ~0.18
+GET /v1/predictleads/products/{id} — Retrieve a Product — ~0.18
+GET /v1/predictleads/discover/products/latest — Retrieve Latest Products — ~0.18
+GET /v1/predictleads/discover/startup_platform_posts — Retrieve Startup Platform Posts — Recent Hacker News posts from startups. — ~0.18
+POST /v1/predictleads/companies/{companyId}/follow — Follow a Company — Subscribe to webhook events. — ~0.18
+DELETE /v1/predictleads/companies/{companyId}/follow — Unfollow a Company — free
+GET /v1/predictleads/followed_companies — List Followed Companies — free
+
+POST /v1/prospeo/enrich-person — Enrich Person — Enrich using LinkedIn URL, email, name + company, or internal person ID. —
+POST /v1/prospeo/bulk-enrich-person — Bulk Enrich Person — Up to 50. Each requires identifier. —
+POST /v1/prospeo/search-person — Search Person — 30+ filters (seniority, location, industry, years of experience). — free
+POST /v1/prospeo/enrich-company — Enrich Company — Using website, LinkedIn URL, name, or internal company ID. —
+POST /v1/prospeo/bulk-enrich-company — Bulk Enrich Company — Up to 50. —
+POST /v1/prospeo/search-company — Search Company — industry, employee count, funding, revenue, technology. — free
+
+POST /v1/reddit/scrape — Reddit Scraper — Async job to scrape posts, comments, communities, or users by URL. — (async)
+GET /v1/reddit/scrape/{jobId} — Get Reddit scrape job result — free (poll)
+POST /v1/reddit-ads/scrape — Scrape Reddit ads — Async job, up to 30 ads from the Reddit Ads Library. — flat (async)
+GET /v1/reddit-ads/scrape/{jobId} — Get Reddit Ads scrape job result — free (poll)
+
+POST /v1/serper/search — Google Search — Structured results: organic, knowledge graph, answer boxes. —
+POST /v1/serper/news — Google News Search — tbs param for recency. —
+POST /v1/serper/images — Google Images Search —
+POST /v1/serper/videos — Google Videos Search —
+POST /v1/serper/places — Google Places Search — name, address, coords, rating, phone, website. —
+POST /v1/serper/shopping — Google Shopping Search —
+POST /v1/serper/scholar — Google Scholar Search —
+POST /v1/serper/patents — Google Patents Search —
+POST /v1/serper/autocomplete — Google Autocomplete —
+
+GET /v1/signalbase/funding-signals — Get Funding Signals — Companies with funding events. Filtering, pagination, search. —
+GET /v1/signalbase/acquisition-signals — Get Acquisition Signals — Acquisition events. —
+GET /v1/signalbase/job-change-signals — Get Job Change Signals — Role-aware position filters, department. —
+GET /v1/signalbase/hiring-signals — Get Hiring Signals — Open job postings. Role-aware position filters. —
+GET /v1/signalbase/investors — Get Investors — VC firms, angels, PE. —
+GET /v1/signalbase/companies — Get Companies — Company profiles with industry, headcount. —
+
+POST /v1/sumble/organizations/find — Find Organizations — By technology, industry, firmographic filters. Up to 200. — per result
+POST /v1/sumble/organizations/enrich — Enrich Organization — Identify technologies at an org. 5 cr per tech found. —
+POST /v1/sumble/organizations/match — Match Organizations — Batch match up to 200 by name/URL/location. 1 cr per match. — free
+POST /v1/sumble/people/find — Find People — At a specific org, by job function, level, country, date. — per result
+POST /v1/sumble/people/enrich — Enrich Person — Emails + phone by Sumble ID. 10 cr per success. — free
+POST /v1/sumble/jobs/find — Find Jobs — By technology, country, text. 2-3 cr per job. —
+
+POST /v1/theirstack/jobs/search — Search jobs — By title, technology, company, location, seniority. 1 cr per job. — per result
+POST /v1/theirstack/companies/search — Search companies — By tech stack, hiring signals, firmographics, funding. 3 cr per company. — per result
+POST /v1/theirstack/companies/technologies — Get company technologies — Confidence levels + job signal counts. 3 cr. — flat
+POST /v1/theirstack/companies/buying_intents — Get company buying intents — Buying intent topics from job signals + tech adoption. 3 cr. — flat
+
+POST /v1/twitter/tweet-scraper/scrape — Scrape tweets by keyword, handle, URL, or conversation ID — Async job. Returns jobId. — (async)
+GET /v1/twitter/tweet-scraper/scrape/{jobId} — Get tweet scraper job result — free (poll)
+POST /v1/twitter-ads-scraper/search — Search Ads — Async. Twitter Ad Transparency Center. — (async)
+GET /v1/twitter-ads-scraper/search/{jobId} — Get Twitter Ads search job result — free (poll)
+
+# unipile group — LinkedIn / email / calendar / chats / messaging (all free, BYOK) — partial list
+GET /v1/unipile/accounts — List All Accounts — free
+POST /v1/unipile/accounts — Connect Account — free
+POST /v1/unipile/accounts/hosted — Connect Account via Hosted Auth — free
+GET /v1/unipile/accounts/{id} — Retrieve Account — free
+DELETE /v1/unipile/accounts/{id} — Delete Account — free
+PATCH /v1/unipile/accounts/{id} — Update Account — free
+POST /v1/unipile/accounts/{id}/reconnect — Reconnect Account — free
+GET /v1/unipile/accounts/{id}/resync — Resync Account — free
+POST /v1/unipile/accounts/{id}/checkpoint/solve — Solve Checkpoint — free
+POST /v1/unipile/accounts/{id}/checkpoint/resend — Resend Checkpoint — free
+POST /v1/unipile/accounts/{id}/restart — Restart Account — free
+GET /v1/unipile/chats — List All Chats — free
+POST /v1/unipile/chats — Start New Chat — free
+GET /v1/unipile/chats/{id} — Retrieve Chat — free
+PATCH /v1/unipile/chats/{id} — Update Chat — free
+DELETE /v1/unipile/chats/{id} — Delete Chat — free
+GET /v1/unipile/chats/{chatId}/messages — List Chat Messages — free
+POST /v1/unipile/chats/{chatId}/messages — Send Message — free
+GET /v1/unipile/chats/{id}/attendees — List Chat Attendees — free
+GET /v1/unipile/chats/{id}/sync — Sync Chat — free
+GET /v1/unipile/messages — List All Messages — free
+GET /v1/unipile/messages/{messageId} — Retrieve Message — free
+PATCH /v1/unipile/messages/{messageId} — Edit Message — free
+DELETE /v1/unipile/messages/{messageId} — Delete Message — free
+POST /v1/unipile/messages/{messageId}/forward — Forward Message — free
+POST /v1/unipile/messages/{messageId}/reactions — Add Message Reaction — free
+GET /v1/unipile/users/attendees — List Attendees — free
+GET /v1/unipile/users/me — Get Own Profile — free
+GET /v1/unipile/users/invite/sent — List Sent Invitations — free
+GET /v1/unipile/users/invite/received — List Received Invitations — free
+POST /v1/unipile/users/invite/{inviteId} — Handle Received Invitation — free
+DELETE /v1/unipile/users/invite/{inviteId} — Cancel Sent Invitation — free
+GET /v1/unipile/emails — List Emails — free
+POST /v1/unipile/emails — Send Email — free
+GET /v1/unipile/emails/contacts — List Email Contacts — free
+GET /v1/unipile/emails/{mailId} — Retrieve Email — free
+PUT /v1/unipile/emails/{mailId} — Update Email — free
+DELETE /v1/unipile/emails/{mailId} — Delete Email — free
+GET /v1/unipile/folders — List Email Folders — free
+GET /v1/unipile/folders/{folderId} — Retrieve Email Folder — free
+POST /v1/unipile/drafts — Create Email Draft — free
+GET /v1/unipile/linkedin/search/parameters — Get LinkedIn Search Parameters — free
+POST /v1/unipile/linkedin/search — Execute LinkedIn Search — free
+GET /v1/unipile/linkedin/jobs — List LinkedIn Job Postings — free
+POST /v1/unipile/linkedin/jobs — Create LinkedIn Job Posting — free
+GET /v1/unipile/linkedin/jobs/{jobId} — Retrieve LinkedIn Job Posting — free
+PATCH /v1/unipile/linkedin/jobs/{jobId} — Update LinkedIn Job Posting — free
+POST /v1/unipile/linkedin/jobs/{jobId}/publish — Publish LinkedIn Job Posting — free
+POST /v1/unipile/linkedin/jobs/{jobId}/close — Close LinkedIn Job Posting — free
+GET /v1/unipile/linkedin/jobs/{jobId}/applicants — List Job Applicants — free
+GET /v1/unipile/webhooks — List Webhooks — free
+POST /v1/unipile/webhooks — Create Webhook — free
+DELETE /v1/unipile/webhooks/{webhookId} — Delete Webhook — free
+GET /v1/unipile/calendars — List Calendars — free
+GET /v1/unipile/calendars/{calendarId} — Retrieve Calendar — free
+GET /v1/unipile/calendars/{calendarId}/events — List Calendar Events — free
+POST /v1/unipile/calendars/{calendarId}/events — Create Calendar Event — free
+GET /v1/unipile/calendars/{calendarId}/events/{eventId} — Retrieve Calendar Event — free
+PATCH /v1/unipile/calendars/{calendarId}/events/{eventId} — Update Calendar Event — free
+DELETE /v1/unipile/calendars/{calendarId}/events/{eventId} — Delete Calendar Event — free
+
+POST /v1/wiza/individual-reveals — Start Individual Reveal — Enrich a single contact. Returns reveal ID; async. —
+GET /v1/wiza/individual-reveals/{id} — Get Individual Reveal — (poll)
+POST /v1/wiza/lists — Create List — Bulk enrich up to 2,500 contacts. Returns list ID; async. —
+GET /v1/wiza/lists/{id} — Get List —
+GET /v1/wiza/lists/{id}/contacts — Get List Contacts — Export enriched contacts. segment param: people/etc. —
+POST /v1/wiza/prospects/search — Prospects Search — Find prospect count matching filters. Free when size=0 (preview/count). — free
+POST /v1/wiza/prospects/create-prospect-list — Create Prospect List — Enriched list from prospect filters. —
+POST /v1/wiza/prospects/continue-search — Continue Prospect Search — Fetch additional results. —
+POST /v1/wiza/company-enrichments — Company Enrichment — By name, domain, or LinkedIn. 2 cr per success. —
+GET /v1/wiza/meta/credits — Get Credits — Wiza account credit balance. Free. — free
