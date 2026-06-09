@@ -10,18 +10,61 @@ the ColdIQ marketplace, so everything runs with one key and unified credits.
 
 ## Install
 
+### 1. Clone the repo
+
 ```bash
-git clone <this-repo> coldiq-marketplace-skills
+git clone https://github.com/Cold-IQ/coldiq-marketplace-skills.git
+cd coldiq-marketplace-skills
 ```
 
-Point your agent (Claude Code, an Agent SDK app, etc.) at the `skills/` folder. Each skill is a
-`SKILL.md` with YAML frontmatter — the `description` field drives activation.
+### 2. Install the skills into your agent
 
-## Auth
+Each skill is a folder under `skills/` containing a `SKILL.md` (YAML frontmatter + body). Drop those
+folders wherever your agent looks for skills.
 
-Base URL `https://api.coldiq.com`. Get a key from the dashboard
-(`POST /dashboard/api-keys`). ⚠️ The exact auth header is **not yet confirmed** — see
-[endpoints/auth.md](endpoints/auth.md). Confirm it before any live calls.
+**Claude Code — all projects (recommended):**
+```bash
+mkdir -p ~/.claude/skills
+cp -R skills/* ~/.claude/skills/
+```
+
+**Claude Code — one project only:**
+```bash
+mkdir -p /path/to/your/project/.claude/skills
+cp -R skills/* /path/to/your/project/.claude/skills/
+```
+
+Restart Claude Code (or run `/skills`) and the 18 skills appear. They activate automatically from
+their `description` triggers — e.g. ask *"find the work email for this LinkedIn URL"* and
+`coldiq-search-enrich` kicks in.
+
+**Other agents (Agent SDK, custom):** point the agent at the `skills/` folder and load each
+`SKILL.md`. The frontmatter `description` is what the agent reads to decide when to use a skill.
+
+> Tip: skills cross-reference each other and the shared docs by relative path (`../../endpoints/`,
+> `../../shared/`). If you copy only `skills/`, those links won't resolve — copy the whole repo, or
+> just clone it and keep `~/.claude/skills` as a symlink to `skills/`:
+> `ln -s "$(pwd)/skills" ~/.claude/skills/coldiq` (groups them under one folder).
+
+### 3. Set your ColdIQ API key
+
+Get a key from your ColdIQ dashboard (`POST /dashboard/api-keys`), then:
+
+```bash
+export COLDIQ_API_KEY="your-key-here"
+```
+
+Base URL is `https://api.coldiq.com`. ⚠️ The exact auth **header** (`X-KEY` vs
+`Authorization: Bearer`) is not yet confirmed — see [endpoints/auth.md](endpoints/auth.md) and
+confirm before live calls.
+
+### 4. (Optional) Verify the install
+
+```bash
+node scripts/validate.mjs   # 18 skills should lint clean
+```
+
+That's it — your agent now runs GTM tasks through the ColdIQ marketplace, one key, unified credits.
 
 ## Layout
 
