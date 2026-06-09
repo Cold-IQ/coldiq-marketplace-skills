@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.0 — 2026-06-09
+
+Added 4 non-redundant skills (from analysis of ColdIQ's master-skills — nothing already covered):
+
+- **email-infra** — sending infrastructure (domains/mailboxes/warmup) via Instantly account &
+  DFY endpoints (added 11 `instantly` account/warmup/DFY entries to the catalog).
+- **ad-audiences** — matched ad audiences + ABM lists + ads↔outbound sync, via
+  `coldiq.find.hashed_email` / `identity_resolution`.
+- **website-visitors** — enrich & route de-anonymized site visitors (external pixel/IP tool →
+  ColdIQ enrichment tail).
+- **icp-personas** — ICP definition, ABM account sizing/tiering, buying-committee mapping.
+
+Catalog now 145 endpoints. All 18 skills lint clean.
+
 ## 0.1.0 — 2026-06-08
 
 Initial package.

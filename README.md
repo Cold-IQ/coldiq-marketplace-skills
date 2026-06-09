@@ -37,12 +37,13 @@ shared/            conventions, async-job pattern, credit optimization
 scripts/validate.mjs   offline linter
 ```
 
-## The skills (14)
+## The skills (18)
 
-**Actionable (re-routed to ColdIQ endpoints):** coldiq-search-enrich (folder `lima-data-api`),
-apollo-search, contact-enrichment, instantly-api, clay-mastery, meta-ads-scraper, emailbison.
-**Augmented (endpoints added where they exist):** signal-detection, tam-scoring, campaign-delivery,
-crawford-method. **Methodology (no endpoints):** cold-email-copy, list-dedup, fireflies-usage.
+**Search / enrich / lists:** coldiq-search-enrich (folder `lima-data-api`), apollo-search,
+contact-enrichment, clay-mastery, list-dedup, meta-ads-scraper.
+**Signals & strategy:** signal-detection, tam-scoring, icp-personas, website-visitors.
+**Outreach & infra:** instantly-api, email-infra, emailbison, ad-audiences, campaign-delivery.
+**Copy (methodology):** crawford-method, cold-email-copy. **Meetings:** fireflies-usage.
 
 ## How endpoints are wired into skills
 
@@ -65,6 +66,6 @@ Needs-Verification list (endpoints to confirm against the live API).
 
 ## Status
 
-All 14 skills lint clean. Endpoint paths/credits/auth are **best-effort from a pasted admin
+All 18 skills lint clean. Endpoint paths/credits/auth are **best-effort from a pasted admin
 catalog and unverified** — confirm against the live API before production. See the
 "Needs Verification" section of [endpoints/catalog.md](endpoints/catalog.md).

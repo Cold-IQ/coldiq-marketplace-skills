@@ -4,7 +4,7 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 
 > Credit values are best-effort from the pasted admin dump. The dump's 'Cost' column was garbled for several groups (e.g. all apollo rows showed 2832, all blitzapi showed 2994). Real per-call costs are taken from each endpoint's description text. Any value we could not read is 'unknown'.
 
-**134 endpoints across 30 groups.** This is a curated, GTM-relevant slice of the full ~575-endpoint marketplace — see `_raw/catalog-dump.txt` for the complete pasted list.
+**145 endpoints across 30 groups.** This is a curated, GTM-relevant slice of the full ~575-endpoint marketplace — see `_raw/catalog-dump.txt` for the complete pasted list.
 
 ## ai-ark
 
@@ -161,6 +161,17 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 | POST | `/v1/instantly/leads/add` | free | `instantly.leads.add` | Bulk add leads to a campaign |
 | POST | `/v1/instantly/leads/list` | free | `instantly.leads.list` | List leads (check status) |
 | POST | `/v1/instantly/email-verification` | free | `instantly.email_verification.create` | Create an email verification |
+| POST | `/v1/instantly/accounts` | free | `instantly.accounts.create` | Add/connect a sending account (mailbox) |
+| GET | `/v1/instantly/accounts` | free | `instantly.accounts.list` | List sending accounts (mailboxes) |
+| GET | `/v1/instantly/accounts/{email}` | free | `instantly.accounts.get` | Get one sending account's status/health |
+| POST | `/v1/instantly/accounts/warmup/enable` | free | `instantly.accounts.warmup_enable` | Enable warmup on accounts |
+| POST | `/v1/instantly/accounts/warmup/disable` | free | `instantly.accounts.warmup_disable` | Disable warmup on accounts (avoid once live) |
+| POST | `/v1/instantly/accounts/warmup-analytics` | free | `instantly.accounts.warmup_analytics` | Get warmup health/analytics for accounts |
+| POST | `/v1/instantly/accounts/test/vitals` | free | `instantly.accounts.test_vitals` | Test account vitals (deliverability/connection health) |
+| GET | `/v1/instantly/accounts/analytics/daily` | free | `instantly.accounts.analytics_daily` | Daily per-account sending analytics |
+| POST | `/v1/instantly/dfy-email-account-orders` | free | `instantly.dfy_orders.create` | Order done-for-you (pre-warmed) email accounts + domains |
+| POST | `/v1/instantly/dfy-email-account-orders/domains/check` | free | `instantly.dfy_orders.domains_check` | Check domain availability for DFY order |
+| POST | `/v1/instantly/dfy-email-account-orders/domains/pre-warmed-up-list` | free | `instantly.dfy_orders.domains_prewarmed` | Get list of available pre-warmed domains |
 
 ## jina
 
@@ -295,7 +306,7 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 Everything below is unconfirmed against the live API. Confirm before production.
 
 - **Auth header** `X-KEY` is a guess — see [auth.md](auth.md).
-- **134 endpoints** are `verified:false` (all of them, pending a live smoke test).
+- **145 endpoints** are `verified:false` (all of them, pending a live smoke test).
 - **20 endpoints** have `credits:"unknown"` (cost unreadable in the dump):
   - `prospeo.enrich_person` — POST /v1/prospeo/enrich-person
   - `prospeo.bulk_enrich_person` — POST /v1/prospeo/bulk-enrich-person
