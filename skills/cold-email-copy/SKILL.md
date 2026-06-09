@@ -85,8 +85,8 @@ sends/variant. The gap between worst and best variant is ~13× — testing matte
 segment > individual personalization · position yourself as a potential customer in the subject ·
 write for the 97% who won't reply · follow-ups only work if step 1 was solid.
 
-ColdIQ pain angles (from 73 calls): Referral Ceiling · Failed DIY Outbound · System vs. Leads ·
-Scale Without Headcount.
+Common B2B pain angles that consistently land: Referral Ceiling · Failed DIY Outbound · System
+vs. Leads · Scale Without Headcount.
 
 ## Common mistakes
 

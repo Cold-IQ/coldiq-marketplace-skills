@@ -12,13 +12,10 @@ description: >
 
 # Clay Mastery
 
-Clay stays your orchestration canvas; this skill re-expresses ColdIQ's standard Clay table and
-its enrichment waterfalls as **ColdIQ marketplace endpoint calls**, so the same recipe runs with
-one ColdIQ key whether you build it in Clay or call the API directly.
-
-> Substitution: GTME OS ran the email waterfall via Clay's own provider integrations (Prospeo →
-> LeadMagic → Wiza → Hunter → FullEnrich → Debounce). The same waterfall is below as ColdIQ
-> endpoints. Clay-specific UI steps (run conditions, formula writer) are kept as guidance.
+Clay stays your orchestration canvas; this skill re-expresses a standard enrichment table and its
+waterfalls as **ColdIQ marketplace endpoint calls**, so the same recipe runs with one ColdIQ key
+whether you build it in Clay or call the API directly. Clay-specific UI steps (run conditions,
+formula writer, Claygent) are kept as guidance.
 
 ## ColdIQ Marketplace Endpoints
 
@@ -34,7 +31,7 @@ one ColdIQ key whether you build it in Clay or call the API directly.
 | Tech stack | POST | `/v1/builtwith/domain` | flat | `builtwith.domain` | For tech-stack columns |
 | News / signal | POST | `/v1/serper/news` | unknown | `serper.news` | Cheap news lookups |
 
-## Standard ColdIQ Table Layout (9 phases, left → right)
+## Standard Table Layout (9 phases, left → right)
 
 1. **Input** — Company Name, Domain, LinkedIn URL
 2. **Company Enrichment** — Industry, Employee Count, Revenue, Funding, Tech Stack

@@ -8,7 +8,7 @@
     "note": "Header name not confirmed against live API. Candidates: 'X-KEY' (used by ColdIQ providers in coldiq_web) or 'Authorization: Bearer'. Verify before live use — see auth.md."
   },
   "credit_note": "Credit values are best-effort from the pasted admin dump. The dump's 'Cost' column was garbled for several groups (e.g. all apollo rows showed 2832, all blitzapi showed 2994). Real per-call costs are taken from each endpoint's description text. Any value we could not read is 'unknown'.",
-  "source": "endpoints/_raw/catalog-dump.txt (pasted from api.coldiq.com/admin, 2026-06-08)",
+  "source": "endpoints/_raw/catalog-dump.txt (ColdIQ marketplace API catalog capture)",
   "endpoints": [
     { "id": "ai_ark.companies.search", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/companies", "summary": "Search 70M+ enriched company profiles by industry, location, employee size, revenue, funding", "credits": "per_result", "async": false, "inputs": ["filters"], "replaces": ["apollo:/mixed_companies/search"], "verified": false },
     { "id": "ai_ark.people.search", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/people", "summary": "Search 500M+ enriched people profiles by name, title, seniority, skills, education", "credits": "per_result", "async": false, "inputs": ["filters"], "replaces": ["apollo:/mixed_people/api_search", "limadata:/prospect/live/people/filter"], "verified": false },

@@ -13,11 +13,9 @@ description: >
 
 # Instantly API
 
-Create campaigns, load leads, and pull analytics in Instantly via the ColdIQ marketplace.
-
-> Substitution: GTME OS called `api.instantly.ai/api/v2/*` directly. All calls now go through
-> ColdIQ's resold Instantly endpoints `/v1/instantly/*` (paths preserved, base URL swapped,
-> one ColdIQ key; BYOK — free, no ColdIQ credits).
+Create campaigns, load leads, and pull analytics in Instantly via ColdIQ's resold Instantly
+endpoints `/v1/instantly/*` (Instantly v2 paths preserved, one ColdIQ key; BYOK — connect your own
+Instantly account, free, no ColdIQ credits).
 
 ## ColdIQ Marketplace Endpoints
 
@@ -36,15 +34,15 @@ Create campaigns, load leads, and pull analytics in Instantly via the ColdIQ mar
 | Daily analytics | GET | `/v1/instantly/campaigns/analytics/daily` | free | `instantly.campaigns.analytics.daily` | per-day |
 | Verify email | POST | `/v1/instantly/email-verification` | free | `instantly.email_verification.create` | |
 
-## ColdIQ Default Campaign Settings
+## Recommended Campaign Settings
 
-Baseline for every new campaign:
+Deliverability-first baseline for every new campaign:
 
 ```json
 {
   "email_gap": 15, "random_wait_max": 7, "text_only": true, "first_email_text_only": true,
   "daily_limit": 9999, "stop_on_reply": true, "match_lead_esp": true,
-  "link_tracking": false, "open_tracking": false, "pl_value": 35000,
+  "link_tracking": false, "open_tracking": false,
   "campaign_schedule": { "schedules": [{ "name": "Weekday schedule",
     "timing": { "from": "08:00", "to": "14:00" },
     "days": { "1": true, "2": true, "3": true, "4": true, "5": false },
@@ -107,7 +105,7 @@ Spintax: `{{RANDOM|Hey|Hi|Hello}} {{firstName}},`.
 2. Daily trend.
    → **GET** `/v1/instantly/campaigns/analytics/daily` · free · `instantly.campaigns.analytics.daily`
 
-## ColdIQ Benchmarks
+## Benchmarks
 
 | Metric | Kill | Keep | Scale |
 |--------|------|------|-------|
@@ -115,5 +113,6 @@ Spintax: `{{RANDOM|Hey|Hi|Hello}} {{firstName}},`.
 | Emails per positive reply | >5,000 | 1,000–3,000 | <1,000 |
 | Meeting book rate | <0.5% | 1–2% | >2% |
 
-Top performer across 43 campaigns: the 3 AI Campaign Ideas (`{{Idea1}}/{{Idea2}}/{{Idea3}}`).
-After 200+ sends/variant: kill <1% reply, branch top 2–3 winners (70/20/10 winners/iterations/experiments).
+A reliable top performer: 3 AI-generated campaign ideas (`{{Idea1}}/{{Idea2}}/{{Idea3}}`) as the
+personalization payload. After 200+ sends/variant: kill <1% reply, branch top 2–3 winners
+(70/20/10 winners/iterations/experiments).

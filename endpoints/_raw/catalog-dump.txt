@@ -1,6 +1,6 @@
-# ColdIQ Marketplace API — raw endpoint catalog (pasted from api.coldiq.com/admin)
+# ColdIQ Marketplace API — raw endpoint catalog
 # PROVENANCE FILE — DO NOT EDIT. Normalized into ../catalog.json.
-# Source: pasted by user 2026-06-08. Known issues: garbled "Cost" column values,
+# Known issues in this source capture: garbled "Cost" column values,
 # a few truncated paths (e.g. "compach", "datas/page-intersection", "Pupapi").
 
 POST /v1/ai-ark/companies — Company Search API — Search 70M+ enriched company profiles using flexible filters: industry, location, employee size, revenue, funding… — per result

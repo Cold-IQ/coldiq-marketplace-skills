@@ -9,14 +9,14 @@
 3. Add inline `→` callouts at each step, keyed by `endpoint.id`.
 4. Run `node scripts/validate.mjs` until clean.
 
-## Endpoint resolution rules (Kenny-direct → ColdIQ)
+## Endpoint resolution rules (direct provider → ColdIQ)
 
-When a source skill calls a provider directly, re-route it by this precedence:
+When a workflow would call a provider directly, re-route it by this precedence:
 
 1. **Native first** — if `/v1/coldiq/*` covers the capability, use it (Lima Data
    `/find /enrich /prospect /search /research /watch /batch` → `/v1/coldiq/*`, ~1:1).
 2. **ai-ark for big-database search** — large people/company search → `/v1/ai-ark/people|companies`.
-3. **Matching resold provider** — if ColdIQ resells the exact provider Kenny used (Apollo,
+3. **Matching resold provider** — if ColdIQ resells the exact provider the workflow used (Apollo,
    Instantly, Prospeo, FullEnrich, Wiza…), use `/v1/<provider>/*`, preserving the path shape.
 4. **Closest-capability substitution** — when ColdIQ doesn't resell the provider:
    - Linkup → `/v1/coldiq/find/company-linkedin` + `/find/work-email*`
@@ -45,6 +45,6 @@ When a source skill calls a provider directly, re-route it by this precedence:
 
 ## Conventions
 
-- Folder names mirror GTME OS (recognizability); frontmatter `name` reflects the new reality.
+- Folder names mirror the original skill names (recognizability); frontmatter `name` reflects the ColdIQ reality.
 - Endpoints never go in frontmatter.
 - Run the linter before every commit.

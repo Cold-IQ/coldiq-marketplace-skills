@@ -16,9 +16,9 @@ description: >
 Find brands actively running video ads on Meta — a strong signal of marketing budget + digital
 maturity — and turn them into net-new accounts for DTC/e-commerce clients.
 
-> Substitution: GTME OS used a local Playwright + SQLite scraper (`scraper_v3_airpost.py`). That
-> is replaced by ColdIQ's async Meta Ads endpoint — no local browser, no DB. The valuable IP (the
-> 135-term search strategy) is preserved below as the query set you submit.
+This replaces any local Playwright/SQLite Meta scraper with ColdIQ's async Meta Ads endpoint — no
+local browser, no database to maintain. The valuable part — the 135-term search strategy — is
+preserved below as the query set you submit.
 
 ## ColdIQ Marketplace Endpoints
 

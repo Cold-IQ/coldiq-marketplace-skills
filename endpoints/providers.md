@@ -39,15 +39,17 @@ The ColdIQ marketplace (`api.coldiq.com`) exposes ~39 provider groups. Two kinds
 `instantly` (full campaign/lead/account API), `lemlist`, `attio` (CRM), `unipile`
 (LinkedIn/email/calendar/chats).
 
-## What each GTME OS provider maps to
+## Common direct providers → ColdIQ route
 
-| Kenny's GTME OS provider | ColdIQ route |
-|--------------------------|--------------|
+If you previously called these providers directly, here's the ColdIQ marketplace equivalent:
+
+| Direct provider | ColdIQ route |
+|-----------------|--------------|
 | Lima Data | native `/v1/coldiq/*` (+ `/v1/ai-ark/*` for big search) |
 | Apollo | resold `/v1/apollo/*` |
 | Instantly | resold `/v1/instantly/*` (BYOK) |
-| Linkup (railway box) | native `/v1/coldiq/find/company-linkedin` + `/find/work-email*` |
-| Clay waterfall providers | resold `/v1/prospeo/*`, `/v1/findymail/*`, `/v1/fullenrich/*` |
-| Meta Ad Library (Playwright) | resold async `/v1/meta-ads/*` |
-| EmailBison / AirOps | **not resold** → substitute `/v1/instantly/*` or `/v1/lemlist/*` |
+| Linkup | native `/v1/coldiq/find/company-linkedin` + `/find/work-email*` |
+| Email waterfall providers | resold `/v1/prospeo/*`, `/v1/findymail/*`, `/v1/fullenrich/*` |
+| Meta Ad Library scraper | resold async `/v1/meta-ads/*` |
+| EmailBison | **not resold** → substitute `/v1/instantly/*` or `/v1/lemlist/*` |
 | Fireflies | **not resold** → stays on Fireflies (MCP), see fireflies-usage |

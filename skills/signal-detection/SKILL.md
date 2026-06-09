@@ -16,8 +16,8 @@ description: >
 30 sales triggers across 6 categories, tiered by reliability, each mapped to the ColdIQ endpoint
 that surfaces it. Blend ≥2 independent signals before high-effort plays.
 
-> Augmentation: GTME OS listed external tools (Crunchbase, PredictLeads, BuiltWith…). This version
-> routes each detectable signal to a ColdIQ marketplace endpoint where one exists.
+Where a signal is detectable, this skill routes it to a ColdIQ marketplace endpoint; the rest stay
+as research guidance.
 
 ## ColdIQ Marketplace Endpoints
 

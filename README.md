@@ -5,8 +5,8 @@ an AI agent how to run a go-to-market task (build a TAM, score companies, find &
 detect buying signals, write copy, load campaigns) **and** tells it exactly which
 `https://api.coldiq.com` endpoint to call for each step — one key, unified credits.
 
-Derived from ColdIQ's GTME OS skills (which call providers like Apollo, Lima Data, and Instantly
-directly) and re-routed onto the ColdIQ marketplace.
+The GTM workflows are re-routed from direct-provider APIs (Apollo, Instantly, and the like) onto
+the ColdIQ marketplace, so everything runs with one key and unified credits.
 
 ## Install
 
@@ -29,7 +29,7 @@ Base URL `https://api.coldiq.com`. Get a key from the dashboard
 endpoints/
   catalog.json     canonical endpoint registry (source of truth, machine-readable)
   catalog.md       human view + "Needs Verification" punch-list
-  providers.md     the ~39 providers; native vs resold; GTME-OS → ColdIQ mapping
+  providers.md     the ~39 providers; native vs resold; direct-provider → ColdIQ mapping
   auth.md          base URL, API key header (unverified), credits
   _raw/            the original pasted admin catalog (provenance, never edited)
 skills/            one folder per skill (SKILL.md + optional resources/)

@@ -1,23 +1,23 @@
 ---
 name: emailbison
 description: >
-  Run sending-platform campaigns for clients whose GTME OS playbook used EmailBison (AirOps
-  instance). ColdIQ does NOT resell EmailBison, so this skill routes campaign/lead/sequence/reply
-  actions to ColdIQ's resold Instantly (or Lemlist) endpoints and flags where semantics differ.
-  Use when migrating an EmailBison workflow onto the ColdIQ marketplace, loading leads, creating a
-  campaign, or pulling reply analytics for an AirOps-style client. Triggers on "EmailBison",
-  "AirOps campaign", "load campaign into EmailBison", "send via EmailBison", "campaign analytics".
-  Do NOT use for native Instantly work (use instantly-api), Lemlist-first work, copywriting (see
-  cold-email-copy), or enrichment (see contact-enrichment).
+  Migrate an EmailBison sending workflow onto the ColdIQ marketplace. ColdIQ does NOT resell
+  EmailBison, so this skill routes campaign/lead/sequence/reply actions to ColdIQ's resold
+  Instantly (or Lemlist) endpoints and flags where semantics differ. Use when porting an EmailBison
+  campaign to the ColdIQ marketplace, loading leads, creating a campaign, or pulling reply
+  analytics for a former EmailBison setup. Triggers on "EmailBison", "migrate EmailBison", "load
+  campaign into EmailBison", "send via EmailBison", "campaign analytics". Do NOT use for native
+  Instantly work (use instantly-api), Lemlist-first work, copywriting (see cold-email-copy), or
+  enrichment (see contact-enrichment).
 ---
 
 # EmailBison → ColdIQ (Instantly/Lemlist)
 
-> Substitution (important): ColdIQ does **not** resell EmailBison / the AirOps mail instance
-> (`send.airops-mail.com`). There is no `/v1/emailbison/*` group. This skill maps every EmailBison
-> campaign action to the closest ColdIQ-resold sender — **Instantly** by default (or **Lemlist**).
-> Semantics differ: EmailBison merge tags are `{FIRST_NAME}` (caps, single brace) vs Instantly
-> `{{firstName}}`; schedule/sequence field names differ. Re-map fields when migrating.
+> Note (important): ColdIQ does **not** resell EmailBison. There is no `/v1/emailbison/*` group.
+> This skill maps every EmailBison campaign action to the closest ColdIQ-resold sender —
+> **Instantly** by default (or **Lemlist**). Semantics differ: EmailBison merge tags are
+> `{FIRST_NAME}` (caps, single brace) vs Instantly `{{firstName}}`; schedule/sequence field names
+> differ. Re-map fields when migrating.
 
 ## ColdIQ Marketplace Endpoints (Instantly substitution)
 
@@ -66,4 +66,4 @@ For reply handling, sentiment marking, and the analytics field reference, see
   (`mark-as-interested` / `mark-as-automated`) maps to Instantly's lead interest-status update
   (`POST /v1/instantly/leads/update-interest-status`), not a per-reply call.
 - **Schedules/sequences are nested** in Instantly's campaign object, not separate endpoints.
-- Confirm the client's actual sender before migrating — some AirOps clients may move to Lemlist.
+- Confirm the actual target sender before migrating — some teams move to Lemlist instead of Instantly.

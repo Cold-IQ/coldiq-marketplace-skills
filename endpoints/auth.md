@@ -15,7 +15,7 @@ The exact auth header is **not confirmed** against the live API yet. Two candida
 Until confirmed, every skill marks endpoint callouts as `(unverified)` where the catalog
 entry has `verified: false`. **Confirm the header before any production/live use:**
 
-1. Sign in to `https://api.coldiq.com/admin` (Cloudflare Access).
+1. Sign in to your ColdIQ dashboard.
 2. Create a key under `GET/POST /dashboard/api-keys`.
 3. Test the cheapest free endpoint, e.g. `GET /dashboard/credits`, with each header form.
 4. Set the winner in `catalog.json` → `auth.header` and flip `auth.verified` to `true`.

@@ -11,8 +11,8 @@ skills/<skill-name>/SKILL.md          # the skill (required)
 skills/<skill-name>/resources/*.md    # optional deep references loaded on demand
 ```
 
-Folder names mirror the original GTME OS skill names for recognizability, even when the
-frontmatter `name` differs (e.g. folder `lima-data-api/` → `name: coldiq-search-enrich`).
+Folder names mirror their original skill names for recognizability, even when the frontmatter
+`name` differs (e.g. folder `lima-data-api/` → `name: coldiq-search-enrich`).
 
 ## 2. Frontmatter (YAML)
 
@@ -74,9 +74,9 @@ append `(unverified)` to the callout, e.g. `… · `signalbase.funding_signals` 
 
 ## 5. Substitutions & base-URL swaps
 
-Kenny's GTME OS skills call providers directly (`api.apollo.io`, `api.limadata.com`,
-`api.instantly.ai`, `send.airops-mail.com`, a Linkup railway box, `api.fireflies.ai`,
-a local Playwright scraper). This package re-routes every actionable call to ColdIQ.
+A workflow might otherwise call providers directly (Apollo, Instantly, Lima Data, Linkup,
+Findymail, a local scraper, etc.). This package re-routes every actionable call to the ColdIQ
+marketplace instead.
 
 Resolution precedence (full rules in [../CONTRIBUTING.md](../CONTRIBUTING.md)):
 1. ColdIQ-native `/v1/coldiq/*` if it covers the capability
@@ -87,8 +87,8 @@ Resolution precedence (full rules in [../CONTRIBUTING.md](../CONTRIBUTING.md)):
 Any non-1:1 swap MUST be called out in the skill as a blockquote:
 
 ```markdown
-> Substitution: this skill was Lima Data in GTME OS. All `api.limadata.com` paths are now
-> ColdIQ-native `/v1/coldiq/*`. Behaviour is equivalent; credit costs unverified.
+> Substitution: this capability maps to ColdIQ-native `/v1/coldiq/*` instead of a direct provider
+> call. Behaviour is equivalent; credit costs unverified.
 ```
 
 Direct-provider URLs are allowed ONLY inside such `>` blockquotes (the validator flags any

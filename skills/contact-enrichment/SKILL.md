@@ -14,11 +14,9 @@ description: >
 # Contact Enrichment
 
 Find LinkedIn URLs, work/personal emails, and phones for a list of contacts — layering ColdIQ
-endpoints cheapest-first and skipping anyone already enriched.
-
-> Substitution: GTME OS used a Linkup railway box (`linkup-verifier-production.up.railway.app`)
-> for company-LinkedIn + email enrichment, and a Clay-internal waterfall (Prospeo → LeadMagic →
-> Wiza → Hunter → FullEnrich → Debounce). Both are re-expressed here as ColdIQ marketplace calls.
+endpoints cheapest-first and skipping anyone already enriched. The classic multi-provider email
+waterfall (Prospeo → Findymail → FullEnrich, then verify) runs entirely through ColdIQ marketplace
+endpoints, so you get one key and unified credits instead of juggling provider accounts.
 
 ## ColdIQ Marketplace Endpoints
 

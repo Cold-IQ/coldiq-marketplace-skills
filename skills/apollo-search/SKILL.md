@@ -14,11 +14,9 @@ description: >
 # Apollo Search
 
 Search Apollo's 210M+ contacts and 35M+ companies to build targeted lists, then enrich them —
-routed through the ColdIQ marketplace. Use Apollo to BUILD the list (search + filter); use
+through ColdIQ's resold Apollo endpoints `/v1/apollo/*` (same Apollo filter semantics, one ColdIQ
+key). Use Apollo to BUILD the list (search + filter); use
 [coldiq-search-enrich](../lima-data-api/SKILL.md) to ENRICH it with emails.
-
-> Substitution: GTME OS called `api.apollo.io/api/v1/*` directly. All calls now go through
-> ColdIQ's resold Apollo endpoints `/v1/apollo/*` (same filter semantics, one ColdIQ key).
 
 ## ColdIQ Marketplace Endpoints
 
@@ -63,7 +61,7 @@ founded, department headcount, buying intent (Org plan only).
 "1,10"  "11,50"  "51,200"  "201,500"  "501,1000"  "1001,5000"  "5001,10000"  "10001,50000"
 ```
 
-## Proven Search Configurations (ColdIQ)
+## Proven Search Configurations (examples)
 
 - **Referral-ceiling founders:** 10–200 emp, $1–10M rev, software/internet, Seed/Series A,
   US/UK/W-Europe, sales dept 0–2 → titles Founder/CEO/Owner.

@@ -16,11 +16,9 @@ description: >
 # ColdIQ Search & Enrich
 
 Find people and companies, enrich them with emails/phones/firmographics, and prospect at
-scale — all through the ColdIQ marketplace API with one key and unified credits.
-
-> Substitution: this skill was **Lima Data** in GTME OS. Every `api.limadata.com` path is
-> now ColdIQ-native `/v1/coldiq/*` (or `/v1/ai-ark/*` for big-database search). Behaviour is
-> equivalent; credit costs are best-effort from the admin catalog and unverified.
+scale — all through the ColdIQ marketplace API with one key and unified credits. Native
+`/v1/coldiq/*` endpoints cover find/enrich/prospect/search; `/v1/ai-ark/*` covers large-database
+search.
 
 ## ColdIQ Marketplace Endpoints
 

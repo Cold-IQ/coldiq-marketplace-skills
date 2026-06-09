@@ -4,8 +4,8 @@
 
 Initial package.
 
-- Ported the 14 ColdIQ GTME OS skills into the marketplace house format (YAML frontmatter +
-  per-skill endpoint table + inline callouts).
+- Ported 14 GTM skills into the marketplace house format (YAML frontmatter + per-skill endpoint
+  table + inline callouts).
 - Re-routed all actionable tasks from direct-provider APIs to ColdIQ marketplace endpoints
   (`https://api.coldiq.com/v1/*`).
 - Built `endpoints/catalog.json` (134 curated entries across 30 groups) from the pasted admin

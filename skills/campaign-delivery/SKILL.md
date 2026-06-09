@@ -1,7 +1,7 @@
 ---
 name: campaign-delivery
 description: >
-  Build an outbound campaign end-to-end with ColdIQ's 9-phase system, orchestrating the other
+  Build an outbound campaign end-to-end with a proven 9-phase system, orchestrating the other
   skills and their ColdIQ endpoints at each phase. Use when running a full campaign from scratch,
   planning the build order, knowing what comes before what (copy before list), or coordinating
   TAM → scoring → enrichment → copy → load. Triggers on "build a campaign", "campaign from
@@ -13,7 +13,7 @@ description: >
 
 # Campaign Delivery
 
-Build outbound campaigns with ColdIQ's 9-phase system (based on Jordan Crawford / Blueprint GTM).
+Build outbound campaigns with a 9-phase system (based on Jordan Crawford / Blueprint GTM).
 This is the orchestrator — each phase points to the skill and ColdIQ endpoint that does the work.
 
 > Golden rule: **write the perfect email FIRST, then build the list that makes it true.** Copy
