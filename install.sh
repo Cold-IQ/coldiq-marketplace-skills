@@ -68,10 +68,12 @@ else
     if [ -r /dev/tty ]; then
       printf '\n%s\n' "${BOLD}Enter your ColdIQ API key${RESET} ${DIM}(create one at https://coldiq.com/marketplace → API keys)${RESET}"
       printf 'API key: '
-      # Read without echoing to the screen.
-      stty -echo 2>/dev/null || true
+      # Read without echoing to the screen. Always restore echo, even on Ctrl-C.
+      trap 'stty echo </dev/tty 2>/dev/null || true' EXIT INT TERM
+      stty -echo </dev/tty 2>/dev/null || true
       IFS= read -r KEY </dev/tty || true
-      stty echo 2>/dev/null || true
+      stty echo </dev/tty 2>/dev/null || true
+      trap - EXIT INT TERM
       printf '\n'
     fi
   fi
