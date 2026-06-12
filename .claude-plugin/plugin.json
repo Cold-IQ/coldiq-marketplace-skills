@@ -1,0 +1,21 @@
+{
+  "name": "coldiq",
+  "description": "ColdIQ GTM skills + MCP server. Run go-to-market workflows — TAM building, company & people search, email finding and verification, signal detection, copywriting, campaign loading — through one ColdIQ API key with unified credits.",
+  "author": {
+    "name": "ColdIQ",
+    "url": "https://coldiq.com"
+  },
+  "homepage": "https://coldiq.com/marketplace",
+  "repository": "https://github.com/Cold-IQ/coldiq-marketplace-skills",
+  "license": "MIT",
+  "keywords": ["gtm", "prospecting", "sales", "enrichment", "coldiq", "mcp"],
+  "userConfig": {
+    "apiKey": {
+      "type": "string",
+      "title": "ColdIQ API Key",
+      "description": "Your ColdIQ API key. Create one at https://coldiq.com/marketplace (dashboard → API keys). Used to authenticate the bundled MCP server against https://api.coldiq.com.",
+      "sensitive": true,
+      "required": true
+    }
+  }
+}
