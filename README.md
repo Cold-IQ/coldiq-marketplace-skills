@@ -41,16 +41,25 @@ claude plugin install coldiq@coldiq --config apiKey=YOUR_COLDIQ_API_KEY
 Get a key from your ColdIQ dashboard at <https://coldiq.com/marketplace> (→ API keys). Then **restart
 Claude Code** (or run `/reload-plugins`) so the MCP server loads.
 
-### Updating
+### Updating — automatic
 
-Skills and endpoint wiring improve on GitHub continuously. Pull the latest with:
+Skills and endpoint wiring improve on GitHub continuously, and you get them **without
+reinstalling**. The installer turns on **startup auto-update** for the ColdIQ marketplace, so
+**every time you start Claude Code** it refreshes the catalog and pulls the latest skills; when
+something changed you'll be prompted to run `/reload-plugins` (or just restart). The bundled MCP
+server is pinned to `@coldiq/mcp@latest`, so it independently fetches the newest package each launch.
+
+This works because the plugin is published with no pinned version — its version tracks the git commit
+SHA, so **each push to `main` is a new version** auto-update picks up.
+
+Prefer to control updates yourself? Update on demand any time with:
 
 ```bash
 claude plugin marketplace update coldiq && claude plugin update coldiq@coldiq
 ```
 
-…or just re-run the install one-liner — it's the same thing. Restart Claude Code / `/reload-plugins`
-afterwards so MCP changes take effect (skill changes load live).
+To turn auto-update off, open `/plugin` → **Marketplaces** → `coldiq` → **Disable auto-update**
+(or set `"autoUpdate": false` on the `coldiq` entry in `extraKnownMarketplaces` in your settings).
 
 ### What you get
 

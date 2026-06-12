@@ -33,6 +33,37 @@ ok()    { printf '%s\n' "${GREEN}✔${RESET} $*"; }
 warn()  { printf '%s\n' "${YELLOW}⚠${RESET} $*"; }
 err()   { printf '%s\n' "${RED}✗${RESET} $*" >&2; }
 
+# Turn on startup auto-update for our marketplace so users get the latest skills
+# on every Claude Code restart — no reinstall, no manual `plugin update`. This
+# sets extraKnownMarketplaces.<name>.autoUpdate=true (the same flag the /plugin UI
+# writes). Best-effort: needs python3 or node; falls back to a manual hint.
+enable_autoupdate() {
+  settings="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json"
+  [ -f "$settings" ] || return 1
+  if command -v python3 >/dev/null 2>&1; then
+    python3 - "$settings" "$MARKETPLACE" >/dev/null 2>&1 <<'PY'
+import json, sys
+path, name = sys.argv[1], sys.argv[2]
+d = json.load(open(path))
+mk = d.get("extraKnownMarketplaces", {})
+if name not in mk:
+    sys.exit(2)
+mk[name]["autoUpdate"] = True
+json.dump(d, open(path, "w"), indent=2)
+PY
+  elif command -v node >/dev/null 2>&1; then
+    node -e '
+const fs=require("fs"), [p,name]=process.argv.slice(1);
+const d=JSON.parse(fs.readFileSync(p,"utf8"));
+if(!d.extraKnownMarketplaces||!d.extraKnownMarketplaces[name])process.exit(2);
+d.extraKnownMarketplaces[name].autoUpdate=true;
+fs.writeFileSync(p,JSON.stringify(d,null,2));
+' "$settings" "$MARKETPLACE" >/dev/null 2>&1
+  else
+    return 1
+  fi
+}
+
 printf '\n%s\n\n' "${BOLD}ColdIQ Marketplace — Claude Code installer${RESET}"
 
 # --- 1. prerequisites ---------------------------------------------------------
@@ -53,6 +84,14 @@ else
   claude plugin marketplace add "$MARKETPLACE_SOURCE" >/dev/null
 fi
 ok "Marketplace '${MARKETPLACE}' is registered and up to date."
+
+# --- 2b. enable startup auto-update so skills refresh on every Claude restart --
+if enable_autoupdate; then
+  ok "Auto-update on: skills refresh on each Claude Code restart."
+else
+  warn "Couldn't auto-enable startup updates (no python3/node, or settings not writable)."
+  printf '%s\n' "  Turn it on once in-app: ${BOLD}/plugin${RESET} → Marketplaces → ${MARKETPLACE} → Enable auto-update."
+fi
 
 # --- 3. install (first run) or update (subsequent runs) -----------------------
 if claude plugin list --json 2>/dev/null | grep -q "\"id\": *\"${PLUGIN_REF}\""; then
@@ -91,7 +130,10 @@ else
 fi
 
 # --- 4. heads-up about a conflicting manually-added MCP server ----------------
-if claude mcp get "$PLUGIN" >/dev/null 2>&1; then
+# Only the global (user-scoped) server duplicates the plugin's tools. Run the
+# check from $HOME so a project/local .mcp.json in the invocation dir (e.g. a
+# clone of this repo) doesn't trigger a false positive.
+if ( cd "$HOME" 2>/dev/null && claude mcp get "$PLUGIN" >/dev/null 2>&1 ); then
   warn "You also have a manually-added MCP server named '${PLUGIN}'."
   printf '%s\n' "  It will duplicate the plugin's tools. Remove it with: ${BOLD}claude mcp remove ${PLUGIN}${RESET}"
 fi
@@ -100,5 +142,6 @@ fi
 printf '\n%s\n' "${GREEN}${BOLD}ColdIQ is ready.${RESET}"
 printf '%s\n' "  • ${BOLD}Restart Claude Code${RESET} (or run ${BOLD}/reload-plugins${RESET}) to load the MCP server."
 printf '%s\n' "  • 18 GTM skills are now available — they activate automatically, or list them with ${BOLD}/plugin${RESET}."
-printf '%s\n' "  • Update anytime by re-running this command, or: ${BOLD}claude plugin marketplace update ${MARKETPLACE} && claude plugin update ${PLUGIN_REF}${RESET}"
+printf '%s\n' "  • Updates are automatic: each restart pulls the latest skills (you'll be prompted to ${BOLD}/reload-plugins${RESET})."
+printf '%s\n' "  • To update on demand instead: ${BOLD}claude plugin marketplace update ${MARKETPLACE} && claude plugin update ${PLUGIN_REF}${RESET}"
 printf '\n'
