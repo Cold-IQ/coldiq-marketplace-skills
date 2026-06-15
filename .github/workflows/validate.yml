@@ -1,0 +1,27 @@
+name: validate
+
+# Keeps the skills, the resource copies, and the discovery index consistent.
+# The ColdIQ MCP serves the committed index from main, so a stale index ships
+# stale skills — this gate prevents that.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Lint skills (frontmatter, endpoint citations, links)
+        run: node scripts/validate.mjs
+      - name: Per-skill resources/ are in sync with shared/ + endpoints/
+        run: node scripts/sync-resources.mjs --check
+      - name: Discovery index is up to date
+        run: node scripts/build-index.mjs --check
+      - name: install.sh is valid bash
+        run: bash -n install.sh

@@ -46,26 +46,39 @@ if command -v python3 >/dev/null 2>&1; then JSON_TOOL="python3"
 elif command -v node >/dev/null 2>&1; then JSON_TOOL="node"; fi
 
 # Merge the coldiq MCP server (with the API key) into a {mcpServers:{...}} JSON
-# config at $1, preserving everything else. Returns non-zero if no JSON tool.
+# config at $1, preserving everything else. Writes atomically and chmod 600
+# (the file holds a credential). Returns: 0 wrote · 1 no JSON tool · 3 the
+# existing file isn't valid JSON object — left UNTOUCHED so we never clobber a
+# user's other MCP servers; the caller warns them to add it manually.
 write_json_mcp() {
   cfg="$1"
   case "$JSON_TOOL" in
     python3)
       python3 - "$cfg" "$KEY" "$MCP_CMD" "$MCP_ARGS_JSON" <<'PY'
-import json, sys, pathlib
+import json, sys, pathlib, os
 cfg, key, cmd, args = sys.argv[1], sys.argv[2], sys.argv[3], json.loads(sys.argv[4])
 p = pathlib.Path(cfg)
 d = {}
 if p.exists():
-    try: d = json.loads(p.read_text() or "{}")
-    except Exception: d = {}
-    if not isinstance(d, dict): d = {}
+    raw = p.read_text()
+    if raw.strip():
+        try:
+            d = json.loads(raw)
+        except Exception:
+            sys.exit(3)            # don't overwrite an unparseable config
+        if not isinstance(d, dict):
+            sys.exit(3)
 servers = d.get("mcpServers")
 if not isinstance(servers, dict): servers = {}
 servers["coldiq"] = {"command": cmd, "args": args, "env": {"COLDIQ_API_KEY": key}}
 d["mcpServers"] = servers
 p.parent.mkdir(parents=True, exist_ok=True)
-p.write_text(json.dumps(d, indent=2) + "\n")
+tmp = str(p) + ".coldiq.tmp"
+with open(tmp, "w") as f:
+    f.write(json.dumps(d, indent=2) + "\n")
+os.replace(tmp, str(p))            # atomic
+try: os.chmod(str(p), 0o600)
+except OSError: pass
 PY
       ;;
     node)
@@ -73,15 +86,38 @@ PY
 const fs=require("fs"),path=require("path");
 const [cfg,key,cmd,args]=[process.argv[1],process.argv[2],process.argv[3],JSON.parse(process.argv[4])];
 let d={};
-try{ if(fs.existsSync(cfg)){ d=JSON.parse(fs.readFileSync(cfg,"utf8")||"{}"); if(typeof d!=="object"||d===null)d={};}}catch(e){d={};}
+if(fs.existsSync(cfg)){
+  const raw=fs.readFileSync(cfg,"utf8");
+  if(raw.trim()){
+    try{ d=JSON.parse(raw); }catch(e){ process.exit(3); }   // dont overwrite unparseable
+    if(typeof d!=="object"||d===null||Array.isArray(d)) process.exit(3);
+  }
+}
 if(typeof d.mcpServers!=="object"||d.mcpServers===null)d.mcpServers={};
 d.mcpServers.coldiq={command:cmd,args:args,env:{COLDIQ_API_KEY:key}};
 fs.mkdirSync(path.dirname(cfg),{recursive:true});
-fs.writeFileSync(cfg,JSON.stringify(d,null,2)+"\n");
+const tmp=cfg+".coldiq.tmp";
+fs.writeFileSync(tmp,JSON.stringify(d,null,2)+"\n");
+fs.renameSync(tmp,cfg);                                      // atomic
+try{ fs.chmodSync(cfg,0o600); }catch(e){}
 ' "$cfg" "$KEY" "$MCP_CMD" "$MCP_ARGS_JSON"
       ;;
     *) return 1 ;;
   esac
+}
+
+# Write the MCP config for an agent and report the outcome (dedups the call sites).
+configure_mcp_json() {
+  label="$1"; path="$2"
+  write_json_mcp "$path"; rc=$?
+  if [ "$rc" -eq 0 ]; then
+    ok "MCP server written to ${path/#$HOME/\~}"
+  elif [ "$rc" -eq 3 ]; then
+    warn "${path/#$HOME/\~} exists but isn't valid JSON — left it untouched."
+    printf '%s\n' "  Add the coldiq server to its \"mcpServers\" block manually (see README)."
+  else
+    warn "No python3 or node found — couldn't write ${label} MCP config."
+  fi
 }
 
 # Read the API key from env / first arg / interactive prompt. Stored in $KEY.
@@ -191,15 +227,31 @@ if $HAS_CLAUDE; then
   fi
   # Enable startup auto-update (third-party marketplaces default to off).
   settings="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json"
-  if [ -f "$settings" ] && [ -n "$JSON_TOOL" ]; then
-    "$JSON_TOOL" - "$settings" "$MARKETPLACE" >/dev/null 2>&1 <<'PY' || true
-import json,sys
+  if [ -f "$settings" ]; then
+    case "$JSON_TOOL" in
+      python3)
+        python3 - "$settings" "$MARKETPLACE" >/dev/null 2>&1 <<'PY' || true
+import json,sys,os
 try:
     p,name=sys.argv[1],sys.argv[2]; d=json.load(open(p))
     mk=d.get("extraKnownMarketplaces",{})
-    if name in mk: mk[name]["autoUpdate"]=True; json.dump(d,open(p,"w"),indent=2)
+    if name in mk:
+        mk[name]["autoUpdate"]=True
+        tmp=p+".coldiq.tmp"; open(tmp,"w").write(json.dumps(d,indent=2)); os.replace(tmp,p)
 except Exception: pass
 PY
+        ;;
+      node)
+        node -e '
+const fs=require("fs");const [p,name]=[process.argv[1],process.argv[2]];
+try{const d=JSON.parse(fs.readFileSync(p,"utf8"));
+  if(d.extraKnownMarketplaces&&d.extraKnownMarketplaces[name]){
+    d.extraKnownMarketplaces[name].autoUpdate=true;
+    const tmp=p+".coldiq.tmp";fs.writeFileSync(tmp,JSON.stringify(d,null,2));fs.renameSync(tmp,p);}
+}catch(e){}
+' "$settings" "$MARKETPLACE" >/dev/null 2>&1 || true
+        ;;
+    esac
   fi
   if claude plugin list --json 2>/dev/null | grep -q "\"id\": *\"${PLUGIN_REF}\""; then
     claude plugin update "$PLUGIN_REF" >/dev/null 2>&1 || true
@@ -219,13 +271,9 @@ fi
 # ============================================================================
 if $HAS_CURSOR; then
   step "Cursor"
-  if write_json_mcp "$HOME/.cursor/mcp.json"; then
-    ok "MCP server written to ~/.cursor/mcp.json"
-  else
-    warn "No python3/node — couldn't write ~/.cursor/mcp.json"
-  fi
-  if install_skills cursor; then ok "18 skills installed (~/.agents/skills — Cursor reads this)"; fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cursor${RESET}: 18 skills + MCP (approve the server in Settings → MCP)"
+  configure_mcp_json Cursor "$HOME/.cursor/mcp.json"
+  if install_skills cursor; then ok "skills installed (~/.agents/skills — Cursor reads this)"; fi
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cursor${RESET}: skills + MCP (approve the server in Settings → MCP)"
 fi
 
 # ============================================================================
@@ -233,11 +281,18 @@ fi
 # ============================================================================
 if $HAS_CODEX; then
   step "Codex"
-  if command -v codex >/dev/null 2>&1 && \
-     codex mcp add coldiq --env COLDIQ_API_KEY="$KEY" -- npx -y @coldiq/mcp@latest >/dev/null 2>&1; then
-    ok "MCP server added to ~/.codex/config.toml"
-  else
-    warn "Couldn't run 'codex mcp add'. Add manually to ~/.codex/config.toml:"
+  codex_toml="${CODEX_HOME:-$HOME/.codex}/config.toml"
+  codex_done=false
+  if command -v codex >/dev/null 2>&1; then
+    if codex mcp list 2>/dev/null | grep -qi 'coldiq'; then
+      codex_done=true; ok "MCP server already configured in ~/.codex/config.toml"
+    elif codex mcp add coldiq --env COLDIQ_API_KEY="$KEY" -- npx -y @coldiq/mcp@latest >/dev/null 2>&1; then
+      codex_done=true; ok "MCP server added to ~/.codex/config.toml"
+    fi
+    [ -f "$codex_toml" ] && { chmod 600 "$codex_toml" 2>/dev/null || true; }  # holds the key
+  fi
+  if ! $codex_done; then
+    warn "Couldn't run 'codex mcp add' — add this to ~/.codex/config.toml manually:"
     printf '%s\n' "    ${DIM}[mcp_servers.coldiq]${RESET}"
     printf '%s\n' "    ${DIM}command = \"npx\"${RESET}"
     printf '%s\n' "    ${DIM}args = [\"-y\", \"@coldiq/mcp@latest\"]${RESET}"
@@ -245,9 +300,9 @@ if $HAS_CODEX; then
     printf '%s\n' "    ${DIM}COLDIQ_API_KEY = \"<your key>\"${RESET}"
   fi
   if upsert_agents_md "${CODEX_HOME:-$HOME/.codex}/AGENTS.md"; then
-    ok "ColdIQ guidance added to ~/.codex/AGENTS.md"
+    ok "ColdIQ guidance + skill instructions added to ~/.codex/AGENTS.md"
   fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Codex${RESET}: MCP tools + AGENTS.md guidance"
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Codex${RESET}: MCP tools + skills via list_skills (AGENTS.md guidance)"
 fi
 
 # ============================================================================
@@ -255,12 +310,8 @@ fi
 # ============================================================================
 if $HAS_WINDSURF; then
   step "Windsurf"
-  if write_json_mcp "$HOME/.codeium/windsurf/mcp_config.json"; then
-    ok "MCP server written to ~/.codeium/windsurf/mcp_config.json"
-  else
-    warn "No python3/node — couldn't write Windsurf MCP config"
-  fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Windsurf${RESET}: MCP tools (refresh MCP servers in Cascade)"
+  configure_mcp_json Windsurf "$HOME/.codeium/windsurf/mcp_config.json"
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Windsurf${RESET}: MCP tools + skills via list_skills (refresh MCP servers in Cascade)"
 fi
 
 # ============================================================================
@@ -268,12 +319,8 @@ fi
 # ============================================================================
 if $HAS_CLINE; then
   step "Cline"
-  if write_json_mcp "$CLINE_DIR/cline_mcp_settings.json"; then
-    ok "MCP server written to Cline settings"
-  else
-    warn "No python3/node — couldn't write Cline MCP config"
-  fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cline${RESET}: MCP tools"
+  configure_mcp_json Cline "$CLINE_DIR/cline_mcp_settings.json"
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cline${RESET}: MCP tools + skills via list_skills"
 fi
 
 # ============================================================================

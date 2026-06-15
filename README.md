@@ -70,14 +70,16 @@ Skills:
 ```bash
 npx skills add Cold-IQ/coldiq-marketplace-skills --agent cursor --global --yes
 ```
-MCP — add to `~/.cursor/mcp.json` (then approve the server in Settings → MCP):
+MCP — add to `~/.cursor/mcp.json` (then approve the server in Settings → MCP). The installer
+writes your key inline (`chmod 600`); to keep it out of the file instead, set `COLDIQ_API_KEY` in
+your environment and use `"${env:COLDIQ_API_KEY}"`:
 ```json
 {
   "mcpServers": {
     "coldiq": {
       "command": "npx",
       "args": ["-y", "@coldiq/mcp@latest"],
-      "env": { "COLDIQ_API_KEY": "${env:COLDIQ_API_KEY}" }
+      "env": { "COLDIQ_API_KEY": "YOUR_COLDIQ_API_KEY" }
     }
   }
 }
@@ -108,9 +110,11 @@ Then refresh MCP servers in the agent.
 <summary><b>Other agents / Agent SDK</b></summary>
 
 `npx skills add Cold-IQ/coldiq-marketplace-skills --agent '*'` installs the skills to ~70 agents
-(see [vercel-labs/skills](https://github.com/vercel-labs/skills)). Each skill is a self-contained
-folder under `skills/` (`SKILL.md` + its own `resources/`). For MCP, point your client at
-`npx -y @coldiq/mcp@latest` with `COLDIQ_API_KEY` in its environment.
+(via [vercel-labs/skills](https://github.com/vercel-labs/skills) — a third-party CLI fetched with
+`npx`; review before running). Each skill is a self-contained folder under `skills/` (`SKILL.md` +
+its own `resources/`), so it installs cleanly anywhere. For MCP, point your client at
+`npx -y @coldiq/mcp@latest` with `COLDIQ_API_KEY` in its environment — and any MCP client can also
+call the `list_skills` / `load_skill` tools to use the playbooks without a native skills loader.
 </details>
 
 ## Layout
