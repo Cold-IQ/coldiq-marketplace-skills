@@ -14,7 +14,7 @@ description: >
 
 A pure data-processing utility: dedup and clean BEFORE any ColdIQ enrichment. This is the single
 biggest credit saver — every duplicate you remove is a paid find/enrich call you don't make. See
-[../../shared/credit-optimization.md](../../shared/credit-optimization.md). This skill makes no API
+[resources/credit-optimization.md](resources/credit-optimization.md). This skill makes no API
 calls.
 
 ## When to dedup

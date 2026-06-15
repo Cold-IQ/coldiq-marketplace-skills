@@ -45,7 +45,7 @@ search.
 ## Quick Reference
 
 - **Base URL:** `https://api.coldiq.com`
-- **Auth:** API key header (see [../../endpoints/auth.md](../../endpoints/auth.md) — header unverified)
+- **Auth:** API key header (see [resources/auth.md](resources/auth.md) — header unverified)
 - **Credits:** every call settles against your ColdIQ balance; check via `/dashboard/credits`
 - **Not charged** when a find endpoint returns nothing (`free_if_not_found`)
 
@@ -109,7 +109,7 @@ For lists above a few hundred, batch is 25× cheaper than live prospecting (1 cr
    → **POST** `/v1/coldiq/batch/results` · free · `coldiq.batch.results`
 
 Status flow: `pending → processing → completed | failed`. See
-[../../shared/async-job-pattern.md](../../shared/async-job-pattern.md) for the generic poll loop.
+[resources/async-job-pattern.md](resources/async-job-pattern.md) for the generic poll loop.
 
 To turn a list of LinkedIn profile URLs into full profiles, use
 → **POST** `/v1/coldiq/batch/people` · 1/URL · `coldiq.batch.people`

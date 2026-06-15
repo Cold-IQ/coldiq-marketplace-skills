@@ -49,7 +49,7 @@ Given company domains, resolve their LinkedIn company pages first (downstream st
 4. Provider-level enrichment as a fallback.
    → **POST** `/v1/prospeo/enrich-person` · ? cr · `prospeo.enrich_person` (unverified)
 5. Nuclear option for whatever's still missing (bulk, async — see
-   [../../shared/async-job-pattern.md](../../shared/async-job-pattern.md)).
+   [resources/async-job-pattern.md](resources/async-job-pattern.md)).
    → **POST** `/v1/fullenrich/contact/enrich/bulk` · per result · `fullenrich.contact.enrich_bulk`
 6. Personal email only if a work email is truly unreachable.
    → **POST** `/v1/coldiq/find/personal-email` · 5 cr · `coldiq.find.personal_email`
@@ -74,7 +74,7 @@ Unverified emails destroy sender reputation. Verify every found address.
 
 ## Cost optimization
 
-See [../../shared/credit-optimization.md](../../shared/credit-optimization.md). Key rules:
+See [resources/credit-optimization.md](resources/credit-optimization.md). Key rules:
 dedup first ([list-dedup](../list-dedup/SKILL.md)), cheapest input first, stop on first hit,
 test on 50–100 rows before the full list, export only valid/risky emails to the campaign.
 
