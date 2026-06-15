@@ -35,7 +35,9 @@ function frontmatter(text) {
   const desc = /(^|\n)description:\s*([\s\S]+?)(\n[a-z_]+:|$)/.exec(fm);
   return {
     name: name ? name[2] : null,
-    description: desc ? desc[2].replace(/\s+/g, ' ').trim() : null,
+    // Strip a leading YAML block-scalar indicator (`>`/`|` with optional chomp)
+    // before folding, so it doesn't leak into the description.
+    description: desc ? desc[2].replace(/^\s*[>|][+-]?\s*/, '').replace(/\s+/g, ' ').trim() : null,
   };
 }
 
