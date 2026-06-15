@@ -109,6 +109,52 @@ install_skills() {
   npx -y skills@latest add "$REPO" --agent "$agent" --global --yes >/dev/null 2>&1
 }
 
+# Upsert the canonical ColdIQ block into an AGENTS.md (Codex's only guidance
+# channel — it has no skills loader). Marker-delimited so re-runs replace just
+# our block and never clobber the user's own AGENTS.md content.
+upsert_agents_md() {
+  target="$1"
+  command -v curl >/dev/null 2>&1 || return 1
+  [ -n "$JSON_TOOL" ] || return 1
+  tmp="$(mktemp "${TMPDIR:-/tmp}/coldiq-agents.XXXXXX")" || return 1
+  if ! curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/AGENTS.md" -o "$tmp" 2>/dev/null || [ ! -s "$tmp" ]; then
+    rm -f "$tmp"; return 1
+  fi
+  case "$JSON_TOOL" in
+    python3)
+      python3 - "$tmp" "$target" <<'PY'
+import sys, re, pathlib
+block = open(sys.argv[1]).read().strip()
+t = pathlib.Path(sys.argv[2])
+existing = t.read_text() if t.exists() else ""
+pat = re.compile(r"<!-- BEGIN COLDIQ -->.*?<!-- END COLDIQ -->", re.S)
+if pat.search(existing):
+    new = pat.sub(lambda _: block, existing)
+elif existing.strip():
+    new = existing.rstrip() + "\n\n" + block + "\n"
+else:
+    new = block + "\n"
+t.parent.mkdir(parents=True, exist_ok=True)
+t.write_text(new)
+PY
+      ;;
+    node)
+      node -e '
+const fs=require("fs"),path=require("path");
+const block=fs.readFileSync(process.argv[1],"utf8").trim();
+const t=process.argv[2];
+let e=fs.existsSync(t)?fs.readFileSync(t,"utf8"):"";
+const pat=/<!-- BEGIN COLDIQ -->[\s\S]*?<!-- END COLDIQ -->/;
+let out=pat.test(e)?e.replace(pat,block):(e.trim()?e.replace(/\s+$/,"")+"\n\n"+block+"\n":block+"\n");
+fs.mkdirSync(path.dirname(t),{recursive:true});
+fs.writeFileSync(t,out);
+' "$tmp" "$target"
+      ;;
+    *) rm -f "$tmp"; return 1 ;;
+  esac
+  rm -f "$tmp"
+}
+
 # ============================================================================
 # Detect which agents are present
 # ============================================================================
@@ -198,7 +244,10 @@ if $HAS_CODEX; then
     printf '%s\n' "    ${DIM}[mcp_servers.coldiq.env]${RESET}"
     printf '%s\n' "    ${DIM}COLDIQ_API_KEY = \"<your key>\"${RESET}"
   fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Codex${RESET}: MCP tools (skills surfaced via AGENTS.md — see README)"
+  if upsert_agents_md "${CODEX_HOME:-$HOME/.codex}/AGENTS.md"; then
+    ok "ColdIQ guidance added to ~/.codex/AGENTS.md"
+  fi
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Codex${RESET}: MCP tools + AGENTS.md guidance"
 fi
 
 # ============================================================================
