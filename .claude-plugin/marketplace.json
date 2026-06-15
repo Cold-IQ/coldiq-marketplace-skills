@@ -1,0 +1,17 @@
+{
+  "name": "coldiq",
+  "owner": {
+    "name": "ColdIQ",
+    "url": "https://coldiq.com"
+  },
+  "description": "ColdIQ marketplace — GTM agent skills and MCP tools wired to the ColdIQ API. One key, unified credits.",
+  "plugins": [
+    {
+      "name": "coldiq",
+      "source": "./",
+      "description": "ColdIQ GTM skills + MCP server. Prospecting, enrichment, signals, copy, and campaign workflows through one ColdIQ API key.",
+      "category": "integrations",
+      "tags": ["gtm", "prospecting", "sales", "enrichment", "mcp"]
+    }
+  ]
+}

@@ -8,63 +8,89 @@ detect buying signals, write copy, load campaigns) **and** tells it exactly whic
 The GTM workflows are re-routed from direct-provider APIs (Apollo, Instantly, and the like) onto
 the ColdIQ marketplace, so everything runs with one key and unified credits.
 
-## Install
+## Install (Claude Code)
 
-### 1. Clone the repo
+The ColdIQ marketplace ships as a **Claude Code plugin** — one command installs the 18 GTM skills
+**and** the ColdIQ MCP server together, wired to your key, and keeps them updatable.
+
+### One command — install or update
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/install.sh | bash
+```
+
+It checks for the Claude Code CLI, registers the ColdIQ marketplace, installs the plugin, and prompts
+for your ColdIQ API key (stored securely in your OS keychain — never written to disk in plaintext).
+**Re-run the exact same command any time to update** to the latest skills + MCP.
+
+Prefer not to be prompted? Pass the key non-interactively:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/install.sh | COLDIQ_API_KEY=your_key bash
+```
+
+### Or use the Claude Code CLI directly (any OS — macOS, Linux, Windows)
+
+No script needed; this is exactly what the installer runs under the hood:
+
+```bash
+claude plugin marketplace add Cold-IQ/coldiq-marketplace-skills
+claude plugin install coldiq@coldiq --config apiKey=YOUR_COLDIQ_API_KEY
+```
+
+Get a key from your ColdIQ dashboard at <https://coldiq.com/marketplace> (→ API keys). Then **restart
+Claude Code** (or run `/reload-plugins`) so the MCP server loads.
+
+### Updating — automatic
+
+Skills and endpoint wiring improve on GitHub continuously, and you get them **without
+reinstalling**. The installer turns on **startup auto-update** for the ColdIQ marketplace, so
+**every time you start Claude Code** it refreshes the catalog and pulls the latest skills; when
+something changed you'll be prompted to run `/reload-plugins` (or just restart). The bundled MCP
+server is pinned to `@coldiq/mcp@latest`, so it independently fetches the newest package each launch.
+
+This works because the plugin is published with no pinned version — its version tracks the git commit
+SHA, so **each push to `main` is a new version** auto-update picks up.
+
+Prefer to control updates yourself? Update on demand any time with:
+
+```bash
+claude plugin marketplace update coldiq && claude plugin update coldiq@coldiq
+```
+
+To turn auto-update off, open `/plugin` → **Marketplaces** → `coldiq` → **Disable auto-update**
+(or set `"autoUpdate": false` on the `coldiq` entry in `extraKnownMarketplaces` in your settings).
+
+### What you get
+
+- **18 GTM skills** under the `coldiq:` namespace (e.g. `coldiq:apollo-search`), activated
+  automatically from their `description` triggers — ask *"find the work email for this LinkedIn URL"*
+  and the right skill kicks in. List them with `/plugin`.
+- **The ColdIQ MCP server** (`@coldiq/mcp`), authenticated with your key, exposing the
+  search / enrich / verify / signals tools to Claude.
+
+One key, unified credits, base URL `https://api.coldiq.com`.
+
+### Other agents (Agent SDK, custom — no plugin system)
+
+<details>
+<summary>Manual install: clone + copy the skills folder</summary>
+
+Each skill is a folder under `skills/` containing a `SKILL.md` (YAML frontmatter + body). Skills
+cross-reference each other and the shared docs by relative path (`../../endpoints/`, `../../shared/`),
+so keep the whole repo together rather than copying `skills/` alone.
 
 ```bash
 git clone https://github.com/Cold-IQ/coldiq-marketplace-skills.git
 cd coldiq-marketplace-skills
-```
-
-### 2. Install the skills into your agent
-
-Each skill is a folder under `skills/` containing a `SKILL.md` (YAML frontmatter + body). Drop those
-folders wherever your agent looks for skills.
-
-**Claude Code — all projects (recommended):**
-```bash
-mkdir -p ~/.claude/skills
-cp -R skills/* ~/.claude/skills/
-```
-
-**Claude Code — one project only:**
-```bash
-mkdir -p /path/to/your/project/.claude/skills
-cp -R skills/* /path/to/your/project/.claude/skills/
-```
-
-Restart Claude Code (or run `/skills`) and the 18 skills appear. They activate automatically from
-their `description` triggers — e.g. ask *"find the work email for this LinkedIn URL"* and
-`coldiq-search-enrich` kicks in.
-
-**Other agents (Agent SDK, custom):** point the agent at the `skills/` folder and load each
-`SKILL.md`. The frontmatter `description` is what the agent reads to decide when to use a skill.
-
-> Tip: skills cross-reference each other and the shared docs by relative path (`../../endpoints/`,
-> `../../shared/`). If you copy only `skills/`, those links won't resolve — copy the whole repo, or
-> just clone it and keep `~/.claude/skills` as a symlink to `skills/`:
-> `ln -s "$(pwd)/skills" ~/.claude/skills/coldiq` (groups them under one folder).
-
-### 3. Set your ColdIQ API key
-
-Get a key from your ColdIQ dashboard (`POST /dashboard/api-keys`), then:
-
-```bash
 export COLDIQ_API_KEY="your-key-here"
+node scripts/validate.mjs   # optional: 18 skills should lint clean
 ```
 
-Base URL is `https://api.coldiq.com`. ⚠️ The exact auth **header** (`X-KEY` vs
-`Authorization: Bearer`) is not yet confirmed — see [endpoints/auth.md](endpoints/auth.md) and
-confirm before live calls.
+Point your agent at the `skills/` folder and load each `SKILL.md`. The frontmatter `description` is
+what the agent reads to decide when to use a skill.
 
-### 4. (Optional) Verify the install
-
-```bash
-node scripts/validate.mjs   # 18 skills should lint clean
-```
-
-That's it — your agent now runs GTM tasks through the ColdIQ marketplace, one key, unified credits.
+</details>
 
 ## Layout
 
