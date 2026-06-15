@@ -30,7 +30,7 @@ preserved below as the query set you submit.
 ## How to run
 
 For each search term, submit a job and poll for results (see
-[../../shared/async-job-pattern.md](../../shared/async-job-pattern.md)):
+[resources/async-job-pattern.md](resources/async-job-pattern.md)):
 
 1. Submit one keyword/term (or URL).
    → **POST** `/v1/meta-ads/search` · flat · `meta_ads.search.create`

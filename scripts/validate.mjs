@@ -39,6 +39,10 @@ function walk(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
+    // resources/ holds bundled supporting docs (copies of canonical shared/
+    // and endpoints/ files synced by sync-resources.mjs), not skill bodies —
+    // they aren't linted for endpoint citations. Validate the canonical sources.
+    if (name === 'resources') continue;
     if (statSync(p).isDirectory()) out.push(...walk(p));
     else if (name.endsWith('.md')) out.push(p);
   }

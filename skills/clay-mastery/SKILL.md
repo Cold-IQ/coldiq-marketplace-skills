@@ -92,4 +92,4 @@ Default Claygent to GPT-4o-mini; escalate only when it fails.
 Pre-filter before enrichment; cheapest tool first; test 50–100 rows; cache; column order =
 execution order. When enrichments fail, check: input populated? input format (LinkedIn full
 path, domain no protocol)? API key active? run condition correct? provider has data → move to
-next in waterfall. See [../../shared/credit-optimization.md](../../shared/credit-optimization.md).
+next in waterfall. See [resources/credit-optimization.md](resources/credit-optimization.md).
