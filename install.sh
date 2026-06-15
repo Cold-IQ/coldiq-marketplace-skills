@@ -224,7 +224,7 @@ if $HAS_CURSOR; then
   else
     warn "No python3/node — couldn't write ~/.cursor/mcp.json"
   fi
-  if install_skills cursor; then ok "18 skills installed (~/.cursor/skills)"; fi
+  if install_skills cursor; then ok "18 skills installed (~/.agents/skills — Cursor reads this)"; fi
   CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cursor${RESET}: 18 skills + MCP (approve the server in Settings → MCP)"
 fi
 
