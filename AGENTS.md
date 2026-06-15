@@ -31,8 +31,12 @@ waterfall on the first hit. Check balance with the `get_credit_balance` tool.
 
 ## Detailed playbooks (skills)
 
-On skill-capable agents (Claude Code, Cursor) the 18 ColdIQ GTM skills — TAM building,
-Apollo search, contact enrichment, signal detection, copywriting, campaign delivery, and
-more — load on demand. On other agents, lead with the MCP tools above. Full catalog:
-https://github.com/Cold-IQ/coldiq-marketplace-skills
+For step-by-step playbooks — TAM building, Apollo search, contact-enrichment waterfalls,
+signal detection, ICP & personas, copywriting, campaign delivery, and more:
+
+- On **Claude Code** and **Cursor**, the 18 skills load natively on demand.
+- On **every other agent**, call the **`list_skills`** MCP tool to see the catalog, then
+  **`load_skill("<name>")`** to read the full playbook before executing the task.
+
+Full catalog: https://github.com/Cold-IQ/coldiq-marketplace-skills
 <!-- END COLDIQ -->

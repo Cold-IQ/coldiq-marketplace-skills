@@ -35,13 +35,14 @@ Get a key from your ColdIQ dashboard at <https://coldiq.com/marketplace> (→ AP
 |---|---|---|---|
 | **Claude Code** | ✅ 18 (native, progressive) | ✅ | Plugin — key in OS keychain, auto-updates on restart |
 | **Cursor** | ✅ 18 (native Skills) | ✅ | `npx skills` + `~/.cursor/mcp.json` |
-| **Codex** | via `AGENTS.md` | ✅ | `codex mcp add` + `~/.codex/AGENTS.md` |
-| **Windsurf** | via `AGENTS.md` | ✅ | `~/.codeium/windsurf/mcp_config.json` |
-| **Cline** | via `AGENTS.md` | ✅ | VS Code `cline_mcp_settings.json` |
+| **Codex** | ✅ via MCP (`list_skills`) | ✅ | `codex mcp add` + `~/.codex/AGENTS.md` |
+| **Windsurf** | ✅ via MCP (`list_skills`) | ✅ | `~/.codeium/windsurf/mcp_config.json` |
+| **Cline** | ✅ via MCP (`list_skills`) | ✅ | VS Code `cline_mcp_settings.json` |
 
-Skills need an agent with a progressive-disclosure skills loader (today: Claude Code and Cursor).
-Everywhere else the MCP **tools** are the integration, and a short `AGENTS.md` block tells the agent
-how to use them. One key, unified credits, base URL `https://api.coldiq.com`.
+Agents with a native skills loader (Claude Code, Cursor) load the 18 skills directly. **Every other
+agent gets them over the MCP**: the server exposes `list_skills` (the catalog) and `load_skill(name)`
+(the full playbook on demand), so installing the MCP is enough — no native loader required. One key,
+unified credits, base URL `https://api.coldiq.com`.
 
 ### Manual setup (per agent)
 
