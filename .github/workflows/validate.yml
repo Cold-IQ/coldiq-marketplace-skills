@@ -25,3 +25,47 @@ jobs:
         run: node scripts/build-index.mjs --check
       - name: install.sh is valid bash
         run: bash -n install.sh
+      - name: shellcheck install.sh
+        run: shellcheck install.sh  # preinstalled on ubuntu-latest runners
+
+  # Regression lock for the stdin-eating P0: on the shipped `curl … | bash`
+  # path, bash reads the script from the same stdin pipe it hands to children.
+  # A child that drains stdin (npx skills, claude/codex CLIs) used to truncate
+  # the script mid-run — with multiple agents present, only the first
+  # skills-installing block ran and every later agent was silently skipped
+  # (exit 0, no summary). This job pipes the script into bash with three agent
+  # dirs seeded and asserts the LAST agent block still executed.
+  installer-piped:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Seed agent config dirs (Cursor, Codex, Windsurf)
+        run: mkdir -p ~/.cursor ~/.codex ~/.codeium/windsurf
+      - name: Run installer via pipe (the shipped curl | bash path)
+        # Runs the real `npx skills@latest` against npm — bounded by the step
+        # timeout; a skills-CLI failure only warns, the config writes below are
+        # the actual assertion.
+        timeout-minutes: 10
+        run: |
+          set -o pipefail
+          cat install.sh | COLDIQ_API_KEY=ciq_test_dummy bash | tee /tmp/install-out.txt
+      - name: All agent blocks executed (incl. the last one) + summary printed
+        run: |
+          set -x
+          # Cursor (first JSON-config agent)
+          test -f ~/.cursor/mcp.json
+          grep -q '"coldiq"' ~/.cursor/mcp.json
+          # Codex: the codex CLI is absent in the runner, so the block can't
+          # write config.toml — but it MUST still run and print its manual
+          # fallback warning (proves the script wasn't truncated before it).
+          grep -q 'mcp_servers.coldiq' ~/.codex/config.toml \
+            || grep -q "Couldn't run 'codex mcp add'" /tmp/install-out.txt
+          # Windsurf is the LAST seeded agent block — the P0 regression check.
+          test -f ~/.codeium/windsurf/mcp_config.json
+          grep -q '"coldiq"' ~/.codeium/windsurf/mcp_config.json
+          # Final summary must print (previously eaten along with the script).
+          grep -q 'ColdIQ is ready.' /tmp/install-out.txt
