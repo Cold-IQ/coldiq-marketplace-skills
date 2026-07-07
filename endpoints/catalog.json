@@ -10,170 +10,2221 @@
   "credit_note": "Credit values are best-effort from the pasted admin dump. The dump's 'Cost' column was garbled for several groups (e.g. all apollo rows showed 2832, all blitzapi showed 2994). Real per-call costs are taken from each endpoint's description text. Any value we could not read is 'unknown'.",
   "source": "endpoints/_raw/catalog-dump.txt (ColdIQ marketplace API catalog capture)",
   "endpoints": [
-    { "id": "ai_ark.companies.search", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/companies", "summary": "Search 70M+ enriched company profiles by industry, location, employee size, revenue, funding", "credits": "per_result", "async": false, "inputs": ["filters"], "replaces": ["apollo:/mixed_companies/search"], "verified": false },
-    { "id": "ai_ark.people.search", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/people", "summary": "Search 500M+ enriched people profiles by name, title, seniority, skills, education", "credits": "per_result", "async": false, "inputs": ["filters"], "replaces": ["apollo:/mixed_people/api_search", "limadata:/prospect/live/people/filter"], "verified": false },
-    { "id": "ai_ark.people.reverse_lookup", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/people/reverse-lookup", "summary": "Look up a person profile by email address or phone number", "credits": 5, "async": false, "inputs": ["email", "phone"], "verified": false },
-    { "id": "ai_ark.people.mobile_phone_finder", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/people/mobile-phone-finder", "summary": "Find a person's mobile phone by LinkedIn URL or name + company domain", "credits": 10, "free_if_not_found": true, "async": false, "inputs": ["linkedin_url", "name", "company_domain"], "verified": false },
-    { "id": "ai_ark.people.export_single", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/people/export/single", "summary": "Export a single person's full profile with verified email (by AI Ark person ID or LinkedIn URL)", "credits": "free", "async": false, "inputs": ["person_id", "linkedin_url"], "verified": false },
-    { "id": "ai_ark.people.export", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/people/export", "summary": "Export up to 10,000 people profiles with verified emails by company + contact filters; returns trackId", "credits": "per_result", "async": true, "result_path": "/v1/ai-ark/people/export/{trackId}", "inputs": ["filters"], "verified": false },
-    { "id": "ai_ark.people.email_finder", "group": "ai-ark", "kind": "native", "method": "POST", "path": "/v1/ai-ark/people/email-finder", "summary": "Find emails for all people in a previous People Search result, by its trackId", "credits": "per_result", "async": true, "result_path": "/v1/ai-ark/people/email-finder/{trackId}", "inputs": ["trackId"], "verified": false },
-    { "id": "ai_ark.people.export.result", "group": "ai-ark", "kind": "native", "method": "GET", "path": "/v1/ai-ark/people/export/{trackId}", "summary": "Retrieve the result of an Export People job", "credits": "free", "async": false, "inputs": ["trackId"], "verified": false },
-    { "id": "ai_ark.people.email_finder.result", "group": "ai-ark", "kind": "native", "method": "GET", "path": "/v1/ai-ark/people/email-finder/{trackId}", "summary": "Retrieve the result of a Find Emails job", "credits": "free", "async": false, "inputs": ["trackId"], "verified": false },
-
-    { "id": "coldiq.enrich.person", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/enrich/person", "summary": "Enrich a person's professional profile by email, LinkedIn URL, or name+company", "credits": "1-5", "async": false, "inputs": ["email", "linkedin_url", "name", "company"], "replaces": ["limadata:/enrich/person", "prospeo:/enrich-person"], "verified": false },
-    { "id": "coldiq.enrich.company", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/enrich/company", "summary": "Enrich a company by domain or LinkedIn URL; firmographics, funding, tech stack, traffic", "credits": 1, "async": false, "inputs": ["domain", "linkedin_url"], "replaces": ["limadata:/enrich/company"], "verified": false },
-    { "id": "coldiq.person", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/person", "summary": "Retrieve LinkedIn person data by profile URL (cached 30-60d; live=true for fresh)", "credits": 3, "async": false, "inputs": ["linkedin_url"], "verified": false },
-    { "id": "coldiq.company", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/company", "summary": "Get LinkedIn company data by profile URL (live=true for fresh)", "credits": 3, "async": false, "inputs": ["linkedin_url"], "verified": false },
-    { "id": "coldiq.company.insights", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/company/insights", "summary": "Company insights from Crunchbase, Semrush, IPqwery and others", "credits": 5, "async": false, "inputs": ["domain"], "verified": false },
-    { "id": "coldiq.company.workplace_benefits", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/company/workplace-benefits", "summary": "Get workplace benefits for a company by Glassdoor ID", "credits": 3, "async": false, "inputs": ["glassdoor_id"], "verified": false },
-    { "id": "coldiq.workplace_ratings", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/workplace-ratings", "summary": "Get workplace ratings for a company by Glassdoor ID", "credits": 3, "async": false, "inputs": ["glassdoor_id"], "verified": false, "flag": "dump-path-said-/v1/colany/workplace-ratings; assumed /v1/coldiq/" },
-    { "id": "coldiq.find.hashed_email", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/hashed-email", "summary": "Find SHA-256 hashed emails for ad audience targeting (LinkedIn URL or work email)", "credits": 1, "async": false, "inputs": ["linkedin_url", "work_email"], "verified": false },
-    { "id": "coldiq.find.personal_email", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/personal-email", "summary": "Find personal email from LinkedIn, GitHub, X, or work email", "credits": 5, "free_if_not_found": true, "async": false, "inputs": ["linkedin_url", "work_email"], "replaces": ["limadata:/find/email_personal"], "verified": false },
-    { "id": "coldiq.find.work_email", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/work-email", "summary": "Find business email from full name + company domain", "credits": 1, "free_if_not_found": true, "async": false, "inputs": ["full_name", "company_domain"], "replaces": ["limadata:/find/email_work", "findymail:/search/name"], "verified": false },
-    { "id": "coldiq.find.work_email_linkedin", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/work-email-linkedin", "summary": "Find business email from a LinkedIn profile URL", "credits": 3, "free_if_not_found": true, "async": false, "inputs": ["linkedin_url"], "replaces": ["limadata:/find/email_work_linkedin", "findymail:/search/business-profile"], "verified": false },
-    { "id": "coldiq.find.company_linkedin", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/company-linkedin", "summary": "Find the LinkedIn page of a company from its domain", "credits": 1, "async": false, "inputs": ["domain"], "replaces": ["linkup:/enrich/linkedin", "blitzapi:/enrichment/domain-to-linkedin"], "verified": false },
-    { "id": "coldiq.find.phone", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/phone", "summary": "Find phone numbers from LinkedIn profile or name+company", "credits": 10, "free_if_not_found": true, "async": false, "inputs": ["linkedin_url", "name", "company"], "replaces": ["limadata:/find/phone", "findymail:/search/phone"], "verified": false },
-    { "id": "coldiq.find.identity_resolution", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/identity-resolution", "summary": "Find social profile URLs (LinkedIn etc.) by name and company/domain/email", "credits": 2, "async": false, "inputs": ["name", "company", "domain", "email"], "verified": false },
-    { "id": "coldiq.find.reverse_email_lookup", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/reverse-email-lookup", "summary": "Find LinkedIn, GitHub, X profiles from an email address", "credits": 5, "free_if_not_found": true, "async": false, "inputs": ["email"], "replaces": ["blitzapi:/enrichment/reverse-email-lookup"], "verified": false },
-    { "id": "coldiq.find.glassdoor_company", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/find/glassdoor-company", "summary": "Find the Glassdoor ID for a company from its domain", "credits": 1, "async": false, "inputs": ["domain"], "verified": false },
-    { "id": "coldiq.jobs", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/jobs", "summary": "Get LinkedIn job listings for a company page (20/page)", "credits": 2, "async": false, "inputs": ["company_linkedin_url"], "verified": false },
-    { "id": "coldiq.jobs.details", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/jobs/details", "summary": "Get detailed info about a LinkedIn job posting by ID", "credits": 1, "async": false, "inputs": ["job_id"], "verified": false },
-    { "id": "coldiq.posts", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/posts", "summary": "Get LinkedIn posts of a person or company profile", "credits": 2, "async": false, "inputs": ["profile_url"], "verified": false },
-    { "id": "coldiq.posts.comments", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/posts/comments", "summary": "Get comments for a LinkedIn post using comments_urn", "credits": 2, "async": false, "inputs": ["comments_urn"], "replaces": ["jungler:/workbooks(comments)"], "verified": false },
-    { "id": "coldiq.posts.reactions", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/posts/reactions", "summary": "Get reactions for a LinkedIn post using reactions_urn", "credits": 2, "async": false, "inputs": ["reactions_urn"], "replaces": ["jungler:/workbooks(reactions)"], "verified": false },
-    { "id": "coldiq.posts.details", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/posts/details", "summary": "Get details of a single LinkedIn post by URL", "credits": 1, "async": false, "inputs": ["post_url"], "verified": false },
-    { "id": "coldiq.search.people", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/search/people", "summary": "Search people by keywords with title/company/location filters", "credits": 2, "async": false, "inputs": ["keywords", "filters"], "verified": false },
-    { "id": "coldiq.search.companies", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/search/companies", "summary": "Search companies by keywords with size/location/industry filters", "credits": 2, "async": false, "inputs": ["keywords", "filters"], "verified": false },
-    { "id": "coldiq.search.jobs", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/search/jobs", "summary": "Search jobs by keywords with filters", "credits": 2, "async": false, "inputs": ["keywords"], "verified": false },
-    { "id": "coldiq.search.posts", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/search/posts", "summary": "Search LinkedIn posts by keywords with filters", "credits": 2, "async": false, "inputs": ["keywords"], "verified": false },
-    { "id": "coldiq.search.web", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/search/web", "summary": "Perform a Google web search", "credits": 0.1, "async": false, "inputs": ["query"], "verified": false },
-    { "id": "coldiq.research.ai_search", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/research/ai-search", "summary": "AI-powered web search that retrieves and synthesizes information", "credits": 0.3, "async": false, "inputs": ["query"], "verified": false },
-    { "id": "coldiq.research.extract", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/research/extract", "summary": "Extract clean markdown content from web pages (1-10 URLs)", "credits": 0.1, "async": false, "inputs": ["urls"], "verified": false },
-    { "id": "coldiq.references.autocomplete", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/references/autocomplete", "summary": "Get autocomplete results for prospect filter types", "credits": "free", "async": false, "inputs": ["filter_type", "query"], "replaces": ["limadata:/references/autocomplete"], "verified": false },
-    { "id": "coldiq.prospect.people.search_url", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/prospect/people/search-url", "summary": "Prospect people from a LinkedIn Sales Navigator search URL (25/page)", "credits": 25, "async": false, "inputs": ["sn_url"], "replaces": ["leadsfactory:/sn-scraper/jobs"], "verified": false },
-    { "id": "coldiq.prospect.people.filter", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/prospect/people/filter", "summary": "Prospect people using filter criteria", "credits": 25, "async": false, "inputs": ["filters"], "replaces": ["limadata:/prospect/live/people/filter"], "verified": false },
-    { "id": "coldiq.prospect.employees", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/prospect/employees", "summary": "Prospect employees of a company with title/location/seniority filters", "credits": 25, "async": false, "inputs": ["company", "filters"], "replaces": ["limadata:/prospect/live/people/employees"], "verified": false },
-    { "id": "coldiq.prospect.companies.filter", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/prospect/companies/filter", "summary": "Prospect companies using filter criteria", "credits": 25, "async": false, "inputs": ["filters"], "replaces": ["limadata:/prospect/live/companies/filter"], "verified": false },
-    { "id": "coldiq.prospect.companies.search_url", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/prospect/companies/search-url", "summary": "Prospect companies from a LinkedIn Sales Navigator company search URL", "credits": 25, "async": false, "inputs": ["sn_url"], "verified": false },
-    { "id": "coldiq.batch.people", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/batch/people", "summary": "Batch retrieve LinkedIn people profiles (1 cr/URL)", "credits": "per_result", "async": true, "result_path": "/v1/coldiq/batch/results", "inputs": ["linkedin_urls"], "verified": false },
-    { "id": "coldiq.batch.companies", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/batch/companies", "summary": "Batch retrieve LinkedIn company profiles (1 cr/URL)", "credits": "per_result", "async": true, "result_path": "/v1/coldiq/batch/results", "inputs": ["linkedin_urls"], "verified": false },
-    { "id": "coldiq.batch.prospect_people", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/batch/prospect-people", "summary": "Batch prospect people with filters (1 cr/entity — cheaper at scale than live prospect)", "credits": "per_result", "async": true, "result_path": "/v1/coldiq/batch/results", "inputs": ["filters"], "replaces": ["limadata:/batch/prospect-people"], "verified": false },
-    { "id": "coldiq.batch.prospect_companies", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/batch/prospect-companies", "summary": "Batch prospect companies with filters (1 cr/entity)", "credits": "per_result", "async": true, "result_path": "/v1/coldiq/batch/results", "inputs": ["filters"], "verified": false },
-    { "id": "coldiq.batch.list", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/batch/list", "summary": "List all batch operations", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "coldiq.batch.results", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/batch/results", "summary": "Get results of a batch operation by ID", "credits": "free", "async": false, "inputs": ["batch_id"], "verified": false },
-    { "id": "coldiq.watch.create", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/watch", "summary": "Create a watch subscription to monitor people/companies for changes (job changes, profile changes)", "credits": "free", "async": false, "inputs": ["type", "target", "notification_url"], "verified": false },
-    { "id": "coldiq.watch.list", "group": "coldiq", "kind": "native", "method": "POST", "path": "/v1/coldiq/watch/list", "summary": "List all watch subscriptions", "credits": "free", "async": false, "inputs": [], "verified": false },
-
-    { "id": "apollo.people.search", "group": "apollo", "kind": "resold", "method": "POST", "path": "/v1/apollo/people/search", "summary": "Search people in Apollo's global DB by title, seniority, location, company", "credits": 1, "async": false, "inputs": ["filters"], "replaces": ["apollo:/mixed_people/api_search"], "verified": false },
-    { "id": "apollo.organizations.search", "group": "apollo", "kind": "resold", "method": "POST", "path": "/v1/apollo/organizations/search", "summary": "Search organizations in Apollo by industry, size, location", "credits": 1, "async": false, "inputs": ["filters"], "replaces": ["apollo:/mixed_companies/search"], "verified": false },
-    { "id": "apollo.people.match", "group": "apollo", "kind": "resold", "method": "POST", "path": "/v1/apollo/people/match", "summary": "Enrich a person by name, email, LinkedIn URL, or company", "credits": 1, "async": false, "inputs": ["name", "email", "linkedin_url"], "replaces": ["apollo:/people/match"], "verified": false },
-    { "id": "apollo.people.bulk_match", "group": "apollo", "kind": "resold", "method": "POST", "path": "/v1/apollo/people/bulk-match", "summary": "Enrich up to 10 people in one request (1 cr/person)", "credits": "per_result", "async": false, "inputs": ["people"], "replaces": ["apollo:/people/bulk_match"], "verified": false },
-    { "id": "apollo.organizations.enrich", "group": "apollo", "kind": "resold", "method": "POST", "path": "/v1/apollo/organizations/enrich", "summary": "Enrich an organization by domain (size, funding, tech stack)", "credits": 1, "async": false, "inputs": ["domain"], "replaces": ["apollo:/organizations/enrich"], "verified": false },
-    { "id": "apollo.organizations.bulk_enrich", "group": "apollo", "kind": "resold", "method": "POST", "path": "/v1/apollo/organizations/bulk-enrich", "summary": "Enrich up to 10 organizations by domain (1 cr/org)", "credits": "per_result", "async": false, "inputs": ["domains"], "replaces": ["apollo:/organizations/bulk_enrich"], "verified": false },
-    { "id": "apollo.organizations.info", "group": "apollo", "kind": "resold", "method": "POST", "path": "/v1/apollo/organizations/info", "summary": "Get complete organization info by Apollo ID", "credits": 1, "async": false, "inputs": ["apollo_id"], "verified": false },
-
-    { "id": "prospeo.enrich_person", "group": "prospeo", "kind": "resold", "method": "POST", "path": "/v1/prospeo/enrich-person", "summary": "Enrich a person by LinkedIn URL, email, name+company, or internal ID", "credits": "unknown", "async": false, "inputs": ["linkedin_url", "email"], "verified": false },
-    { "id": "prospeo.bulk_enrich_person", "group": "prospeo", "kind": "resold", "method": "POST", "path": "/v1/prospeo/bulk-enrich-person", "summary": "Enrich up to 50 person records (each needs an identifier)", "credits": "unknown", "async": false, "inputs": ["records"], "verified": false },
-    { "id": "prospeo.search_person", "group": "prospeo", "kind": "resold", "method": "POST", "path": "/v1/prospeo/search-person", "summary": "Search people with 30+ filters (seniority, location, industry, YoE)", "credits": "free", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "prospeo.enrich_company", "group": "prospeo", "kind": "resold", "method": "POST", "path": "/v1/prospeo/enrich-company", "summary": "Enrich a company by website, LinkedIn URL, name, or internal ID", "credits": "unknown", "async": false, "inputs": ["website", "linkedin_url"], "verified": false },
-
-    { "id": "findymail.verify", "group": "findymail", "kind": "resold", "method": "POST", "path": "/v1/findymail/verify", "summary": "Verify whether an email is deliverable (bounce check)", "credits": 1, "async": false, "inputs": ["email"], "replaces": ["debounce:verify"], "verified": false },
-    { "id": "findymail.search.name", "group": "findymail", "kind": "resold", "method": "POST", "path": "/v1/findymail/search/name", "summary": "Find an email from name + company domain (1 cr if found)", "credits": 1, "free_if_not_found": true, "async": false, "inputs": ["name", "domain"], "verified": false },
-    { "id": "findymail.search.business_profile", "group": "findymail", "kind": "resold", "method": "POST", "path": "/v1/findymail/search/business-profile", "summary": "Find an email from a LinkedIn profile URL (1 cr if found)", "credits": 1, "free_if_not_found": true, "async": false, "inputs": ["linkedin_url"], "verified": false },
-    { "id": "findymail.search.employees", "group": "findymail", "kind": "resold", "method": "POST", "path": "/v1/findymail/search/employees", "summary": "Find employees at a company by job titles (1 cr/contact found)", "credits": "per_result", "async": false, "inputs": ["domain", "titles"], "verified": false },
-    { "id": "findymail.search.phone", "group": "findymail", "kind": "resold", "method": "POST", "path": "/v1/findymail/search/phone", "summary": "Find a phone number from a LinkedIn profile URL (10 cr if found)", "credits": 10, "free_if_not_found": true, "async": false, "inputs": ["linkedin_url"], "verified": false },
-
-    { "id": "fullenrich.contact.enrich_bulk", "group": "fullenrich", "kind": "resold", "method": "POST", "path": "/v1/fullenrich/contact/enrich/bulk", "summary": "Submit up to 100 contacts for enrichment; returns enrichment_id (async)", "credits": "per_result", "async": true, "result_path": "/v1/fullenrich/contact/enrich/bulk/{enrichmentId}", "inputs": ["contacts"], "verified": false, "note": "Rates from dump: emails 4, phones 34, personal_emails 1" },
-    { "id": "fullenrich.contact.enrich_bulk.result", "group": "fullenrich", "kind": "resold", "method": "GET", "path": "/v1/fullenrich/contact/enrich/bulk/{enrichmentId}", "summary": "Retrieve the result of a bulk enrichment job", "credits": "free", "async": false, "inputs": ["enrichmentId"], "verified": false },
-
-    { "id": "wiza.individual_reveals.create", "group": "wiza", "kind": "resold", "method": "POST", "path": "/v1/wiza/individual-reveals", "summary": "Enrich a single contact; returns reveal ID (async)", "credits": "unknown", "async": true, "result_path": "/v1/wiza/individual-reveals/{id}", "inputs": ["contact"], "verified": false },
-    { "id": "wiza.lists.create", "group": "wiza", "kind": "resold", "method": "POST", "path": "/v1/wiza/lists", "summary": "Bulk enrich up to 2,500 contacts; returns list ID (async)", "credits": "per_result", "async": true, "result_path": "/v1/wiza/lists/{id}/contacts", "inputs": ["contacts"], "verified": false },
-    { "id": "wiza.company_enrichments", "group": "wiza", "kind": "resold", "method": "POST", "path": "/v1/wiza/company-enrichments", "summary": "Enrich company data by name, domain, or LinkedIn (2 cr/success)", "credits": 2, "async": false, "inputs": ["name", "domain", "linkedin"], "verified": false },
-
-    { "id": "icypeas.email_search", "group": "icypeas", "kind": "resold", "method": "POST", "path": "/v1/icypeas/email-search", "summary": "Find an email from firstname, lastname, company domain (async, poll _id)", "credits": 0.3, "async": true, "result_path": "/v1/icypeas/search-results", "inputs": ["firstname", "lastname", "domain"], "verified": false },
-    { "id": "icypeas.email_verification", "group": "icypeas", "kind": "resold", "method": "POST", "path": "/v1/icypeas/email-verification", "summary": "Verify whether an email is valid and deliverable (async)", "credits": 0.1, "async": true, "result_path": "/v1/icypeas/search-results", "inputs": ["email"], "verified": false },
-
-    { "id": "pdl.person.enrich", "group": "pdl", "kind": "resold", "method": "POST", "path": "/v1/pdl/person/enrich", "summary": "Match a person against PDL ~3B profiles by email, LinkedIn, phone, or name+contact", "credits": "flat", "async": false, "inputs": ["email", "linkedin_url", "phone", "name"], "verified": false },
-    { "id": "pdl.company.enrich", "group": "pdl", "kind": "resold", "method": "GET", "path": "/v1/pdl/company/enrich", "summary": "Enrich a company by website, name, LinkedIn URL, or stock ticker", "credits": "flat", "async": false, "inputs": ["website", "name", "linkedin_url", "ticker"], "verified": false },
-    { "id": "pdl.person.search", "group": "pdl", "kind": "resold", "method": "POST", "path": "/v1/pdl/person/search", "summary": "Query the PDL person dataset (Elasticsearch DSL or SQL)", "credits": "per_result", "async": false, "inputs": ["query"], "verified": false },
-
-    { "id": "linkupapi.mail.finder", "group": "linkupapi", "kind": "resold", "method": "POST", "path": "/v1/linkupapi/data/mail/finder", "summary": "Find a professional email from LinkedIn URL or name + company domain", "credits": "unknown", "async": false, "inputs": ["linkedin_url", "name", "domain"], "verified": false },
-    { "id": "linkupapi.fundraising_companies", "group": "linkupapi", "kind": "resold", "method": "POST", "path": "/v1/linkupapi/data/fundraising-companies", "summary": "Find companies that recently received funding", "credits": "unknown", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "linkupapi.hiring_companies", "group": "linkupapi", "kind": "resold", "method": "POST", "path": "/v1/linkupapi/data/hiring-companies", "summary": "Find companies actively hiring for roles (Indeed + LinkedIn)", "credits": "unknown", "async": false, "inputs": ["roles", "filters"], "verified": false },
-
-    { "id": "instantly.campaigns.create", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/campaigns", "summary": "Create a campaign", "credits": "free", "async": false, "inputs": ["name", "settings"], "replaces": ["instantly:/api/v2/campaigns"], "verified": false },
-    { "id": "instantly.campaigns.list", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/campaigns", "summary": "List campaigns", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "instantly.campaigns.get", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/campaigns/{id}", "summary": "Get a campaign", "credits": "free", "async": false, "inputs": ["id"], "verified": false },
-    { "id": "instantly.campaigns.patch", "group": "instantly", "kind": "resold", "method": "PATCH", "path": "/v1/instantly/campaigns/{id}", "summary": "Update a campaign", "credits": "free", "async": false, "inputs": ["id", "settings"], "verified": false },
-    { "id": "instantly.campaigns.activate", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/campaigns/{id}/activate", "summary": "Activate a campaign (empty body)", "credits": "free", "async": false, "inputs": ["id"], "verified": false },
-    { "id": "instantly.campaigns.pause", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/campaigns/{id}/pause", "summary": "Pause a campaign", "credits": "free", "async": false, "inputs": ["id"], "verified": false },
-    { "id": "instantly.campaigns.variables", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/campaigns/{id}/variables", "summary": "Add campaign variables", "credits": "free", "async": false, "inputs": ["id", "variables"], "verified": false },
-    { "id": "instantly.campaigns.analytics", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/campaigns/analytics", "summary": "Get campaign analytics (open/reply/bounce rates)", "credits": "free", "async": false, "inputs": ["campaign_id", "start_date", "end_date"], "replaces": ["instantly:/api/v2/campaigns/analytics"], "verified": false },
-    { "id": "instantly.campaigns.analytics.daily", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/campaigns/analytics/daily", "summary": "Get daily campaign analytics time series", "credits": "free", "async": false, "inputs": ["campaign_id"], "verified": false },
-    { "id": "instantly.campaigns.analytics.steps", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/campaigns/analytics/steps", "summary": "Get per-step campaign analytics", "credits": "free", "async": false, "inputs": ["campaign_id"], "verified": false },
-    { "id": "instantly.leads.create", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/leads", "summary": "Create a single lead (first_name, last_name, email, company_name, custom vars)", "credits": "free", "async": false, "inputs": ["campaign", "email", "first_name"], "replaces": ["instantly:/api/v2/leads"], "verified": false },
-    { "id": "instantly.leads.add", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/leads/add", "summary": "Bulk add leads to a campaign", "credits": "free", "async": false, "inputs": ["campaign", "leads"], "verified": false },
-    { "id": "instantly.leads.list", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/leads/list", "summary": "List leads (check status)", "credits": "free", "async": false, "inputs": ["campaign"], "verified": false },
-    { "id": "instantly.email_verification.create", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/email-verification", "summary": "Create an email verification", "credits": "free", "async": false, "inputs": ["email"], "verified": false },
-    { "id": "instantly.accounts.create", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/accounts", "summary": "Add/connect a sending account (mailbox)", "credits": "free", "async": false, "inputs": ["email", "provider"], "verified": false },
-    { "id": "instantly.accounts.list", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/accounts", "summary": "List sending accounts (mailboxes)", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "instantly.accounts.get", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/accounts/{email}", "summary": "Get one sending account's status/health", "credits": "free", "async": false, "inputs": ["email"], "verified": false },
-    { "id": "instantly.accounts.warmup_enable", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/accounts/warmup/enable", "summary": "Enable warmup on accounts", "credits": "free", "async": false, "inputs": ["emails"], "verified": false },
-    { "id": "instantly.accounts.warmup_disable", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/accounts/warmup/disable", "summary": "Disable warmup on accounts (avoid once live)", "credits": "free", "async": false, "inputs": ["emails"], "verified": false },
-    { "id": "instantly.accounts.warmup_analytics", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/accounts/warmup-analytics", "summary": "Get warmup health/analytics for accounts", "credits": "free", "async": false, "inputs": ["emails"], "verified": false },
-    { "id": "instantly.accounts.test_vitals", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/accounts/test/vitals", "summary": "Test account vitals (deliverability/connection health)", "credits": "free", "async": false, "inputs": ["emails"], "verified": false },
-    { "id": "instantly.accounts.analytics_daily", "group": "instantly", "kind": "resold", "method": "GET", "path": "/v1/instantly/accounts/analytics/daily", "summary": "Daily per-account sending analytics", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "instantly.dfy_orders.create", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/dfy-email-account-orders", "summary": "Order done-for-you (pre-warmed) email accounts + domains", "credits": "free", "async": false, "inputs": ["quantity"], "verified": false },
-    { "id": "instantly.dfy_orders.domains_check", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/dfy-email-account-orders/domains/check", "summary": "Check domain availability for DFY order", "credits": "free", "async": false, "inputs": ["domains"], "verified": false },
-    { "id": "instantly.dfy_orders.domains_prewarmed", "group": "instantly", "kind": "resold", "method": "POST", "path": "/v1/instantly/dfy-email-account-orders/domains/pre-warmed-up-list", "summary": "Get list of available pre-warmed domains", "credits": "free", "async": false, "inputs": [], "verified": false },
-
-    { "id": "lemlist.campaigns.list", "group": "lemlist", "kind": "resold", "method": "GET", "path": "/v1/lemlist/campaigns", "summary": "List campaigns", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "lemlist.campaigns.create", "group": "lemlist", "kind": "resold", "method": "POST", "path": "/v1/lemlist/campaigns", "summary": "Create a campaign", "credits": "free", "async": false, "inputs": ["name"], "verified": false },
-    { "id": "lemlist.campaigns.leads.create", "group": "lemlist", "kind": "resold", "method": "POST", "path": "/v1/lemlist/campaigns/{campaignId}/leads", "summary": "Create a lead in a campaign", "credits": "free", "async": false, "inputs": ["campaignId", "lead"], "verified": false },
-    { "id": "lemlist.campaigns.start", "group": "lemlist", "kind": "resold", "method": "POST", "path": "/v1/lemlist/campaigns/{campaignId}/start", "summary": "Start a campaign", "credits": "free", "async": false, "inputs": ["campaignId"], "verified": false },
-    { "id": "lemlist.campaigns.stats", "group": "lemlist", "kind": "resold", "method": "GET", "path": "/v1/lemlist/campaigns/{campaignId}/stats", "summary": "Get campaign stats", "credits": "free", "async": false, "inputs": ["campaignId"], "verified": false },
-
-    { "id": "signalbase.funding_signals", "group": "signalbase", "kind": "resold", "method": "GET", "path": "/v1/signalbase/funding-signals", "summary": "Get funding signals (companies with funding events) with filters, pagination, search", "credits": "unknown", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "signalbase.acquisition_signals", "group": "signalbase", "kind": "resold", "method": "GET", "path": "/v1/signalbase/acquisition-signals", "summary": "Get acquisition signals (M&A events)", "credits": "unknown", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "signalbase.job_change_signals", "group": "signalbase", "kind": "resold", "method": "GET", "path": "/v1/signalbase/job-change-signals", "summary": "Get job change signals (role-aware position filters, department)", "credits": "unknown", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "signalbase.hiring_signals", "group": "signalbase", "kind": "resold", "method": "GET", "path": "/v1/signalbase/hiring-signals", "summary": "Get hiring signals (open job postings, role-aware filters)", "credits": "unknown", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "signalbase.investors", "group": "signalbase", "kind": "resold", "method": "GET", "path": "/v1/signalbase/investors", "summary": "Get investor data (VC firms, angels, PE)", "credits": "unknown", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "signalbase.companies", "group": "signalbase", "kind": "resold", "method": "GET", "path": "/v1/signalbase/companies", "summary": "Browse/search companies with industry, headcount filters", "credits": "unknown", "async": false, "inputs": ["filters"], "verified": false },
-
-    { "id": "predictleads.discover.financing_events", "group": "predictleads", "kind": "resold", "method": "GET", "path": "/v1/predictleads/discover/financing_events", "summary": "Discover financing events by type and/or company location", "credits": 0.18, "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "predictleads.discover.job_openings", "group": "predictleads", "kind": "resold", "method": "GET", "path": "/v1/predictleads/discover/job_openings", "summary": "Discover job openings by O*NET codes and/or location", "credits": 0.18, "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "predictleads.discover.news_events", "group": "predictleads", "kind": "resold", "method": "GET", "path": "/v1/predictleads/discover/news_events", "summary": "Discover news events by category and/or company location", "credits": 0.18, "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "predictleads.company.technology_detections", "group": "predictleads", "kind": "resold", "method": "GET", "path": "/v1/predictleads/companies/{companyIdOrDomain}/technology_detections", "summary": "Technologies detected on a company website", "credits": 0.18, "async": false, "inputs": ["companyIdOrDomain"], "verified": false },
-
-    { "id": "theirstack.jobs.search", "group": "theirstack", "kind": "resold", "method": "POST", "path": "/v1/theirstack/jobs/search", "summary": "Search job postings by title, technology, company, location, seniority (1 cr/job)", "credits": "per_result", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "theirstack.companies.search", "group": "theirstack", "kind": "resold", "method": "POST", "path": "/v1/theirstack/companies/search", "summary": "Search companies by tech stack, hiring signals, firmographics, funding (3 cr/company)", "credits": "per_result", "async": false, "inputs": ["filters"], "verified": false },
-    { "id": "theirstack.companies.buying_intents", "group": "theirstack", "kind": "resold", "method": "POST", "path": "/v1/theirstack/companies/buying_intents", "summary": "Detect buying intent topics for a company from job signals + tech adoption (3 cr)", "credits": 3, "async": false, "inputs": ["company"], "verified": false },
-
-    { "id": "sumble.organizations.enrich", "group": "sumble", "kind": "resold", "method": "POST", "path": "/v1/sumble/organizations/enrich", "summary": "Identify technologies used at a specific organization (5 cr/tech found)", "credits": "per_result", "async": false, "inputs": ["organization"], "verified": false },
-    { "id": "builtwith.domain", "group": "builtwith", "kind": "resold", "method": "POST", "path": "/v1/builtwith/domain", "summary": "Full technology stack detected on a domain", "credits": "flat", "async": false, "inputs": ["domain"], "verified": false },
-
-    { "id": "career_site_jobs.search.create", "group": "career-site-jobs", "kind": "resold", "method": "POST", "path": "/v1/career-site-jobs/search", "summary": "Async search of real job postings from 175k+ company career sites (54 ATS)", "credits": "unknown", "async": true, "result_path": "/v1/career-site-jobs/search/{jobId}", "inputs": ["filters"], "verified": false },
-    { "id": "linkedin_jobs.search.create", "group": "linkedin-jobs-api", "kind": "resold", "method": "POST", "path": "/v1/linkedin-jobs-api/search", "summary": "Async advanced LinkedIn job search (title, location, description, company filters)", "credits": "unknown", "async": true, "result_path": "/v1/linkedin-jobs-api/search/{jobId}", "inputs": ["filters"], "verified": false },
-
-    { "id": "meta_ads.search.create", "group": "meta-ads", "kind": "resold", "method": "POST", "path": "/v1/meta-ads/search", "summary": "Async search of the Facebook Ads Library by keyword or URL; returns jobId", "credits": "flat", "async": true, "poll_path": "/v1/meta-ads/search/{jobId}", "result_path": "/v1/meta-ads/search/{jobId}", "inputs": ["query"], "replaces": ["playwright:meta-ad-library-scraper"], "verified": false },
-    { "id": "meta_ads.search.result", "group": "meta-ads", "kind": "resold", "method": "GET", "path": "/v1/meta-ads/search/{jobId}", "summary": "Poll a Meta Ads Library job (202 in progress, 200 done)", "credits": "free", "async": false, "inputs": ["jobId"], "verified": false },
-    { "id": "linkedin_ad_library.search.create", "group": "linkedin-ad-library", "kind": "resold", "method": "POST", "path": "/v1/linkedin-ad-library/search", "summary": "Async scrape of the LinkedIn Ad Library; returns jobId", "credits": "flat", "async": true, "result_path": "/v1/linkedin-ad-library/search/{jobId}", "inputs": ["query"], "verified": false },
-    { "id": "google_ads.search.create", "group": "google-ads", "kind": "resold", "method": "POST", "path": "/v1/google-ads/search", "summary": "Async scrape of Google Ads from the Ads Transparency Center", "credits": "flat", "async": true, "result_path": "/v1/google-ads/search/{jobId}", "inputs": ["query"], "verified": false },
-    { "id": "google_maps.scraper.create", "group": "google-maps", "kind": "resold", "method": "POST", "path": "/v1/google-maps/scraper", "summary": "Async extract of places from Google Maps by search terms or URLs", "credits": "unknown", "async": true, "result_path": "/v1/google-maps/scraper/{jobId}", "inputs": ["query"], "verified": false },
-    { "id": "reddit.scrape.create", "group": "reddit", "kind": "resold", "method": "POST", "path": "/v1/reddit/scrape", "summary": "Async scrape of Reddit posts, comments, communities, or users by URL", "credits": "unknown", "async": true, "result_path": "/v1/reddit/scrape/{jobId}", "inputs": ["url"], "verified": false },
-
-    { "id": "jungler.workbooks.create", "group": "jungler", "kind": "resold", "method": "POST", "path": "/v1/jungler/workbooks", "summary": "Extract comments and/or reactions from a LinkedIn post; returns task_id (async)", "credits": "free", "async": true, "poll_path": "/v1/jungler/tasks/{task_id}/status", "result_path": "/v1/jungler/workbooks/{workbook_id}/contacts", "inputs": ["post_url"], "verified": false },
-    { "id": "leadsfactory.contact_finder.create", "group": "leadsfactory", "kind": "resold", "method": "POST", "path": "/v1/leadsfactory/contact-finder/searches", "summary": "Find contacts by job title + seniority across a list of company LinkedIn URLs", "credits": "per_result", "async": true, "result_path": "/v1/leadsfactory/contact-finder/searches/{search_id}", "inputs": ["companies", "titles"], "verified": false },
-
-    { "id": "serper.search", "group": "serper", "kind": "resold", "method": "POST", "path": "/v1/serper/search", "summary": "Google web search (organic, knowledge graph, answer boxes)", "credits": "unknown", "async": false, "inputs": ["q"], "verified": false },
-    { "id": "serper.news", "group": "serper", "kind": "resold", "method": "POST", "path": "/v1/serper/news", "summary": "Google News search (tbs param for recency)", "credits": "unknown", "async": false, "inputs": ["q"], "verified": false },
-    { "id": "serper.places", "group": "serper", "kind": "resold", "method": "POST", "path": "/v1/serper/places", "summary": "Google Places search (name, address, coords, rating, phone, website)", "credits": "unknown", "async": false, "inputs": ["q"], "verified": false },
-    { "id": "exa.search", "group": "exa", "kind": "resold", "method": "POST", "path": "/v1/exa/search", "summary": "Neural or deep web search; ranked results with optional content", "credits": 0.3, "async": false, "inputs": ["query"], "verified": false },
-    { "id": "jina.reader", "group": "jina", "kind": "resold", "method": "POST", "path": "/v1/jina/reader", "summary": "Fetch any URL → clean LLM-ready markdown (handles JS, PDFs)", "credits": "flat", "async": false, "inputs": ["url"], "verified": false },
-
-    { "id": "dashboard.credits", "group": "dashboard", "kind": "native", "method": "GET", "path": "/dashboard/credits", "summary": "Get credit balance", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "dashboard.usage", "group": "dashboard", "kind": "native", "method": "GET", "path": "/dashboard/usage", "summary": "Get usage history", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "dashboard.api_keys.list", "group": "dashboard", "kind": "native", "method": "GET", "path": "/dashboard/api-keys", "summary": "List API keys", "credits": "free", "async": false, "inputs": [], "verified": false },
-    { "id": "dashboard.connections.list", "group": "dashboard", "kind": "native", "method": "GET", "path": "/dashboard/connections", "summary": "List your connected (BYOK) tools", "credits": "free", "async": false, "inputs": [], "verified": false }
+    {
+      "id": "ai_ark.companies.search",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/ai-ark/companies",
+      "summary": "Search 70M+ enriched company profiles by industry, location, employee size, revenue, funding",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "replaces": [
+        "apollo:/mixed_companies/search"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.search",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/ai-ark/people",
+      "summary": "Search 500M+ enriched people profiles by name, title, seniority, skills, education",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "replaces": [
+        "apollo:/mixed_people/api_search",
+        "limadata:/prospect/live/people/filter"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.reverse_lookup",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/ai-ark/people/reverse-lookup",
+      "summary": "Look up a person profile by email address or phone number",
+      "credits": 5,
+      "async": false,
+      "inputs": [
+        "email",
+        "phone"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.mobile_phone_finder",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/ai-ark/people/mobile-phone-finder",
+      "summary": "Find a person's mobile phone by LinkedIn URL or name + company domain",
+      "credits": 10,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "linkedin_url",
+        "name",
+        "company_domain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.export_single",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/ai-ark/people/export/single",
+      "summary": "Export a single person's full profile with verified email (by AI Ark person ID or LinkedIn URL)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "person_id",
+        "linkedin_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.export",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/ai-ark/people/export",
+      "summary": "Export up to 10,000 people profiles with verified emails by company + contact filters; returns trackId",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/ai-ark/people/export/{trackId}",
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.email_finder",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/ai-ark/people/email-finder",
+      "summary": "Find emails for all people in a previous People Search result, by its trackId",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/ai-ark/people/email-finder/{trackId}",
+      "inputs": [
+        "trackId"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.export.result",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "GET",
+      "path": "/v1/ai-ark/people/export/{trackId}",
+      "summary": "Retrieve the result of an Export People job",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "trackId"
+      ],
+      "verified": false
+    },
+    {
+      "id": "ai_ark.people.email_finder.result",
+      "group": "ai-ark",
+      "kind": "native",
+      "method": "GET",
+      "path": "/v1/ai-ark/people/email-finder/{trackId}",
+      "summary": "Retrieve the result of a Find Emails job",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "trackId"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.enrich.person",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/enrich/person",
+      "summary": "Enrich a person's professional profile by email, LinkedIn URL, or name+company",
+      "credits": "1-5",
+      "async": false,
+      "inputs": [
+        "email",
+        "linkedin_url",
+        "name",
+        "company"
+      ],
+      "replaces": [
+        "limadata:/enrich/person",
+        "prospeo:/enrich-person"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.enrich.company",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/enrich/company",
+      "summary": "Enrich a company by domain or LinkedIn URL; firmographics, funding, tech stack, traffic",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "domain",
+        "linkedin_url"
+      ],
+      "replaces": [
+        "limadata:/enrich/company"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.person",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/person",
+      "summary": "Retrieve LinkedIn person data by profile URL (cached 30-60d; live=true for fresh)",
+      "credits": 3,
+      "async": false,
+      "inputs": [
+        "linkedin_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.company",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/company",
+      "summary": "Get LinkedIn company data by profile URL (live=true for fresh)",
+      "credits": 3,
+      "async": false,
+      "inputs": [
+        "linkedin_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.company.insights",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/company/insights",
+      "summary": "Company insights from Crunchbase, Semrush, IPqwery and others",
+      "credits": 5,
+      "async": false,
+      "inputs": [
+        "domain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.company.workplace_benefits",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/company/workplace-benefits",
+      "summary": "Get workplace benefits for a company by Glassdoor ID",
+      "credits": 3,
+      "async": false,
+      "inputs": [
+        "glassdoor_id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.workplace_ratings",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/workplace-ratings",
+      "summary": "Get workplace ratings for a company by Glassdoor ID",
+      "credits": 3,
+      "async": false,
+      "inputs": [
+        "glassdoor_id"
+      ],
+      "verified": false,
+      "flag": "dump-path-said-/v1/colany/workplace-ratings; assumed /v1/coldiq/"
+    },
+    {
+      "id": "coldiq.find.hashed_email",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/hashed-email",
+      "summary": "Find SHA-256 hashed emails for ad audience targeting (LinkedIn URL or work email)",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "linkedin_url",
+        "work_email"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.personal_email",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/personal-email",
+      "summary": "Find personal email from LinkedIn, GitHub, X, or work email",
+      "credits": 5,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "linkedin_url",
+        "work_email"
+      ],
+      "replaces": [
+        "limadata:/find/email_personal"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.work_email",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/work-email",
+      "summary": "Find business email from full name + company domain",
+      "credits": 1,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "full_name",
+        "company_domain"
+      ],
+      "replaces": [
+        "limadata:/find/email_work",
+        "findymail:/search/name"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.work_email_linkedin",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/work-email-linkedin",
+      "summary": "Find business email from a LinkedIn profile URL",
+      "credits": 3,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "linkedin_url"
+      ],
+      "replaces": [
+        "limadata:/find/email_work_linkedin",
+        "findymail:/search/business-profile"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.company_linkedin",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/company-linkedin",
+      "summary": "Find the LinkedIn page of a company from its domain",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "domain"
+      ],
+      "replaces": [
+        "linkup:/enrich/linkedin",
+        "blitzapi:/enrichment/domain-to-linkedin"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.phone",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/phone",
+      "summary": "Find phone numbers from LinkedIn profile or name+company",
+      "credits": 10,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "linkedin_url",
+        "name",
+        "company"
+      ],
+      "replaces": [
+        "limadata:/find/phone",
+        "findymail:/search/phone"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.identity_resolution",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/identity-resolution",
+      "summary": "Find social profile URLs (LinkedIn etc.) by name and company/domain/email",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "name",
+        "company",
+        "domain",
+        "email"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.reverse_email_lookup",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/reverse-email-lookup",
+      "summary": "Find LinkedIn, GitHub, X profiles from an email address",
+      "credits": 5,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "email"
+      ],
+      "replaces": [
+        "blitzapi:/enrichment/reverse-email-lookup"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.find.glassdoor_company",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/find/glassdoor-company",
+      "summary": "Find the Glassdoor ID for a company from its domain",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "domain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.jobs",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/jobs",
+      "summary": "Get LinkedIn job listings for a company page (20/page)",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "company_linkedin_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.jobs.details",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/jobs/details",
+      "summary": "Get detailed info about a LinkedIn job posting by ID",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "job_id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.posts",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/posts",
+      "summary": "Get LinkedIn posts of a person or company profile",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "profile_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.posts.comments",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/posts/comments",
+      "summary": "Get comments for a LinkedIn post using comments_urn",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "comments_urn"
+      ],
+      "replaces": [
+        "jungler:/workbooks(comments)"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.posts.reactions",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/posts/reactions",
+      "summary": "Get reactions for a LinkedIn post using reactions_urn",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "reactions_urn"
+      ],
+      "replaces": [
+        "jungler:/workbooks(reactions)"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.posts.details",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/posts/details",
+      "summary": "Get details of a single LinkedIn post by URL",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "post_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.search.people",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/search/people",
+      "summary": "Search people by keywords with title/company/location filters",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "keywords",
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.search.companies",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/search/companies",
+      "summary": "Search companies by keywords with size/location/industry filters",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "keywords",
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.search.jobs",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/search/jobs",
+      "summary": "Search jobs by keywords with filters",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "keywords"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.search.posts",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/search/posts",
+      "summary": "Search LinkedIn posts by keywords with filters",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "keywords"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.search.web",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/search/web",
+      "summary": "Perform a Google web search",
+      "credits": 0.1,
+      "async": false,
+      "inputs": [
+        "query"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.research.ai_search",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/research/ai-search",
+      "summary": "AI-powered web search that retrieves and synthesizes information",
+      "credits": 0.3,
+      "async": false,
+      "inputs": [
+        "query"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.research.extract",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/research/extract",
+      "summary": "Extract clean markdown content from web pages (1-10 URLs)",
+      "credits": 0.1,
+      "async": false,
+      "inputs": [
+        "urls"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.references.autocomplete",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/references/autocomplete",
+      "summary": "Get autocomplete results for prospect filter types",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "filter_type",
+        "query"
+      ],
+      "replaces": [
+        "limadata:/references/autocomplete"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.prospect.people.search_url",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/prospect/people/search-url",
+      "summary": "Prospect people from a LinkedIn Sales Navigator search URL (25/page)",
+      "credits": 25,
+      "async": false,
+      "inputs": [
+        "sn_url"
+      ],
+      "replaces": [
+        "leadsfactory:/sn-scraper/jobs"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.prospect.people.filter",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/prospect/people/filter",
+      "summary": "Prospect people using filter criteria",
+      "credits": 25,
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "replaces": [
+        "limadata:/prospect/live/people/filter"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.prospect.employees",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/prospect/employees",
+      "summary": "Prospect employees of a company with title/location/seniority filters",
+      "credits": 25,
+      "async": false,
+      "inputs": [
+        "company",
+        "filters"
+      ],
+      "replaces": [
+        "limadata:/prospect/live/people/employees"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.prospect.companies.filter",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/prospect/companies/filter",
+      "summary": "Prospect companies using filter criteria",
+      "credits": 25,
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "replaces": [
+        "limadata:/prospect/live/companies/filter"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.prospect.companies.search_url",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/prospect/companies/search-url",
+      "summary": "Prospect companies from a LinkedIn Sales Navigator company search URL",
+      "credits": 25,
+      "async": false,
+      "inputs": [
+        "sn_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.batch.people",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/batch/people",
+      "summary": "Batch retrieve LinkedIn people profiles (1 cr/URL)",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/coldiq/batch/results",
+      "inputs": [
+        "linkedin_urls"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.batch.companies",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/batch/companies",
+      "summary": "Batch retrieve LinkedIn company profiles (1 cr/URL)",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/coldiq/batch/results",
+      "inputs": [
+        "linkedin_urls"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.batch.prospect_people",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/batch/prospect-people",
+      "summary": "Batch prospect people with filters (1 cr/entity — cheaper at scale than live prospect)",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/coldiq/batch/results",
+      "inputs": [
+        "filters"
+      ],
+      "replaces": [
+        "limadata:/batch/prospect-people"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.batch.prospect_companies",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/batch/prospect-companies",
+      "summary": "Batch prospect companies with filters (1 cr/entity)",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/coldiq/batch/results",
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.batch.list",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/batch/list",
+      "summary": "List all batch operations",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "coldiq.batch.results",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/batch/results",
+      "summary": "Get results of a batch operation by ID",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "batch_id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.watch.create",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/watch",
+      "summary": "Create a watch subscription to monitor people/companies for changes (job changes, profile changes)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "type",
+        "target",
+        "notification_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "coldiq.watch.list",
+      "group": "coldiq",
+      "kind": "native",
+      "method": "POST",
+      "path": "/v1/coldiq/watch/list",
+      "summary": "List all watch subscriptions",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "apollo.people.search",
+      "group": "apollo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/apollo/people/search",
+      "summary": "Search people in Apollo's global DB by title, seniority, location, company",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "replaces": [
+        "apollo:/mixed_people/api_search"
+      ],
+      "verified": false
+    },
+    {
+      "id": "apollo.organizations.search",
+      "group": "apollo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/apollo/organizations/search",
+      "summary": "Search organizations in Apollo by industry, size, location",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "replaces": [
+        "apollo:/mixed_companies/search"
+      ],
+      "verified": false
+    },
+    {
+      "id": "apollo.people.match",
+      "group": "apollo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/apollo/people/match",
+      "summary": "Enrich a person by name, email, LinkedIn URL, or company",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "name",
+        "email",
+        "linkedin_url"
+      ],
+      "replaces": [
+        "apollo:/people/match"
+      ],
+      "verified": false
+    },
+    {
+      "id": "apollo.people.bulk_match",
+      "group": "apollo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/apollo/people/bulk-match",
+      "summary": "Enrich up to 10 people in one request (1 cr/person)",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "people"
+      ],
+      "replaces": [
+        "apollo:/people/bulk_match"
+      ],
+      "verified": false
+    },
+    {
+      "id": "apollo.organizations.enrich",
+      "group": "apollo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/apollo/organizations/enrich",
+      "summary": "Enrich an organization by domain (size, funding, tech stack)",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "domain"
+      ],
+      "replaces": [
+        "apollo:/organizations/enrich"
+      ],
+      "verified": false
+    },
+    {
+      "id": "apollo.organizations.bulk_enrich",
+      "group": "apollo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/apollo/organizations/bulk-enrich",
+      "summary": "Enrich up to 10 organizations by domain (1 cr/org)",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "domains"
+      ],
+      "replaces": [
+        "apollo:/organizations/bulk_enrich"
+      ],
+      "verified": false
+    },
+    {
+      "id": "apollo.organizations.info",
+      "group": "apollo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/apollo/organizations/info",
+      "summary": "Get complete organization info by Apollo ID",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "apollo_id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "prospeo.enrich_person",
+      "group": "prospeo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/prospeo/enrich-person",
+      "summary": "Enrich a person by LinkedIn URL, email, name+company, or internal ID",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "linkedin_url",
+        "email"
+      ],
+      "verified": false
+    },
+    {
+      "id": "prospeo.bulk_enrich_person",
+      "group": "prospeo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/prospeo/bulk-enrich-person",
+      "summary": "Enrich up to 50 person records (each needs an identifier)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "records"
+      ],
+      "verified": false
+    },
+    {
+      "id": "prospeo.search_person",
+      "group": "prospeo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/prospeo/search-person",
+      "summary": "Search people with 30+ filters (seniority, location, industry, YoE)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "prospeo.enrich_company",
+      "group": "prospeo",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/prospeo/enrich-company",
+      "summary": "Enrich a company by website, LinkedIn URL, name, or internal ID",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "website",
+        "linkedin_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "findymail.verify",
+      "group": "findymail",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/findymail/verify",
+      "summary": "Verify whether an email is deliverable (bounce check)",
+      "credits": 1,
+      "async": false,
+      "inputs": [
+        "email"
+      ],
+      "replaces": [
+        "debounce:verify"
+      ],
+      "verified": false
+    },
+    {
+      "id": "findymail.search.name",
+      "group": "findymail",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/findymail/search/name",
+      "summary": "Find an email from name + company domain (1 cr if found)",
+      "credits": 1,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "name",
+        "domain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "findymail.search.business_profile",
+      "group": "findymail",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/findymail/search/business-profile",
+      "summary": "Find an email from a LinkedIn profile URL (1 cr if found)",
+      "credits": 1,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "linkedin_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "findymail.search.employees",
+      "group": "findymail",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/findymail/search/employees",
+      "summary": "Find employees at a company by job titles (1 cr/contact found)",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "domain",
+        "titles"
+      ],
+      "verified": false
+    },
+    {
+      "id": "findymail.search.phone",
+      "group": "findymail",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/findymail/search/phone",
+      "summary": "Find a phone number from a LinkedIn profile URL (10 cr if found)",
+      "credits": 10,
+      "free_if_not_found": true,
+      "async": false,
+      "inputs": [
+        "linkedin_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "fullenrich.contact.enrich_bulk",
+      "group": "fullenrich",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/fullenrich/contact/enrich/bulk",
+      "summary": "Submit up to 100 contacts for enrichment; returns enrichment_id (async)",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/fullenrich/contact/enrich/bulk/{enrichmentId}",
+      "inputs": [
+        "contacts"
+      ],
+      "verified": false,
+      "note": "Rates from dump: emails 4, phones 34, personal_emails 1"
+    },
+    {
+      "id": "fullenrich.contact.enrich_bulk.result",
+      "group": "fullenrich",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/fullenrich/contact/enrich/bulk/{enrichmentId}",
+      "summary": "Retrieve the result of a bulk enrichment job",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "enrichmentId"
+      ],
+      "verified": false
+    },
+    {
+      "id": "wiza.individual_reveals.create",
+      "group": "wiza",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/wiza/individual-reveals",
+      "summary": "Enrich a single contact; returns reveal ID (async)",
+      "credits": "unknown",
+      "async": true,
+      "result_path": "/v1/wiza/individual-reveals/{id}",
+      "inputs": [
+        "contact"
+      ],
+      "verified": false
+    },
+    {
+      "id": "wiza.lists.create",
+      "group": "wiza",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/wiza/lists",
+      "summary": "Bulk enrich up to 2,500 contacts; returns list ID (async)",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/wiza/lists/{id}/contacts",
+      "inputs": [
+        "contacts"
+      ],
+      "verified": false
+    },
+    {
+      "id": "wiza.company_enrichments",
+      "group": "wiza",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/wiza/company-enrichments",
+      "summary": "Enrich company data by name, domain, or LinkedIn (2 cr/success)",
+      "credits": 2,
+      "async": false,
+      "inputs": [
+        "name",
+        "domain",
+        "linkedin"
+      ],
+      "verified": false
+    },
+    {
+      "id": "icypeas.email_search",
+      "group": "icypeas",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/icypeas/email-search",
+      "summary": "Find an email from firstname, lastname, company domain (async, poll _id)",
+      "credits": 0.3,
+      "async": true,
+      "result_path": "/v1/icypeas/search-results",
+      "inputs": [
+        "firstname",
+        "lastname",
+        "domain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "icypeas.email_verification",
+      "group": "icypeas",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/icypeas/email-verification",
+      "summary": "Verify whether an email is valid and deliverable (async)",
+      "credits": 0.1,
+      "async": true,
+      "result_path": "/v1/icypeas/search-results",
+      "inputs": [
+        "email"
+      ],
+      "verified": false
+    },
+    {
+      "id": "pdl.person.enrich",
+      "group": "pdl",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/pdl/person/enrich",
+      "summary": "Match a person against PDL ~3B profiles by email, LinkedIn, phone, or name+contact",
+      "credits": "flat",
+      "async": false,
+      "inputs": [
+        "email",
+        "linkedin_url",
+        "phone",
+        "name"
+      ],
+      "verified": false
+    },
+    {
+      "id": "pdl.company.enrich",
+      "group": "pdl",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/pdl/company/enrich",
+      "summary": "Enrich a company by website, name, LinkedIn URL, or stock ticker",
+      "credits": "flat",
+      "async": false,
+      "inputs": [
+        "website",
+        "name",
+        "linkedin_url",
+        "ticker"
+      ],
+      "verified": false
+    },
+    {
+      "id": "pdl.person.search",
+      "group": "pdl",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/pdl/person/search",
+      "summary": "Query the PDL person dataset (Elasticsearch DSL or SQL)",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "query"
+      ],
+      "verified": false
+    },
+    {
+      "id": "linkupapi.mail.finder",
+      "group": "linkupapi",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/linkupapi/data/mail/finder",
+      "summary": "Find a professional email from LinkedIn URL or name + company domain",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "linkedin_url",
+        "name",
+        "domain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "linkupapi.fundraising_companies",
+      "group": "linkupapi",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/linkupapi/data/fundraising-companies",
+      "summary": "Find companies that recently received funding",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "linkupapi.hiring_companies",
+      "group": "linkupapi",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/linkupapi/data/hiring-companies",
+      "summary": "Find companies actively hiring for roles (Indeed + LinkedIn)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "roles",
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.create",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/campaigns",
+      "summary": "Create a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "name",
+        "settings"
+      ],
+      "replaces": [
+        "instantly:/api/v2/campaigns"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.list",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/campaigns",
+      "summary": "List campaigns",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.get",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/campaigns/{id}",
+      "summary": "Get a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.patch",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "PATCH",
+      "path": "/v1/instantly/campaigns/{id}",
+      "summary": "Update a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "id",
+        "settings"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.activate",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/campaigns/{id}/activate",
+      "summary": "Activate a campaign (empty body)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.pause",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/campaigns/{id}/pause",
+      "summary": "Pause a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.variables",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/campaigns/{id}/variables",
+      "summary": "Add campaign variables",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "id",
+        "variables"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.analytics",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/campaigns/analytics",
+      "summary": "Get campaign analytics (open/reply/bounce rates)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaign_id",
+        "start_date",
+        "end_date"
+      ],
+      "replaces": [
+        "instantly:/api/v2/campaigns/analytics"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.analytics.daily",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/campaigns/analytics/daily",
+      "summary": "Get daily campaign analytics time series",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaign_id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.campaigns.analytics.steps",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/campaigns/analytics/steps",
+      "summary": "Get per-step campaign analytics",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaign_id"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.leads.create",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/leads",
+      "summary": "Create a single lead (first_name, last_name, email, company_name, custom vars)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaign",
+        "email",
+        "first_name"
+      ],
+      "replaces": [
+        "instantly:/api/v2/leads"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.leads.add",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/leads/add",
+      "summary": "Bulk add leads to a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaign",
+        "leads"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.leads.list",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/leads/list",
+      "summary": "List leads (check status)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaign"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.email_verification.create",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/email-verification",
+      "summary": "Create an email verification",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "email"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.create",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/accounts",
+      "summary": "Add/connect a sending account (mailbox)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "email",
+        "provider"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.list",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/accounts",
+      "summary": "List sending accounts (mailboxes)",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.get",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/accounts/{email}",
+      "summary": "Get one sending account's status/health",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "email"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.warmup_enable",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/accounts/warmup/enable",
+      "summary": "Enable warmup on accounts",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "emails"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.warmup_disable",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/accounts/warmup/disable",
+      "summary": "Disable warmup on accounts (avoid once live)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "emails"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.warmup_analytics",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/accounts/warmup-analytics",
+      "summary": "Get warmup health/analytics for accounts",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "emails"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.test_vitals",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/accounts/test/vitals",
+      "summary": "Test account vitals (deliverability/connection health)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "emails"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.accounts.analytics_daily",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/instantly/accounts/analytics/daily",
+      "summary": "Daily per-account sending analytics",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "instantly.dfy_orders.create",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/dfy-email-account-orders",
+      "summary": "Order done-for-you (pre-warmed) email accounts + domains",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "quantity"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.dfy_orders.domains_check",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/dfy-email-account-orders/domains/check",
+      "summary": "Check domain availability for DFY order",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "domains"
+      ],
+      "verified": false
+    },
+    {
+      "id": "instantly.dfy_orders.domains_prewarmed",
+      "group": "instantly",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/instantly/dfy-email-account-orders/domains/pre-warmed-up-list",
+      "summary": "Get list of available pre-warmed domains",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "lemlist.campaigns.list",
+      "group": "lemlist",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/lemlist/campaigns",
+      "summary": "List campaigns",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "lemlist.campaigns.create",
+      "group": "lemlist",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/lemlist/campaigns",
+      "summary": "Create a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "name"
+      ],
+      "verified": false
+    },
+    {
+      "id": "lemlist.campaigns.leads.create",
+      "group": "lemlist",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/lemlist/campaigns/{campaignId}/leads",
+      "summary": "Create a lead in a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaignId",
+        "lead"
+      ],
+      "verified": false
+    },
+    {
+      "id": "lemlist.campaigns.start",
+      "group": "lemlist",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/lemlist/campaigns/{campaignId}/start",
+      "summary": "Start a campaign",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaignId"
+      ],
+      "verified": false
+    },
+    {
+      "id": "lemlist.campaigns.stats",
+      "group": "lemlist",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/lemlist/campaigns/{campaignId}/stats",
+      "summary": "Get campaign stats",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "campaignId"
+      ],
+      "verified": false
+    },
+    {
+      "id": "signalbase.funding_signals",
+      "group": "signalbase",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/signalbase/funding-signals",
+      "summary": "Get funding signals (companies with funding events) with filters, pagination, search",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "signalbase.acquisition_signals",
+      "group": "signalbase",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/signalbase/acquisition-signals",
+      "summary": "Get acquisition signals (M&A events)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "signalbase.job_change_signals",
+      "group": "signalbase",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/signalbase/job-change-signals",
+      "summary": "Get job change signals (role-aware position filters, department)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "signalbase.hiring_signals",
+      "group": "signalbase",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/signalbase/hiring-signals",
+      "summary": "Get hiring signals (open job postings, role-aware filters)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "signalbase.investors",
+      "group": "signalbase",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/signalbase/investors",
+      "summary": "Get investor data (VC firms, angels, PE)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "signalbase.companies",
+      "group": "signalbase",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/signalbase/companies",
+      "summary": "Browse/search companies with industry, headcount filters",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "predictleads.discover.financing_events",
+      "group": "predictleads",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/predictleads/discover/financing_events",
+      "summary": "Discover financing events by type and/or company location",
+      "credits": 0.18,
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "predictleads.discover.job_openings",
+      "group": "predictleads",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/predictleads/discover/job_openings",
+      "summary": "Discover job openings by O*NET codes and/or location",
+      "credits": 0.18,
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "predictleads.discover.news_events",
+      "group": "predictleads",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/predictleads/discover/news_events",
+      "summary": "Discover news events by category and/or company location",
+      "credits": 0.18,
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "predictleads.company.technology_detections",
+      "group": "predictleads",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/predictleads/companies/{companyIdOrDomain}/technology_detections",
+      "summary": "Technologies detected on a company website",
+      "credits": 0.18,
+      "async": false,
+      "inputs": [
+        "companyIdOrDomain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "theirstack.jobs.search",
+      "group": "theirstack",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/theirstack/jobs/search",
+      "summary": "Search job postings by title, technology, company, location, seniority (1 cr/job)",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "theirstack.companies.search",
+      "group": "theirstack",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/theirstack/companies/search",
+      "summary": "Search companies by tech stack, hiring signals, firmographics, funding (3 cr/company)",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "theirstack.companies.buying_intents",
+      "group": "theirstack",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/theirstack/companies/buying_intents",
+      "summary": "Detect buying intent topics for a company from job signals + tech adoption (3 cr)",
+      "credits": 3,
+      "async": false,
+      "inputs": [
+        "company"
+      ],
+      "verified": false
+    },
+    {
+      "id": "sumble.organizations.enrich",
+      "group": "sumble",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/sumble/organizations/enrich",
+      "summary": "Identify technologies used at a specific organization (5 cr/tech found)",
+      "credits": "per_result",
+      "async": false,
+      "inputs": [
+        "organization"
+      ],
+      "verified": false
+    },
+    {
+      "id": "builtwith.domain",
+      "group": "builtwith",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/builtwith/domain",
+      "summary": "Full technology stack detected on a domain",
+      "credits": "flat",
+      "async": false,
+      "inputs": [
+        "domain"
+      ],
+      "verified": false
+    },
+    {
+      "id": "career_site_jobs.search.create",
+      "group": "career-site-jobs",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/career-site-jobs/search",
+      "summary": "Async search of real job postings from 175k+ company career sites (54 ATS)",
+      "credits": "unknown",
+      "async": true,
+      "result_path": "/v1/career-site-jobs/search/{jobId}",
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "linkedin_jobs.search.create",
+      "group": "linkedin-jobs-api",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/linkedin-jobs-api/search",
+      "summary": "Async advanced LinkedIn job search (title, location, description, company filters)",
+      "credits": "unknown",
+      "async": true,
+      "result_path": "/v1/linkedin-jobs-api/search/{jobId}",
+      "inputs": [
+        "filters"
+      ],
+      "verified": false
+    },
+    {
+      "id": "meta_ads.search.create",
+      "group": "meta-ads",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/meta-ads/search",
+      "summary": "Async search of the Facebook Ads Library by keyword or URL; returns jobId",
+      "credits": "flat",
+      "async": true,
+      "poll_path": "/v1/meta-ads/search/{jobId}",
+      "result_path": "/v1/meta-ads/search/{jobId}",
+      "inputs": [
+        "query"
+      ],
+      "replaces": [
+        "playwright:meta-ad-library-scraper"
+      ],
+      "verified": false
+    },
+    {
+      "id": "meta_ads.search.result",
+      "group": "meta-ads",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/meta-ads/search/{jobId}",
+      "summary": "Poll a Meta Ads Library job (202 in progress, 200 done)",
+      "credits": "free",
+      "async": false,
+      "inputs": [
+        "jobId"
+      ],
+      "verified": false
+    },
+    {
+      "id": "linkedin_ad_library.search.create",
+      "group": "linkedin-ad-library",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/linkedin-ad-library/search",
+      "summary": "Async scrape of the LinkedIn Ad Library; returns jobId",
+      "credits": "flat",
+      "async": true,
+      "result_path": "/v1/linkedin-ad-library/search/{jobId}",
+      "inputs": [
+        "query"
+      ],
+      "verified": false
+    },
+    {
+      "id": "google_ads.search.create",
+      "group": "google-ads",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/google-ads/search",
+      "summary": "Async scrape of Google Ads from the Ads Transparency Center",
+      "credits": "flat",
+      "async": true,
+      "result_path": "/v1/google-ads/search/{jobId}",
+      "inputs": [
+        "query"
+      ],
+      "verified": false
+    },
+    {
+      "id": "google_maps.scraper.create",
+      "group": "google-maps",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/google-maps/scraper",
+      "summary": "Async extract of places from Google Maps by search terms or URLs",
+      "credits": "unknown",
+      "async": true,
+      "result_path": "/v1/google-maps/scraper/{jobId}",
+      "inputs": [
+        "query"
+      ],
+      "verified": false
+    },
+    {
+      "id": "reddit.scrape.create",
+      "group": "reddit",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/reddit/scrape",
+      "summary": "Async scrape of Reddit posts, comments, communities, or users by URL",
+      "credits": "unknown",
+      "async": true,
+      "result_path": "/v1/reddit/scrape/{jobId}",
+      "inputs": [
+        "url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "jungler.workbooks.create",
+      "group": "jungler",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/jungler/workbooks",
+      "summary": "Extract comments and/or reactions from a LinkedIn post; returns task_id (async)",
+      "credits": "free",
+      "async": true,
+      "poll_path": "/v1/jungler/tasks/{task_id}/status",
+      "result_path": "/v1/jungler/workbooks/{workbook_id}/contacts",
+      "inputs": [
+        "post_url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "leadsfactory.contact_finder.create",
+      "group": "leadsfactory",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/leadsfactory/contact-finder/searches",
+      "summary": "Find contacts by job title + seniority across a list of company LinkedIn URLs",
+      "credits": "per_result",
+      "async": true,
+      "result_path": "/v1/leadsfactory/contact-finder/searches/{search_id}",
+      "inputs": [
+        "companies",
+        "titles"
+      ],
+      "verified": false
+    },
+    {
+      "id": "serper.search",
+      "group": "serper",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/serper/search",
+      "summary": "Google web search (organic, knowledge graph, answer boxes)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "q"
+      ],
+      "verified": false
+    },
+    {
+      "id": "serper.news",
+      "group": "serper",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/serper/news",
+      "summary": "Google News search (tbs param for recency)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "q"
+      ],
+      "verified": false
+    },
+    {
+      "id": "serper.places",
+      "group": "serper",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/serper/places",
+      "summary": "Google Places search (name, address, coords, rating, phone, website)",
+      "credits": "unknown",
+      "async": false,
+      "inputs": [
+        "q"
+      ],
+      "verified": false
+    },
+    {
+      "id": "exa.search",
+      "group": "exa",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/exa/search",
+      "summary": "Neural or deep web search; ranked results with optional content",
+      "credits": 0.3,
+      "async": false,
+      "inputs": [
+        "query"
+      ],
+      "verified": false
+    },
+    {
+      "id": "jina.reader",
+      "group": "jina",
+      "kind": "resold",
+      "method": "POST",
+      "path": "/v1/jina/reader",
+      "summary": "Fetch any URL → clean LLM-ready markdown (handles JS, PDFs)",
+      "credits": "flat",
+      "async": false,
+      "inputs": [
+        "url"
+      ],
+      "verified": false
+    },
+    {
+      "id": "dashboard.credits",
+      "group": "dashboard",
+      "kind": "native",
+      "method": "GET",
+      "path": "/dashboard/credits",
+      "summary": "Get credit balance",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "dashboard.usage",
+      "group": "dashboard",
+      "kind": "native",
+      "method": "GET",
+      "path": "/dashboard/usage",
+      "summary": "Get usage history",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "dashboard.api_keys.list",
+      "group": "dashboard",
+      "kind": "native",
+      "method": "GET",
+      "path": "/dashboard/api-keys",
+      "summary": "List API keys",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "dashboard.connections.list",
+      "group": "dashboard",
+      "kind": "native",
+      "method": "GET",
+      "path": "/dashboard/connections",
+      "summary": "List your connected (BYOK) tools",
+      "credits": "free",
+      "async": false,
+      "inputs": [],
+      "verified": false
+    },
+    {
+      "id": "discolike.discover",
+      "group": "discolike",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/discolike/discover",
+      "summary": "Find lookalike companies from seed domains and/or a natural-language ICP across 70M+ companies (returns firmographic profiles + similarity)",
+      "credits": "11 + 0.21/result",
+      "async": false,
+      "inputs": [
+        "domain",
+        "icp_text",
+        "filters"
+      ],
+      "verified": true
+    },
+    {
+      "id": "discolike.bizdata",
+      "group": "discolike",
+      "kind": "resold",
+      "method": "GET",
+      "path": "/v1/discolike/bizdata",
+      "summary": "Full firmographic profile for a domain (name, digital-footprint score, HQ, socials, industry, employees)",
+      "credits": 12,
+      "async": false,
+      "inputs": [
+        "domain"
+      ],
+      "verified": true
+    }
   ]
 }

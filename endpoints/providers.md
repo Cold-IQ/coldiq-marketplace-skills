@@ -18,7 +18,8 @@ The ColdIQ marketplace (`api.coldiq.com`) exposes ~39 provider groups. Two kinds
 ## Resold — data (pay per call)
 
 `apollo`, `prospeo`, `fullenrich`, `findymail`, `wiza`, `icypeas`, `pdl`, `sumble`, `linkupapi`,
-`companyenrich`, `blitzapi`, `builtwith`, `openmart`, `influencers-club`.
+`companyenrich`, `blitzapi`, `builtwith`, `openmart`, `influencers-club`,
+`discolike` (lookalike company discovery from seed domains / natural-language ICP over 70M companies + B2B contacts).
 
 ## Resold — signals & jobs
 

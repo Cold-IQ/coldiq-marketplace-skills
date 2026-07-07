@@ -4,7 +4,7 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 
 > Credit values are best-effort from the pasted admin dump. The dump's 'Cost' column was garbled for several groups (e.g. all apollo rows showed 2832, all blitzapi showed 2994). Real per-call costs are taken from each endpoint's description text. Any value we could not read is 'unknown'.
 
-**145 endpoints across 30 groups.** This is a curated, GTM-relevant slice of the full ~575-endpoint marketplace — see `_raw/catalog-dump.txt` for the complete pasted list.
+**147 endpoints across 31 groups.** This is a curated, GTM-relevant slice of the full ~575-endpoint marketplace — see `_raw/catalog-dump.txt` for the complete pasted list.
 
 ## ai-ark
 
@@ -100,6 +100,13 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 | GET | `/dashboard/usage` | free | `dashboard.usage` | Get usage history |
 | GET | `/dashboard/api-keys` | free | `dashboard.api_keys.list` | List API keys |
 | GET | `/dashboard/connections` | free | `dashboard.connections.list` | List your connected (BYOK) tools |
+
+## discolike
+
+| Method | Path | Credits | Endpoint ID | Summary |
+|---|---|---|---|---|
+| GET | `/v1/discolike/discover` | 11 + 0.21/result | `discolike.discover` | Find lookalike companies from seed domains and/or a natural-language ICP across 70M+ companies (returns firmographic profiles + similarity) |
+| GET | `/v1/discolike/bizdata` | 12 | `discolike.bizdata` | Full firmographic profile for a domain (name, digital-footprint score, HQ, socials, industry, employees) |
 
 ## exa
 
