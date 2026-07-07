@@ -22,6 +22,7 @@ ColdIQ endpoint provides each scored data point so the model runs on fresh data.
 |-------------------|--------|------|---------|-------------|-------|
 | Firmographics (size, revenue, industry, funding) | POST | `/v1/coldiq/enrich/company` | 1 | `coldiq.enrich.company` | One call for most groups |
 | Large-scale company list | POST | `/v1/ai-ark/companies` | per result | `ai_ark.companies.search` | Build the list to score |
+| Lookalike / ICP company list | GET | `/v1/discolike/discover` | 11 + 0.21/result | `discolike.discover` | Build a net-new TAM from seed domains or a natural-language ICP (70M companies) |
 | Tech-stack signal | POST | `/v1/builtwith/domain` | flat | `builtwith.domain` | Complexity/specialization group |
 | Funding / PE backing | GET | `/v1/signalbase/funding-signals` | unknown | `signalbase.funding_signals` | Ownership/bonus groups |
 

@@ -18,6 +18,11 @@ through ColdIQ's resold Apollo endpoints `/v1/apollo/*` (same Apollo filter sema
 key). Use Apollo to BUILD the list (search + filter); use
 [coldiq-search-enrich](../lima-data-api/SKILL.md) to ENRICH it with emails.
 
+> **Building a lookalike TAM from example accounts?** Apollo can't search by "companies similar to
+> these domains." For that, use DiscoLike lookalike discovery — pass seed domains (and/or a
+> natural-language ICP) to **GET** `/v1/discolike/discover` · 11 cr + 0.21/result · `discolike.discover`,
+> or the `search_companies` verb with `similar_to_domains`. See [tam-scoring](../tam-scoring/SKILL.md).
+
 ## ColdIQ Marketplace Endpoints
 
 | Task | Method | Path | Credits | Endpoint ID | Notes |

@@ -51,8 +51,11 @@ Check how many companies actually fit before committing:
 → **POST** `/v1/ai-ark/companies` · per result · `ai_ark.companies.search`
 
 4-layer selection: firmographic fit · technographic indicators · CRM intelligence (closed-lost,
-lost-to-competitor, churned) · lookalike modeling from best customers. Then prioritize the
-in-market ones:
+lost-to-competitor, churned) · lookalike modeling from best customers. For that last layer, expand
+directly from your best-customer domains (or a natural-language ICP) over 70M companies:
+→ **GET** `/v1/discolike/discover` · 11 cr + 0.21/result · `discolike.discover` (pass seed domains and/or `icp_text`)
+
+Then prioritize the in-market ones:
 → **GET** `/v1/signalbase/funding-signals` · ? cr · `signalbase.funding_signals` (unverified)
 
 Track stage progression: Identified → Aware → Interested (5+ clicks / 10+ engagements) → Considering
