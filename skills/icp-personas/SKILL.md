@@ -21,10 +21,10 @@ you spend credits sourcing and enriching. Mostly methodology; a few steps source
 
 | Task | Method | Path | Credits | Endpoint ID | Notes |
 |------|--------|------|---------|-------------|-------|
-| Validate filter values (ICP criteria) | POST | `/v1/coldiq/references/autocomplete` | free | `coldiq.references.autocomplete` | Confirm titles/industries exist |
+| Validate filter values (ICP criteria) | POST | `/v1/limadata/references/autocomplete` | free | `limadata.references.autocomplete` | Confirm titles/industries exist |
 | Size the addressable market | POST | `/v1/ai-ark/companies` | per result | `ai_ark.companies.search` | How many fit the ICP |
 | Layer intent for prioritization | GET | `/v1/signalbase/funding-signals` | unknown | `signalbase.funding_signals` | Bump in-market accounts |
-| Map the buying committee | POST | `/v1/coldiq/prospect/employees` | 25 | `coldiq.prospect.employees` | Find personas at an account |
+| Map the buying committee | POST | `/v1/limadata/prospect/employees` | 25 | `limadata.prospect.employees` | Find personas at an account |
 
 ## 1. Define the ICP (3 layers + scoring)
 
@@ -37,7 +37,7 @@ industry 20 · size 15 · revenue 15 · geography 10 · tech fit 15 · growth 10
 Tiers: **A** 90–100 (1:1 ABM) · **B** 70–89 (1:few) · **C** 50–69 (programmatic) · **D** <50 (exclude).
 
 Validate your criteria translate to real filter values before sizing:
-→ **POST** `/v1/coldiq/references/autocomplete` · free · `coldiq.references.autocomplete`
+→ **POST** `/v1/limadata/references/autocomplete` · free · `limadata.references.autocomplete`
 
 (Hand the scoring rules to [tam-scoring](../tam-scoring/SKILL.md) to run on an actual export.)
 
@@ -70,7 +70,7 @@ Track stage progression: Identified → Aware → Interested (5+ clicks / 10+ en
 
 For each persona capture: title patterns + seniority, function, jobs-to-be-done, pains, success
 metrics, content preference, buying role. Find the actual people once you've defined the personas:
-→ **POST** `/v1/coldiq/prospect/employees` · 25 cr · `coldiq.prospect.employees`
+→ **POST** `/v1/limadata/prospect/employees` · 25 cr · `limadata.prospect.employees`
 
 Messaging matrix: per persona, different JTBD + pain + stage-appropriate content + role-appropriate
 CTA (champion → demo/ROI, end user → trial/ease-of-use). Hand off to

@@ -20,13 +20,13 @@ ColdIQ endpoint provides each scored data point so the model runs on fresh data.
 
 | Scored data point | Method | Path | Credits | Endpoint ID | Notes |
 |-------------------|--------|------|---------|-------------|-------|
-| Firmographics (size, revenue, industry, funding) | POST | `/v1/coldiq/enrich/company` | 1 | `coldiq.enrich.company` | One call for most groups |
+| Firmographics (size, revenue, industry, funding) | POST | `/v1/limadata/enrich/company` | 1 | `limadata.enrich.company` | One call for most groups |
 | Large-scale company list | POST | `/v1/ai-ark/companies` | per result | `ai_ark.companies.search` | Build the list to score |
 | Tech-stack signal | POST | `/v1/builtwith/domain` | flat | `builtwith.domain` | Complexity/specialization group |
 | Funding / PE backing | GET | `/v1/signalbase/funding-signals` | unknown | `signalbase.funding_signals` | Ownership/bonus groups |
 
 Score from enriched data — don't pay to enrich rows you'll DQ. Filter obvious DQs first, then:
-→ **POST** `/v1/coldiq/enrich/company` · 1 cr · `coldiq.enrich.company`
+→ **POST** `/v1/limadata/enrich/company` · 1 cr · `limadata.enrich.company`
 
 ## Standard tier thresholds
 

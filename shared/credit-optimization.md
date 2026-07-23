@@ -4,14 +4,14 @@ ColdIQ marketplace calls cost credits. These rules cut spend without cutting cov
 
 1. **Dedup before enriching.** Remove duplicate contacts/companies first so you never pay
    twice for the same record. See the **list-dedup** skill.
-2. **Cheapest input first.** For emails: name+domain (`coldiq.find.work_email`, 1 cr) before
-   LinkedIn-URL (`coldiq.find.work_email_linkedin`, 3 cr) before personal (`coldiq.find.personal_email`, 5 cr).
+2. **Cheapest input first.** For emails: name+domain (`limadata.find.work_email`, 1 cr) before
+   LinkedIn-URL (`limadata.find.work_email_linkedin`, 3 cr) before personal (`limadata.find.personal_email`, 5 cr).
 3. **Stop on first hit.** Run a waterfall; once a provider returns a value, skip the rest.
 4. **Free when not found.** Find endpoints with `free_if_not_found: true` (work/personal email,
    phone) don't charge on a miss — safe to attempt broadly.
-5. **Batch over live at scale.** `coldiq.batch.prospect_people` is 1 cr/entity vs 25 cr/page for
+5. **Batch over live at scale.** `limadata.batch.prospect_people` is 1 cr/entity vs 25 cr/page for
    live prospecting — use batch above a few hundred records.
-6. **Resolve filters for free first.** `coldiq.references.autocomplete` is free; a misspelled
+6. **Resolve filters for free first.** `limadata.references.autocomplete` is free; a misspelled
    title silently returns 0 results and still burns a 25-credit prospect page.
 7. **Use BYOK free groups.** instantly / lemlist / attio / unipile are proxied at no credit cost
    when you connect your own account (`/dashboard/connections`).

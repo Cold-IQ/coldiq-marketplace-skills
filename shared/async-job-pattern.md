@@ -1,7 +1,7 @@
 # Async job pattern (submit → poll → read)
 
 Several ColdIQ endpoint groups are asynchronous: you POST a job, get an id, then poll a GET
-until it returns results. This is the shape for **batch** (`/v1/coldiq/batch/*`), **export/email-finder**
+until it returns results. This is the shape for **batch** (`/v1/limadata/batch/*`), **export/email-finder**
 (`/v1/ai-ark/people/export`, `…/email-finder`), **scrapers** (`/v1/meta-ads/*`, `/v1/google-maps/*`,
 `/v1/reddit/*`, `/v1/linkedin-ad-library/*`, `/v1/google-ads/*`), **bulk enrichment**
 (`/v1/fullenrich/contact/enrich/bulk`, `/v1/wiza/lists`), and **post engagement** (`/v1/jungler/*`).

@@ -25,12 +25,12 @@ external tool**; ColdIQ enriches and resolves what that tool surfaces and feeds 
 
 | Task | Method | Path | Credits | Endpoint ID | Notes |
 |------|--------|------|---------|-------------|-------|
-| Email → full profile | POST | `/v1/coldiq/find/reverse-email-lookup` | 5 | `coldiq.find.reverse_email_lookup` | When the tool gives an email |
-| Resolve identity (social URLs) | POST | `/v1/coldiq/find/identity-resolution` | 2 | `coldiq.find.identity_resolution` | name+company → LinkedIn etc. |
-| Enrich the person | POST | `/v1/coldiq/enrich/person` | 1–5 | `coldiq.enrich.person` | Title, seniority, contact |
-| Enrich the company (IP-level hit) | POST | `/v1/coldiq/enrich/company` | 1 | `coldiq.enrich.company` | When you only have the company |
-| Find decision-makers at the account | POST | `/v1/coldiq/prospect/employees` | 25 | `coldiq.prospect.employees` | Company-level visit → buying committee |
-| Find work email for outreach | POST | `/v1/coldiq/find/work-email` | 1 | `coldiq.find.work_email` | If only name+domain known |
+| Email → full profile | POST | `/v1/limadata/find/reverse-email-lookup` | 5 | `limadata.find.reverse_email_lookup` | When the tool gives an email |
+| Resolve identity (social URLs) | POST | `/v1/limadata/find/identity-resolution` | 2 | `limadata.find.identity_resolution` | name+company → LinkedIn etc. |
+| Enrich the person | POST | `/v1/limadata/enrich/person` | 1–5 | `limadata.enrich.person` | Title, seniority, contact |
+| Enrich the company (IP-level hit) | POST | `/v1/limadata/enrich/company` | 1 | `limadata.enrich.company` | When you only have the company |
+| Find decision-makers at the account | POST | `/v1/limadata/prospect/employees` | 25 | `limadata.prospect.employees` | Company-level visit → buying committee |
+| Find work email for outreach | POST | `/v1/limadata/find/work-email` | 1 | `limadata.find.work_email` | If only name+domain known |
 
 ## Why it works
 
@@ -52,13 +52,13 @@ Set ICP filters in the tool so you only alert on relevant visitors, and pipe ale
 
 1. External tool identifies a visitor (person email, or company).
 2a. **Person-level (have email):** resolve + enrich.
-    → **POST** `/v1/coldiq/find/reverse-email-lookup` · 5 cr · `coldiq.find.reverse_email_lookup`
-    → **POST** `/v1/coldiq/enrich/person` · 1–5 cr · `coldiq.enrich.person`
+    → **POST** `/v1/limadata/find/reverse-email-lookup` · 5 cr · `limadata.find.reverse_email_lookup`
+    → **POST** `/v1/limadata/enrich/person` · 1–5 cr · `limadata.enrich.person`
 2b. **Company-level (have company only):** enrich the account, then find the buying committee.
-    → **POST** `/v1/coldiq/enrich/company` · 1 cr · `coldiq.enrich.company`
-    → **POST** `/v1/coldiq/prospect/employees` · 25 cr · `coldiq.prospect.employees`
+    → **POST** `/v1/limadata/enrich/company` · 1 cr · `limadata.enrich.company`
+    → **POST** `/v1/limadata/prospect/employees` · 25 cr · `limadata.prospect.employees`
 3. Get the work email for the right person.
-   → **POST** `/v1/coldiq/find/work-email` · 1 cr · `coldiq.find.work_email`
+   → **POST** `/v1/limadata/find/work-email` · 1 cr · `limadata.find.work_email`
 4. Route to a same-day sequence (see [instantly-api](../instantly-api/SKILL.md)) with copy that
    references the page they viewed (pass the "So what?" test — see
    [signal-detection](../signal-detection/SKILL.md)).

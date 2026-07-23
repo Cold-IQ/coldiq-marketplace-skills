@@ -30,7 +30,7 @@ entry has `verified: false`. **Confirm the header before any production/live use
 | `GET /dashboard/connections` · `PUT /{provider}` | BYOK: connect your own provider keys |
 
 Many provider groups (instantly, lemlist, attio, unipile) are **BYOK and free** — you connect
-your own account and ColdIQ proxies it at no credit cost. Native (`/v1/coldiq/*`, `/v1/ai-ark/*`)
+your own account and ColdIQ proxies it at no credit cost. Lima Data (`/v1/limadata/*`) and native (`/v1/ai-ark/*`)
 and most resold data endpoints consume ColdIQ credits per the costs in `catalog.json`.
 
 > Credit values in the catalog are best-effort from the admin dump and may be wrong. The dump's

@@ -1,10 +1,10 @@
 # Endpoint catalog (human view)
 
-Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. Auth header `X-KEY` (verified: false).
+Generated from `catalog.json` (v2026.07.23). Base URL `https://api.coldiq.com`. Auth header `X-KEY` (verified: false).
 
 > Credit values are best-effort from the pasted admin dump. The dump's 'Cost' column was garbled for several groups (e.g. all apollo rows showed 2832, all blitzapi showed 2994). Real per-call costs are taken from each endpoint's description text. Any value we could not read is 'unknown'.
 
-**145 endpoints across 30 groups.** This is a curated, GTM-relevant slice of the full ~575-endpoint marketplace — see `_raw/catalog-dump.txt` for the complete pasted list.
+**144 endpoints across 30 groups.** This is a curated, GTM-relevant slice of the full ~575-endpoint marketplace — see `_raw/catalog-dump.txt` for the complete pasted list.
 
 ## ai-ark
 
@@ -43,54 +43,6 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 | Method | Path | Credits | Endpoint ID | Summary |
 |---|---|---|---|---|
 | POST | `/v1/career-site-jobs/search` | unknown | `career_site_jobs.search.create` | Async search of real job postings from 175k+ company career sites (54 ATS) |
-
-## coldiq
-
-| Method | Path | Credits | Endpoint ID | Summary |
-|---|---|---|---|---|
-| POST | `/v1/coldiq/enrich/person` | 1-5 | `coldiq.enrich.person` | Enrich a person's professional profile by email, LinkedIn URL, or name+company |
-| POST | `/v1/coldiq/enrich/company` | 1 | `coldiq.enrich.company` | Enrich a company by domain or LinkedIn URL; firmographics, funding, tech stack, traffic |
-| POST | `/v1/coldiq/person` | 3 | `coldiq.person` | Retrieve LinkedIn person data by profile URL (cached 30-60d; live=true for fresh) |
-| POST | `/v1/coldiq/company` | 3 | `coldiq.company` | Get LinkedIn company data by profile URL (live=true for fresh) |
-| POST | `/v1/coldiq/company/insights` | 5 | `coldiq.company.insights` | Company insights from Crunchbase, Semrush, IPqwery and others |
-| POST | `/v1/coldiq/company/workplace-benefits` | 3 | `coldiq.company.workplace_benefits` | Get workplace benefits for a company by Glassdoor ID |
-| POST | `/v1/coldiq/workplace-ratings` | 3 | `coldiq.workplace_ratings` | Get workplace ratings for a company by Glassdoor ID |
-| POST | `/v1/coldiq/find/hashed-email` | 1 | `coldiq.find.hashed_email` | Find SHA-256 hashed emails for ad audience targeting (LinkedIn URL or work email) |
-| POST | `/v1/coldiq/find/personal-email` | 5 | `coldiq.find.personal_email` | Find personal email from LinkedIn, GitHub, X, or work email |
-| POST | `/v1/coldiq/find/work-email` | 1 | `coldiq.find.work_email` | Find business email from full name + company domain |
-| POST | `/v1/coldiq/find/work-email-linkedin` | 3 | `coldiq.find.work_email_linkedin` | Find business email from a LinkedIn profile URL |
-| POST | `/v1/coldiq/find/company-linkedin` | 1 | `coldiq.find.company_linkedin` | Find the LinkedIn page of a company from its domain |
-| POST | `/v1/coldiq/find/phone` | 10 | `coldiq.find.phone` | Find phone numbers from LinkedIn profile or name+company |
-| POST | `/v1/coldiq/find/identity-resolution` | 2 | `coldiq.find.identity_resolution` | Find social profile URLs (LinkedIn etc.) by name and company/domain/email |
-| POST | `/v1/coldiq/find/reverse-email-lookup` | 5 | `coldiq.find.reverse_email_lookup` | Find LinkedIn, GitHub, X profiles from an email address |
-| POST | `/v1/coldiq/find/glassdoor-company` | 1 | `coldiq.find.glassdoor_company` | Find the Glassdoor ID for a company from its domain |
-| POST | `/v1/coldiq/jobs` | 2 | `coldiq.jobs` | Get LinkedIn job listings for a company page (20/page) |
-| POST | `/v1/coldiq/jobs/details` | 1 | `coldiq.jobs.details` | Get detailed info about a LinkedIn job posting by ID |
-| POST | `/v1/coldiq/posts` | 2 | `coldiq.posts` | Get LinkedIn posts of a person or company profile |
-| POST | `/v1/coldiq/posts/comments` | 2 | `coldiq.posts.comments` | Get comments for a LinkedIn post using comments_urn |
-| POST | `/v1/coldiq/posts/reactions` | 2 | `coldiq.posts.reactions` | Get reactions for a LinkedIn post using reactions_urn |
-| POST | `/v1/coldiq/posts/details` | 1 | `coldiq.posts.details` | Get details of a single LinkedIn post by URL |
-| POST | `/v1/coldiq/search/people` | 2 | `coldiq.search.people` | Search people by keywords with title/company/location filters |
-| POST | `/v1/coldiq/search/companies` | 2 | `coldiq.search.companies` | Search companies by keywords with size/location/industry filters |
-| POST | `/v1/coldiq/search/jobs` | 2 | `coldiq.search.jobs` | Search jobs by keywords with filters |
-| POST | `/v1/coldiq/search/posts` | 2 | `coldiq.search.posts` | Search LinkedIn posts by keywords with filters |
-| POST | `/v1/coldiq/search/web` | 0.1 | `coldiq.search.web` | Perform a Google web search |
-| POST | `/v1/coldiq/research/ai-search` | 0.3 | `coldiq.research.ai_search` | AI-powered web search that retrieves and synthesizes information |
-| POST | `/v1/coldiq/research/extract` | 0.1 | `coldiq.research.extract` | Extract clean markdown content from web pages (1-10 URLs) |
-| POST | `/v1/coldiq/references/autocomplete` | free | `coldiq.references.autocomplete` | Get autocomplete results for prospect filter types |
-| POST | `/v1/coldiq/prospect/people/search-url` | 25 | `coldiq.prospect.people.search_url` | Prospect people from a LinkedIn Sales Navigator search URL (25/page) |
-| POST | `/v1/coldiq/prospect/people/filter` | 25 | `coldiq.prospect.people.filter` | Prospect people using filter criteria |
-| POST | `/v1/coldiq/prospect/employees` | 25 | `coldiq.prospect.employees` | Prospect employees of a company with title/location/seniority filters |
-| POST | `/v1/coldiq/prospect/companies/filter` | 25 | `coldiq.prospect.companies.filter` | Prospect companies using filter criteria |
-| POST | `/v1/coldiq/prospect/companies/search-url` | 25 | `coldiq.prospect.companies.search_url` | Prospect companies from a LinkedIn Sales Navigator company search URL |
-| POST | `/v1/coldiq/batch/people` | per_result | `coldiq.batch.people` | Batch retrieve LinkedIn people profiles (1 cr/URL) |
-| POST | `/v1/coldiq/batch/companies` | per_result | `coldiq.batch.companies` | Batch retrieve LinkedIn company profiles (1 cr/URL) |
-| POST | `/v1/coldiq/batch/prospect-people` | per_result | `coldiq.batch.prospect_people` | Batch prospect people with filters (1 cr/entity — cheaper at scale than live prospect) |
-| POST | `/v1/coldiq/batch/prospect-companies` | per_result | `coldiq.batch.prospect_companies` | Batch prospect companies with filters (1 cr/entity) |
-| POST | `/v1/coldiq/batch/list` | free | `coldiq.batch.list` | List all batch operations |
-| POST | `/v1/coldiq/batch/results` | free | `coldiq.batch.results` | Get results of a batch operation by ID |
-| POST | `/v1/coldiq/watch` | free | `coldiq.watch.create` | Create a watch subscription to monitor people/companies for changes (job changes, profile changes) |
-| POST | `/v1/coldiq/watch/list` | free | `coldiq.watch.list` | List all watch subscriptions |
 
 ## dashboard
 
@@ -201,6 +153,53 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 | POST | `/v1/lemlist/campaigns/{campaignId}/start` | free | `lemlist.campaigns.start` | Start a campaign |
 | GET | `/v1/lemlist/campaigns/{campaignId}/stats` | free | `lemlist.campaigns.stats` | Get campaign stats |
 
+## limadata
+
+| Method | Path | Credits | Endpoint ID | Summary |
+|---|---|---|---|---|
+| POST | `/v1/limadata/enrich/person` | 1-5 | `limadata.enrich.person` | Enrich a person's professional profile by email, LinkedIn URL, or name+company |
+| POST | `/v1/limadata/enrich/company` | 1 | `limadata.enrich.company` | Enrich a company by domain or LinkedIn URL; firmographics, funding, tech stack, traffic |
+| POST | `/v1/limadata/person` | 3 | `limadata.person` | Retrieve LinkedIn person data by profile URL (cached 30-60d; live=true for fresh) |
+| POST | `/v1/limadata/company` | 3 | `limadata.company` | Get LinkedIn company data by profile URL (live=true for fresh) |
+| POST | `/v1/limadata/company/insights` | 5 | `limadata.company.insights` | Company insights from Crunchbase, Semrush, IPqwery and others |
+| POST | `/v1/limadata/company/workplace-benefits` | 3 | `limadata.company.workplace_benefits` | Get workplace benefits for a company by Glassdoor ID |
+| POST | `/v1/limadata/company/workplace-ratings` | 3 | `limadata.workplace_ratings` | Get workplace ratings for a company by Glassdoor ID |
+| POST | `/v1/limadata/find/hashed-email` | 1 | `limadata.find.hashed_email` | Find SHA-256 hashed emails for ad audience targeting (LinkedIn URL or work email) |
+| POST | `/v1/limadata/find/personal-email` | 5 | `limadata.find.personal_email` | Find personal email from LinkedIn, GitHub, X, or work email |
+| POST | `/v1/limadata/find/work-email` | 1 | `limadata.find.work_email` | Find business email from full name + company domain |
+| POST | `/v1/limadata/find/work-email-linkedin` | 3 | `limadata.find.work_email_linkedin` | Find business email from a LinkedIn profile URL |
+| POST | `/v1/limadata/find/company-linkedin` | 1 | `limadata.find.company_linkedin` | Find the LinkedIn page of a company from its domain |
+| POST | `/v1/limadata/find/phone` | 10 | `limadata.find.phone` | Find phone numbers from LinkedIn profile or name+company |
+| POST | `/v1/limadata/find/identity-resolution` | 2 | `limadata.find.identity_resolution` | Find social profile URLs (LinkedIn etc.) by name and company/domain/email |
+| POST | `/v1/limadata/find/reverse-email-lookup` | 5 | `limadata.find.reverse_email_lookup` | Find LinkedIn, GitHub, X profiles from an email address |
+| POST | `/v1/limadata/find/glassdoor-company` | 1 | `limadata.find.glassdoor_company` | Find the Glassdoor ID for a company from its domain |
+| POST | `/v1/limadata/jobs` | 2 | `limadata.jobs` | Get LinkedIn job listings for a company page (20/page) |
+| POST | `/v1/limadata/jobs/details` | 1 | `limadata.jobs.details` | Get detailed info about a LinkedIn job posting by ID |
+| POST | `/v1/limadata/posts` | 2 | `limadata.posts` | Get LinkedIn posts of a person or company profile |
+| POST | `/v1/limadata/posts/comments` | 2 | `limadata.posts.comments` | Get comments for a LinkedIn post using comments_urn |
+| POST | `/v1/limadata/posts/reactions` | 2 | `limadata.posts.reactions` | Get reactions for a LinkedIn post using reactions_urn |
+| POST | `/v1/limadata/search/people` | 2 | `limadata.search.people` | Search people by keywords with title/company/location filters |
+| POST | `/v1/limadata/search/companies` | 2 | `limadata.search.companies` | Search companies by keywords with size/location/industry filters |
+| POST | `/v1/limadata/search/jobs` | 2 | `limadata.search.jobs` | Search jobs by keywords with filters |
+| POST | `/v1/limadata/search/posts` | 2 | `limadata.search.posts` | Search LinkedIn posts by keywords with filters |
+| POST | `/v1/limadata/search/web` | 0.1 | `limadata.search.web` | Perform a Google web search |
+| POST | `/v1/limadata/research/ai-search` | 0.3 | `limadata.research.ai_search` | AI-powered web search that retrieves and synthesizes information |
+| POST | `/v1/limadata/research/extract` | 0.1 | `limadata.research.extract` | Extract clean markdown content from web pages (1-10 URLs) |
+| POST | `/v1/limadata/references/autocomplete` | free | `limadata.references.autocomplete` | Get autocomplete results for prospect filter types |
+| POST | `/v1/limadata/prospect/people/search-url` | 25 | `limadata.prospect.people.search_url` | Prospect people from a LinkedIn Sales Navigator search URL (25/page) |
+| POST | `/v1/limadata/prospect/people/filter` | 25 | `limadata.prospect.people.filter` | Prospect people using filter criteria |
+| POST | `/v1/limadata/prospect/employees` | 25 | `limadata.prospect.employees` | Prospect employees of a company with title/location/seniority filters |
+| POST | `/v1/limadata/prospect/companies/filter` | 25 | `limadata.prospect.companies.filter` | Prospect companies using filter criteria |
+| POST | `/v1/limadata/prospect/companies/search-url` | 25 | `limadata.prospect.companies.search_url` | Prospect companies from a LinkedIn Sales Navigator company search URL |
+| POST | `/v1/limadata/batch/people` | per_result | `limadata.batch.people` | Batch retrieve LinkedIn people profiles (1 cr/URL) |
+| POST | `/v1/limadata/batch/companies` | per_result | `limadata.batch.companies` | Batch retrieve LinkedIn company profiles (1 cr/URL) |
+| POST | `/v1/limadata/batch/prospect-people` | per_result | `limadata.batch.prospect_people` | Batch prospect people with filters (1 cr/entity — cheaper at scale than live prospect) |
+| POST | `/v1/limadata/batch/prospect-companies` | per_result | `limadata.batch.prospect_companies` | Batch prospect companies with filters (1 cr/entity) |
+| POST | `/v1/limadata/batch/list` | free | `limadata.batch.list` | List all batch operations |
+| POST | `/v1/limadata/batch/results` | free | `limadata.batch.results` | Get results of a batch operation by ID |
+| POST | `/v1/limadata/watch` | free | `limadata.watch.create` | Create a watch subscription to monitor people/companies for changes (job changes, profile changes) |
+| POST | `/v1/limadata/watch/list` | free | `limadata.watch.list` | List all watch subscriptions |
+
 ## linkedin-ad-library
 
 | Method | Path | Credits | Endpoint ID | Summary |
@@ -306,7 +305,7 @@ Generated from `catalog.json` (v2026.06.08). Base URL `https://api.coldiq.com`. 
 Everything below is unconfirmed against the live API. Confirm before production.
 
 - **Auth header** `X-KEY` is a guess — see [auth.md](auth.md).
-- **145 endpoints** are `verified:false` (all of them, pending a live smoke test).
+- **144 endpoints** are `verified:false` (all of them, pending a live smoke test).
 - **20 endpoints** have `credits:"unknown"` (cost unreadable in the dump):
   - `prospeo.enrich_person` — POST /v1/prospeo/enrich-person
   - `prospeo.bulk_enrich_person` — POST /v1/prospeo/bulk-enrich-person
@@ -328,5 +327,3 @@ Everything below is unconfirmed against the live API. Confirm before production.
   - `serper.search` — POST /v1/serper/search
   - `serper.news` — POST /v1/serper/news
   - `serper.places` — POST /v1/serper/places
-- **1 flagged entries** (path/source uncertainty):
-  - `coldiq.workplace_ratings` — dump-path-said-/v1/colany/workplace-ratings; assumed /v1/coldiq/

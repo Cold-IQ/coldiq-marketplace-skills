@@ -40,9 +40,9 @@ single signal — multiple data points pulling against each other.
 
 Source these heuristics from public data via ColdIQ:
 → **GET** `/v1/signalbase/funding-signals` · ? cr · `signalbase.funding_signals` (unverified) — funding amplifier
-→ **POST** `/v1/coldiq/jobs` · 2 cr · `coldiq.jobs` — hiring / no-SDR heuristics
-→ **POST** `/v1/coldiq/research/ai-search` · 0.3 cr · `coldiq.research.ai_search` — filings, regulation, public events
-→ **POST** `/v1/coldiq/enrich/company` · 1 cr · `coldiq.enrich.company` — growth, tech, firmographic heuristics
+→ **POST** `/v1/limadata/jobs` · 2 cr · `limadata.jobs` — hiring / no-SDR heuristics
+→ **POST** `/v1/limadata/research/ai-search` · 0.3 cr · `limadata.research.ai_search` — filings, regulation, public events
+→ **POST** `/v1/limadata/enrich/company` · 1 cr · `limadata.enrich.company` — growth, tech, firmographic heuristics
 
 ## 7-component email architecture
 

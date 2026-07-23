@@ -53,14 +53,14 @@ The single source of truth is `endpoints/catalog.json`. Each endpoint has a stab
 
 | Task | Method | Path | Credits | Endpoint ID | Notes |
 |------|--------|------|---------|-------------|-------|
-| Find work email from LinkedIn | POST | `/v1/coldiq/find/work-email-linkedin` | 3 | `coldiq.find.work_email_linkedin` | Free if not found |
+| Find work email from LinkedIn | POST | `/v1/limadata/find/work-email-linkedin` | 3 | `limadata.find.work_email_linkedin` | Free if not found |
 ```
 
 **B. Inline callouts** — at the exact step where the agent acts, in this FIXED grammar:
 
 ```markdown
 3. Find the work email for the contact.
-   → **POST** `/v1/coldiq/find/work-email-linkedin` · 3 cr · `coldiq.find.work_email_linkedin`
+   → **POST** `/v1/limadata/find/work-email-linkedin` · 3 cr · `limadata.find.work_email_linkedin`
 ```
 
 Grammar: `→ **<METHOD>** \`<path>\` · <credits> cr · \`<endpoint.id>\``
@@ -79,7 +79,7 @@ Findymail, a local scraper, etc.). This package re-routes every actionable call 
 marketplace instead.
 
 Resolution precedence (full rules in [../CONTRIBUTING.md](../CONTRIBUTING.md)):
-1. ColdIQ-native `/v1/coldiq/*` if it covers the capability
+1. Lima Data `/v1/limadata/*` if it covers the capability
 2. `/v1/ai-ark/*` for large-database people/company search
 3. the matching resold `/v1/<provider>/*` if ColdIQ resells that exact provider
 4. closest-capability substitution otherwise
@@ -87,7 +87,7 @@ Resolution precedence (full rules in [../CONTRIBUTING.md](../CONTRIBUTING.md)):
 Any non-1:1 swap MUST be called out in the skill as a blockquote:
 
 ```markdown
-> Substitution: this capability maps to ColdIQ-native `/v1/coldiq/*` instead of a direct provider
+> Substitution: this capability maps to Lima Data `/v1/limadata/*` through ColdIQ instead of a direct provider
 > call. Behaviour is equivalent; credit costs unverified.
 ```
 

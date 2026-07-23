@@ -25,7 +25,7 @@ This is the orchestrator — each phase points to the skill and ColdIQ endpoint 
 (see [crawford-method](../crawford-method/SKILL.md)). No spend yet.
 
 **Phase 1 — Context.** Pull background on the ICP and a flagship customer.
-→ **POST** `/v1/coldiq/research/ai-search` · 0.3 cr · `coldiq.research.ai_search`
+→ **POST** `/v1/limadata/research/ai-search` · 0.3 cr · `limadata.research.ai_search`
 
 **Phases 2–3 — Copy (free).** Write 5–10 angles, pick PQS/PVP, draft the perfect email + sequence
 (see [crawford-method](../crawford-method/SKILL.md), [cold-email-copy](../cold-email-copy/SKILL.md)).
@@ -33,7 +33,7 @@ QA against the 7-component + benchmark checklists.
 
 **Phase 4 — Targeting criteria (free).** Translate the email into list criteria (company +
 contact + signal + exclusion filters). Validate filter values for free:
-→ **POST** `/v1/coldiq/references/autocomplete` · free · `coldiq.references.autocomplete`
+→ **POST** `/v1/limadata/references/autocomplete` · free · `limadata.references.autocomplete`
 
 **Phase 5 — List building (costs credits).** Build the TAM from the criteria.
 → **POST** `/v1/ai-ark/companies` · per result · `ai_ark.companies.search`
@@ -46,8 +46,8 @@ Layer in signals (see [signal-detection](../signal-detection/SKILL.md)):
 
 **Phase 6 — Contacts & enrichment.** Pull contacts for T1/T2, find + verify emails
 (see [contact-enrichment](../contact-enrichment/SKILL.md)).
-→ **POST** `/v1/coldiq/prospect/employees` · 25 cr · `coldiq.prospect.employees`
-→ **POST** `/v1/coldiq/find/work-email` · 1 cr · `coldiq.find.work_email`
+→ **POST** `/v1/limadata/prospect/employees` · 25 cr · `limadata.prospect.employees`
+→ **POST** `/v1/limadata/find/work-email` · 1 cr · `limadata.find.work_email`
 → **POST** `/v1/findymail/verify` · 1 cr · `findymail.verify`
 
 **Phase 7 — Personalization & QA.** Generate per-segment opening lines / ideas, QA the merge

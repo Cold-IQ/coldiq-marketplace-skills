@@ -8,28 +8,28 @@
       "type": "skill-md",
       "description": "Build matched ad audiences (LinkedIn/Meta/Google) and ABM target lists from your prospect data, and use ad engagement as outbound triggers — through the ColdIQ marketplace. Use when turning a target list into a hashed-email matched audience for ads, building ABM company/contact lists, setting up exclusions, coordinating ads with outbound (ad engagement → sales trigger), or resolving identities for ad targeting. Triggers on \"ad audience\", \"matched audience\", \"hashed email\", \"LinkedIn audience\", \"ABM list\", \"retargeting\", \"exclusion list\", \"ads + outbound\", \"ad engagement trigger\", \"multi-channel ABM\", \"company list for ads\". Do NOT use for ad creative, bidding, or campaign-manager setup (platform-specific, no ColdIQ endpoint), or for email-sending campaigns (see instantly-api).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/ad-audiences/SKILL.md",
-      "digest": "sha256:8a88624d1323a06e8b5426e5396ad7b77dc583ad34c689a84b2bf8bac0e259fa"
+      "digest": "sha256:cce7ea9891cebe23294b068c0b4b27ed6f59530206b6417e6818af53f0ef842a"
     },
     {
       "name": "apollo-search",
       "type": "skill-md",
-      "description": "Build targeted account and contact lists with Apollo's database through the ColdIQ marketplace. Use when searching companies or people with Apollo's filter semantics (titles, seniority, employee ranges, industries, technologies, intent), enriching people or organizations, or building a TAM from Apollo. Triggers on \"Apollo search\", \"Apollo filters\", \"build a TAM\", \"search companies\", \"search people\", \"enrich org\", \"enrich people\", \"find companies by technology\", \"employee count range\", \"intent topics\". Do NOT use for ColdIQ-native or large-scale ai-ark search (see coldiq-search-enrich), email-finding waterfalls (see contact-enrichment), or campaign sending (see instantly-api).",
+      "description": "Build targeted account and contact lists with Apollo's database through the ColdIQ marketplace. Use when searching companies or people with Apollo's filter semantics (titles, seniority, employee ranges, industries, technologies, intent), enriching people or organizations, or building a TAM from Apollo. Triggers on \"Apollo search\", \"Apollo filters\", \"build a TAM\", \"search companies\", \"search people\", \"enrich org\", \"enrich people\", \"find companies by technology\", \"employee count range\", \"intent topics\". Do NOT use for Lima Data or large-scale ai-ark search (see coldiq-search-enrich), email-finding waterfalls (see contact-enrichment), or campaign sending (see instantly-api).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/apollo-search/SKILL.md",
-      "digest": "sha256:5450b686cd394687499e4d981d52a2b11a11a708816dfcbd8bbfb267a68d505d"
+      "digest": "sha256:ec7b5d752a5060655341d9980c3c4264a7a462facc9eeae58a3f65696ede6c92"
     },
     {
       "name": "campaign-delivery",
       "type": "skill-md",
       "description": "Build an outbound campaign end-to-end with a proven 9-phase system, orchestrating the other skills and their ColdIQ endpoints at each phase. Use when running a full campaign from scratch, planning the build order, knowing what comes before what (copy before list), or coordinating TAM → scoring → enrichment → copy → load. Triggers on \"build a campaign\", \"campaign from scratch\", \"full outbound pipeline\", \"9-phase\", \"campaign checklist\", \"what order\", \"kick off a campaign\". Do NOT use for a single sub-step in isolation (use the specific skill: apollo-search, tam-scoring, contact-enrichment, cold-email-copy, instantly-api) or pure copy frameworks (see crawford-method / cold-email-copy).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/campaign-delivery/SKILL.md",
-      "digest": "sha256:2134e3766f2e1975b5d1f0113a8dfb5d546457ffb01eac457ba17fcc2fec0f5d"
+      "digest": "sha256:9602c43e2744aaaeb08e6b19d89b503e1e835db30ce97c8ff18abe6c3d5b919b"
     },
     {
       "name": "clay-mastery",
       "type": "skill-md",
       "description": "Architect Clay enrichment tables and re-express Clay's waterfalls as ColdIQ marketplace calls. Use when designing a Clay table layout, building an email/phone waterfall, ordering enrichment providers cheapest-first, writing Clayscript formulas, prompting Claygent, or deciding which enrichment to run. Triggers on \"Clay table\", \"Clay waterfall\", \"enrichment table\", \"Claygent prompt\", \"Clay formula\", \"column order\", \"conditional run\", \"provider order\", \"Clay credits\". Do NOT use for the email-finding waterfall details alone (see contact-enrichment), search/prospecting (see coldiq-search-enrich), or scoring (see tam-scoring).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/clay-mastery/SKILL.md",
-      "digest": "sha256:419ae23616671d38eb048b9546a7283d05a6adeff91fdd8ddb358c748cb70a5e"
+      "digest": "sha256:1d444e6b08c92b08b200d10645003a5f625ae3ee7794a5fa4f624fb984f70a2b"
     },
     {
       "name": "cold-email-copy",
@@ -41,23 +41,23 @@
     {
       "name": "coldiq-search-enrich",
       "type": "skill-md",
-      "description": "Search and enrich people and companies through the ColdIQ marketplace API. Use when finding work or personal emails, finding phone numbers, enriching a person or company, prospecting contacts by title/seniority/location, Sales-Navigator-style filtering, batch enrichment, LinkedIn-URL lookups, or monitoring people/companies for changes. Triggers on \"find email\", \"work email\", \"personal email\", \"find phone\", \"enrich person\", \"enrich company\", \"prospect people\", \"prospect companies\", \"search people\", \"search companies\", \"batch enrich\", \"find people at company\", \"LinkedIn lookup\", \"Sales Navigator list\". Do NOT use for sending campaigns (see instantly-api / emailbison), Apollo-specific filter semantics (see apollo-search), pure list dedup (see list-dedup), or buying-signal discovery (see signal-detection).",
+      "description": "Search and enrich people and companies with Lima Data through the ColdIQ marketplace API. Use when finding work or personal emails, finding phone numbers, enriching a person or company, prospecting contacts by title/seniority/location, Sales-Navigator-style filtering, batch enrichment, LinkedIn-URL lookups, or monitoring people/companies for changes. Triggers on \"find email\", \"work email\", \"personal email\", \"find phone\", \"enrich person\", \"enrich company\", \"prospect people\", \"prospect companies\", \"search people\", \"search companies\", \"batch enrich\", \"find people at company\", \"LinkedIn lookup\", \"Sales Navigator list\". Do NOT use for sending campaigns (see instantly-api / emailbison), Apollo-specific filter semantics (see apollo-search), pure list dedup (see list-dedup), or buying-signal discovery (see signal-detection).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/lima-data-api/SKILL.md",
-      "digest": "sha256:4adb9bdcedc188393e48e525303a44912b865450eea82c32606df01574f46141"
+      "digest": "sha256:6a22e137d264ea419da89d12afa48dad5aa2c04d7ac129210914af75f4e075f9"
     },
     {
       "name": "contact-enrichment",
       "type": "skill-md",
       "description": "Enrich contacts with LinkedIn URLs, verified work/personal emails, and phone numbers through the ColdIQ marketplace, layering providers cheapest-first. Use when finding emails for a list, building an email waterfall, verifying deliverability, finding phone numbers, resolving company LinkedIn URLs from domains, or enriching contacts before a campaign. Triggers on \"enrich contacts\", \"find emails\", \"email waterfall\", \"verify emails\", \"bounce check\", \"find phone numbers\", \"company LinkedIn URL\", \"enrich before campaign\", \"deliverability\". Do NOT use for prospecting/search to BUILD a list (see coldiq-search-enrich / apollo-search), Clay-specific UI setup (see clay-mastery), or list dedup (see list-dedup).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/contact-enrichment/SKILL.md",
-      "digest": "sha256:b555e8c8759effa4546725c423126777ff54dc11603b8a24b72488f132b2ffe4"
+      "digest": "sha256:3ed7f8f907cf3f8f3e8eb16c56c1d7aa65069e345a284e7cb8ee6a5ecd7bee5d"
     },
     {
       "name": "crawford-method",
       "type": "skill-md",
       "description": "Write cold emails using the Crawford Method — the list IS the message, built on tension heuristics from public data, then delivered as PQS (pain-qualified) or PVP (permissionless value) copy. Use when designing the targeting + message together, finding the \"tension triangle\" for a segment, choosing PQS vs PVP, or writing data-driven emails that describe the buyer's situation. Triggers on \"Crawford method\", \"tension triangle\", \"PVP\", \"PQS\", \"permissionless value\", \"list is the message\", \"data-driven email\", \"7-component email\", \"write backwards from the message\". Do NOT use for subject-line/CTA mechanics alone (see cold-email-copy), campaign operations (see campaign-delivery), or signal sourcing (see signal-detection).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/crawford-method/SKILL.md",
-      "digest": "sha256:5ccca3b2f87452da88bddb940342deebcfde9d2acee41f3818dc0fe474ca18dc"
+      "digest": "sha256:7484d5a1b6f864c45b7e57480b569962c440024a98cadb9a5016721d7948e469"
     },
     {
       "name": "email-infra",
@@ -85,7 +85,7 @@
       "type": "skill-md",
       "description": "Define the ICP, size and tier an ABM target-account list, and map the buying committee — the strategy layer before list-building and enrichment. Use when defining an Ideal Customer Profile and scoring criteria, deciding how many accounts to target for a revenue goal, tiering accounts (A/B/C/D), mapping personas/buying committee (champion, economic buyer, end user, technical evaluator), or planning persona-based messaging. Triggers on \"ICP\", \"ideal customer profile\", \"who to target\", \"scoring criteria\", \"ABM accounts\", \"how many accounts\", \"account tiering\", \"buying committee\", \"persona mapping\", \"champion\", \"economic buyer\", \"revenue reverse-engineering\". Do NOT use for actually sourcing companies/contacts (see apollo-search / coldiq-search-enrich), scoring math on an export (see tam-scoring), or writing copy (see crawford-method / cold-email-copy).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/icp-personas/SKILL.md",
-      "digest": "sha256:d8233e5719d824d3691924eafc3e00b1eda801622e472fd9f2f8baeef14f45c6"
+      "digest": "sha256:3aa04f31b20299635a063e45990266466d7de7f859581e138ca1b673a929bf73"
     },
     {
       "name": "instantly-api",
@@ -113,21 +113,21 @@
       "type": "skill-md",
       "description": "Detect and prioritize buying-intent signals (funding, hiring, tech changes, job changes, news) and map each to a concrete ColdIQ marketplace endpoint. Use when deciding which intent signals to track for a client, sourcing funding/hiring/acquisition/job-change signals, scoring accounts by signal strength, deciding outreach timing from signal freshness, or stacking signals. Triggers on \"intent signals\", \"buying signals\", \"trigger events\", \"funding signal\", \"hiring signal\", \"job change\", \"tech stack change\", \"signal detection\", \"when to reach out\", \"signal stacking\". Do NOT use for writing the copy that references the signal (see crawford-method / cold-email-copy), list scoring math (see tam-scoring), or generic search (see coldiq-search-enrich).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/signal-detection/SKILL.md",
-      "digest": "sha256:6a609458eb84b34cf1bf28ea7f6012fcbc313e02e6cf006adc53d138994f35be"
+      "digest": "sha256:6ce7c11b88f6daa6379d212d03bb81124d24b2cbf87c544b866316fa31fd9946"
     },
     {
       "name": "tam-scoring",
       "type": "skill-md",
       "description": "Build and run scoring models that tier raw company lists into campaign-ready segments, and point each scored data point at the ColdIQ endpoint that sources it. Use when building a scoring model, tiering a TAM, defining signal groups and point allocations, setting tier thresholds, cleaning a list before scoring, or running a Python scorer on an export. Triggers on \"score companies\", \"tier the list\", \"scoring model\", \"TAM scoring\", \"ICP fit score\", \"tier thresholds\", \"100-point model\", \"qualify accounts\". Do NOT use for enrichment/search to BUILD the list (see apollo-search / coldiq-search-enrich), signal sourcing (see signal-detection), or list dedup (see list-dedup).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/tam-scoring/SKILL.md",
-      "digest": "sha256:b46b0a4479c1211a2d4920fd018c64c15fa906604f2779e3456401250063b196"
+      "digest": "sha256:8a0dced22acb1c9eb7b3de6c13e2fbb9b04e103888e338af8ff525d257e0aa4f"
     },
     {
       "name": "website-visitors",
       "type": "skill-md",
       "description": "Turn de-anonymized website visitors into enriched, outreach-ready leads. The visitor identification itself runs in an external pixel/IP tool (RB2B, Warmly, Koala, Leadfeeder); this skill covers the ColdIQ marketplace tail — enriching and resolving identified visitors and timing outreach. Use when setting up website-visitor tracking, enriching identified visitors, scoring pricing/demo-page visits, or routing visitor signals to sequences. Triggers on \"website visitors\", \"visitor tracking\", \"RB2B\", \"de-anonymize\", \"pixel identification\", \"IP to company\", \"Warmly\", \"Leadfeeder\", \"Koala\", \"visitor alerts\", \"who visited my site\". Do NOT use for social post engagement (see signal-detection) or third-party intent data (see signal-detection).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/website-visitors/SKILL.md",
-      "digest": "sha256:7b3cebd59d2aeab112b1548ae40175bf3ae10ec62d38f826621f6cc112fef800"
+      "digest": "sha256:868870a216cac7232e3544c70e33f0997c42c8f292e0b1d5ed874f4ea95ac6f4"
     }
   ]
 }

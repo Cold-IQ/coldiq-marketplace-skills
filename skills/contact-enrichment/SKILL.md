@@ -22,28 +22,28 @@ endpoints, so you get one key and unified credits instead of juggling provider a
 
 | Task | Method | Path | Credits | Endpoint ID | Notes |
 |------|--------|------|---------|-------------|-------|
-| Company LinkedIn URL from domain | POST | `/v1/coldiq/find/company-linkedin` | 1 | `coldiq.find.company_linkedin` | Replaces Linkup `/enrich/linkedin` |
-| Work email (name + domain) | POST | `/v1/coldiq/find/work-email` | 1 | `coldiq.find.work_email` | Free if not found |
-| Work email (LinkedIn URL) | POST | `/v1/coldiq/find/work-email-linkedin` | 3 | `coldiq.find.work_email_linkedin` | Fallback |
-| Personal email | POST | `/v1/coldiq/find/personal-email` | 5 | `coldiq.find.personal_email` | Last resort |
-| Phone number | POST | `/v1/coldiq/find/phone` | 10 | `coldiq.find.phone` | Free if not found |
+| Company LinkedIn URL from domain | POST | `/v1/limadata/find/company-linkedin` | 1 | `limadata.find.company_linkedin` | Replaces Linkup `/enrich/linkedin` |
+| Work email (name + domain) | POST | `/v1/limadata/find/work-email` | 1 | `limadata.find.work_email` | Free if not found |
+| Work email (LinkedIn URL) | POST | `/v1/limadata/find/work-email-linkedin` | 3 | `limadata.find.work_email_linkedin` | Fallback |
+| Personal email | POST | `/v1/limadata/find/personal-email` | 5 | `limadata.find.personal_email` | Last resort |
+| Phone number | POST | `/v1/limadata/find/phone` | 10 | `limadata.find.phone` | Free if not found |
 | Verify email (bounce check) | POST | `/v1/findymail/verify` | 1 | `findymail.verify` | Replaces Debounce |
 | Email via Prospeo (waterfall step) | POST | `/v1/prospeo/enrich-person` | unknown | `prospeo.enrich_person` | First in waterfall |
 | Email via Findymail (LinkedIn) | POST | `/v1/findymail/search/business-profile` | 1 | `findymail.search.business_profile` | Waterfall step |
 | Email via FullEnrich (bulk) | POST | `/v1/fullenrich/contact/enrich/bulk` | per result | `fullenrich.contact.enrich_bulk` | Nuclear option, async |
-| Enrich person (profile) | POST | `/v1/coldiq/enrich/person` | 1–5 | `coldiq.enrich.person` | Full profile |
+| Enrich person (profile) | POST | `/v1/limadata/enrich/person` | 1–5 | `limadata.enrich.person` | Full profile |
 
 ## Layer 1 — Company LinkedIn URLs
 
 Given company domains, resolve their LinkedIn company pages first (downstream steps need them).
-→ **POST** `/v1/coldiq/find/company-linkedin` · 1 cr · `coldiq.find.company_linkedin`
+→ **POST** `/v1/limadata/find/company-linkedin` · 1 cr · `limadata.find.company_linkedin`
 
 ## Layer 2 — Email Waterfall (cheapest-first, stop on hit)
 
 1. Try name + company domain.
-   → **POST** `/v1/coldiq/find/work-email` · 1 cr · `coldiq.find.work_email`
+   → **POST** `/v1/limadata/find/work-email` · 1 cr · `limadata.find.work_email`
 2. If empty / domain missing, fall back to the LinkedIn URL.
-   → **POST** `/v1/coldiq/find/work-email-linkedin` · 3 cr · `coldiq.find.work_email_linkedin`
+   → **POST** `/v1/limadata/find/work-email-linkedin` · 3 cr · `limadata.find.work_email_linkedin`
 3. Second-opinion provider on the same LinkedIn URL.
    → **POST** `/v1/findymail/search/business-profile` · 1 cr · `findymail.search.business_profile`
 4. Provider-level enrichment as a fallback.
@@ -52,7 +52,7 @@ Given company domains, resolve their LinkedIn company pages first (downstream st
    [resources/async-job-pattern.md](resources/async-job-pattern.md)).
    → **POST** `/v1/fullenrich/contact/enrich/bulk` · per result · `fullenrich.contact.enrich_bulk`
 6. Personal email only if a work email is truly unreachable.
-   → **POST** `/v1/coldiq/find/personal-email` · 5 cr · `coldiq.find.personal_email`
+   → **POST** `/v1/limadata/find/personal-email` · 5 cr · `limadata.find.personal_email`
 
 Typical cumulative hit rate: 85–95% depending on contact quality.
 
@@ -70,7 +70,7 @@ Unverified emails destroy sender reputation. Verify every found address.
 
 ## Phone numbers
 
-→ **POST** `/v1/coldiq/find/phone` · 10 cr · `coldiq.find.phone` (free if not found; LinkedIn URL or name+company)
+→ **POST** `/v1/limadata/find/phone` · 10 cr · `limadata.find.phone` (free if not found; LinkedIn URL or name+company)
 
 ## Cost optimization
 

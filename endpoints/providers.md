@@ -11,13 +11,12 @@ The ColdIQ marketplace (`api.coldiq.com`) exposes ~39 provider groups. Two kinds
 
 | Group | What it does |
 |-------|--------------|
-| `coldiq` | Enrich person/company; find work/personal/hashed email, phone, identity, reverse-email, company-LinkedIn, Glassdoor; LinkedIn jobs & posts (+comments/reactions); search people/companies/jobs/posts/web; AI research & extract; prospect people/companies/employees (filter or Sales-Nav URL); batch; watch (webhook monitoring) |
 | `ai-ark` | Search 70M companies / 500M people; reverse lookup; mobile phone finder; export people with verified email; email-finder by trackId |
 | `dashboard` | API keys, credits, usage, billing, BYOK connections |
 
 ## Resold — data (pay per call)
 
-`apollo`, `prospeo`, `fullenrich`, `findymail`, `wiza`, `icypeas`, `pdl`, `sumble`, `linkupapi`,
+`limadata`, `apollo`, `prospeo`, `fullenrich`, `findymail`, `wiza`, `icypeas`, `pdl`, `sumble`, `linkupapi`,
 `companyenrich`, `blitzapi`, `builtwith`, `openmart`, `influencers-club`.
 
 ## Resold — signals & jobs
@@ -45,10 +44,10 @@ If you previously called these providers directly, here's the ColdIQ marketplace
 
 | Direct provider | ColdIQ route |
 |-----------------|--------------|
-| Lima Data | native `/v1/coldiq/*` (+ `/v1/ai-ark/*` for big search) |
+| Lima Data | resold `/v1/limadata/*` (+ `/v1/ai-ark/*` for big search) |
 | Apollo | resold `/v1/apollo/*` |
 | Instantly | resold `/v1/instantly/*` (BYOK) |
-| Linkup | native `/v1/coldiq/find/company-linkedin` + `/find/work-email*` |
+| Linkup | Lima Data `/v1/limadata/find/company-linkedin` + `/find/work-email*` |
 | Email waterfall providers | resold `/v1/prospeo/*`, `/v1/findymail/*`, `/v1/fullenrich/*` |
 | Meta Ad Library scraper | resold async `/v1/meta-ads/*` |
 | EmailBison | **not resold** → substitute `/v1/instantly/*` or `/v1/lemlist/*` |

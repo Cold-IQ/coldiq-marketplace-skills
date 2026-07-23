@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Migrated Lima Data endpoint paths and IDs from `coldiq.*` / `/v1/coldiq/*` to
+  `limadata.*` / `/v1/limadata/*`.
+- Corrected workplace ratings to `/v1/limadata/company/workplace-ratings` and removed the
+  discontinued post-details endpoint.
+
 ## 0.2.0 — 2026-06-09
 
 Added 4 non-redundant skills (from analysis of ColdIQ's master-skills — nothing already covered):

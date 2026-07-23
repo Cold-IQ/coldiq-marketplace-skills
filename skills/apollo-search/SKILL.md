@@ -7,7 +7,7 @@ description: >
   or organizations, or building a TAM from Apollo. Triggers on "Apollo search", "Apollo
   filters", "build a TAM", "search companies", "search people", "enrich org", "enrich
   people", "find companies by technology", "employee count range", "intent topics". Do NOT
-  use for ColdIQ-native or large-scale ai-ark search (see coldiq-search-enrich), email-finding
+  use for Lima Data or large-scale ai-ark search (see coldiq-search-enrich), email-finding
   waterfalls (see contact-enrichment), or campaign sending (see instantly-api).
 ---
 

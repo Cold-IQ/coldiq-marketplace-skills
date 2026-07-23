@@ -27,13 +27,13 @@ as research guidance.
 | Acquisition / M&A | GET | `/v1/signalbase/acquisition-signals` | unknown | `signalbase.acquisition_signals` | |
 | Job changes (champion moves) | GET | `/v1/signalbase/job-change-signals` | unknown | `signalbase.job_change_signals` | Role-aware |
 | Hiring surge | GET | `/v1/signalbase/hiring-signals` | unknown | `signalbase.hiring_signals` | Open postings |
-| Company jobs (one company) | POST | `/v1/coldiq/jobs` | 2 | `coldiq.jobs` | LinkedIn jobs for a page |
+| Company jobs (one company) | POST | `/v1/limadata/jobs` | 2 | `limadata.jobs` | LinkedIn jobs for a page |
 | Financing events (alt source) | GET | `/v1/predictleads/discover/financing_events` | 0.18 | `predictleads.discover.financing_events` | |
 | Job openings (alt source) | GET | `/v1/predictleads/discover/job_openings` | 0.18 | `predictleads.discover.job_openings` | By O*NET / location |
 | News events | GET | `/v1/predictleads/discover/news_events` | 0.18 | `predictleads.discover.news_events` | |
 | Tech adoption / removal | GET | `/v1/predictleads/companies/{companyIdOrDomain}/technology_detections` | 0.18 | `predictleads.company.technology_detections` | |
 | Buying intent (job + tech) | POST | `/v1/theirstack/companies/buying_intents` | 3 | `theirstack.companies.buying_intents` | |
-| LinkedIn post engagement | POST | `/v1/coldiq/posts/reactions` | 2 | `coldiq.posts.reactions` | Warm-engager lists |
+| LinkedIn post engagement | POST | `/v1/limadata/posts/reactions` | 2 | `limadata.posts.reactions` | Warm-engager lists |
 | News / ads (general) | POST | `/v1/serper/news` | unknown | `serper.news` | Cheap catch-all |
 
 ## Reliability tiers
@@ -53,14 +53,14 @@ as research guidance.
 - **Funding & financial:** Series A+ (`signalbase.funding_signals`), M&A
   (`signalbase.acquisition_signals`), financing events (`predictleads.discover.financing_events`).
 - **Hiring & team:** new exec / champion move (`signalbase.job_change_signals`), hiring surge
-  (`signalbase.hiring_signals`), SDR/BDR or dept expansion (`coldiq.jobs`, `predictleads.discover.job_openings`).
+  (`signalbase.hiring_signals`), SDR/BDR or dept expansion (`limadata.jobs`, `predictleads.discover.job_openings`).
 - **Technology & digital:** new tech adoption / stack removal (`predictleads.company.technology_detections`),
   buying intent (`theirstack.companies.buying_intents`), running ads / launches (`serper.news`).
 - **Competitive & vendor:** competitor reviews / contract expiry / comparison shopping — no native
   endpoint; use `serper.news` / `predictleads.discover.news_events` as proxies.
 - **Product & business events:** geographic expansion, new office, partnership, regulatory change
   (`predictleads.discover.news_events`, `serper.news`).
-- **Marketing & reputation:** LinkedIn post engagement (`coldiq.posts.reactions`), PR/media mention
+- **Marketing & reputation:** LinkedIn post engagement (`limadata.posts.reactions`), PR/media mention
   (`serper.news`).
 
 ## Freshness windows (outreach timing)
@@ -86,6 +86,6 @@ for the actual opener.
 
 ## Tips
 
-- Automate Tier 1 with same-day triggers (`/v1/coldiq/watch`); batch Tier 3–4 weekly.
+- Automate Tier 1 with same-day triggers (`/v1/limadata/watch`); batch Tier 3–4 weekly.
 - Cheapest source first: `serper.news` / `predictleads.*` (0.18) before 3-credit intent calls.
 - Track signal→meeting conversion, not detection volume.

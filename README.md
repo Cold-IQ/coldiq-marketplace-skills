@@ -133,7 +133,7 @@ scripts/validate.mjs   offline linter
 
 ## The skills (18)
 
-**Search / enrich / lists:** coldiq-search-enrich (folder `lima-data-api`), apollo-search,
+**Search / enrich / lists:** coldiq-search-enrich (Lima Data; folder `lima-data-api`), apollo-search,
 contact-enrichment, clay-mastery, list-dedup, meta-ads-scraper.
 **Signals & strategy:** signal-detection, tam-scoring, icp-personas, website-visitors.
 **Outreach & infra:** instantly-api, email-infra, emailbison, ad-audiences, campaign-delivery.
@@ -144,7 +144,7 @@ contact-enrichment, clay-mastery, list-dedup, meta-ads-scraper.
 Three layers, all keyed by a stable endpoint `id` from `catalog.json`:
 1. a canonical **registry** (`endpoints/catalog.json`),
 2. a per-skill **`## ColdIQ Marketplace Endpoints` table**, and
-3. inline **callouts** at each step: `→ **POST** \`/v1/coldiq/find/work-email\` · 1 cr · \`coldiq.find.work_email\``.
+3. inline **callouts** at each step: `→ **POST** \`/v1/limadata/find/work-email\` · 1 cr · \`limadata.find.work_email\``.
 
 Full spec in [shared/conventions.md](shared/conventions.md).
 

@@ -13,13 +13,13 @@
 
 When a workflow would call a provider directly, re-route it by this precedence:
 
-1. **Native first** — if `/v1/coldiq/*` covers the capability, use it (Lima Data
-   `/find /enrich /prospect /search /research /watch /batch` → `/v1/coldiq/*`, ~1:1).
+1. **Lima Data first** — if `/v1/limadata/*` covers the capability, use it (Lima Data
+   `/find /enrich /prospect /search /research /watch /batch` → `/v1/limadata/*`, ~1:1).
 2. **ai-ark for big-database search** — large people/company search → `/v1/ai-ark/people|companies`.
 3. **Matching resold provider** — if ColdIQ resells the exact provider the workflow used (Apollo,
    Instantly, Prospeo, FullEnrich, Wiza…), use `/v1/<provider>/*`, preserving the path shape.
 4. **Closest-capability substitution** — when ColdIQ doesn't resell the provider:
-   - Linkup → `/v1/coldiq/find/company-linkedin` + `/find/work-email*`
+   - Linkup → Lima Data `/v1/limadata/find/company-linkedin` + `/find/work-email*`
    - EmailBison / AirOps → `/v1/instantly/*` or `/v1/lemlist/*`
    - Fireflies → no equivalent; stays on Fireflies (MCP)
    - Clay internal waterfall → a sequence of ColdIQ email-finder endpoints

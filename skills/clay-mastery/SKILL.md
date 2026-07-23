@@ -21,13 +21,13 @@ formula writer, Claygent) are kept as guidance.
 
 | Task | Method | Path | Credits | Endpoint ID | Notes |
 |------|--------|------|---------|-------------|-------|
-| Company enrichment | POST | `/v1/coldiq/enrich/company` | 1 | `coldiq.enrich.company` | Industry, headcount, revenue, funding, tech |
+| Company enrichment | POST | `/v1/limadata/enrich/company` | 1 | `limadata.enrich.company` | Industry, headcount, revenue, funding, tech |
 | Email — Prospeo (step 1) | POST | `/v1/prospeo/enrich-person` | unknown | `prospeo.enrich_person` | First in waterfall |
-| Email — work (step 2) | POST | `/v1/coldiq/find/work-email` | 1 | `coldiq.find.work_email` | Name + domain |
+| Email — work (step 2) | POST | `/v1/limadata/find/work-email` | 1 | `limadata.find.work_email` | Name + domain |
 | Email — Findymail (step 3) | POST | `/v1/findymail/search/business-profile` | 1 | `findymail.search.business_profile` | LinkedIn URL |
 | Email — FullEnrich (step 4) | POST | `/v1/fullenrich/contact/enrich/bulk` | per result | `fullenrich.contact.enrich_bulk` | Nuclear, async |
 | Email verification | POST | `/v1/findymail/verify` | 1 | `findymail.verify` | Replaces Debounce |
-| Contact discovery (employees) | POST | `/v1/coldiq/prospect/employees` | 25 | `coldiq.prospect.employees` | Find people at a company |
+| Contact discovery (employees) | POST | `/v1/limadata/prospect/employees` | 25 | `limadata.prospect.employees` | Find people at a company |
 | Tech stack | POST | `/v1/builtwith/domain` | flat | `builtwith.domain` | For tech-stack columns |
 | News / signal | POST | `/v1/serper/news` | unknown | `serper.news` | Cheap news lookups |
 
@@ -35,10 +35,10 @@ formula writer, Claygent) are kept as guidance.
 
 1. **Input** — Company Name, Domain, LinkedIn URL
 2. **Company Enrichment** — Industry, Employee Count, Revenue, Funding, Tech Stack
-   → **POST** `/v1/coldiq/enrich/company` · 1 cr · `coldiq.enrich.company`
+   → **POST** `/v1/limadata/enrich/company` · 1 cr · `limadata.enrich.company`
 3. **Signal Detection** — Hiring, News, LinkedIn Ads, Growth (see [signal-detection](../signal-detection/SKILL.md))
 4. **Contact Discovery** — Full Name, Title, LinkedIn URL
-   → **POST** `/v1/coldiq/prospect/employees` · 25 cr · `coldiq.prospect.employees`
+   → **POST** `/v1/limadata/prospect/employees` · 25 cr · `limadata.prospect.employees`
 5. **Email Waterfall** — see below
 6. **Email Verification**
    → **POST** `/v1/findymail/verify` · 1 cr · `findymail.verify`
@@ -52,7 +52,7 @@ Naming: prefix sources (`LI - Employee Count`, `Apollo - Revenue`), prefix AI co
 ## Email Waterfall (cheapest-first, "only run when previous is empty")
 
 1. → **POST** `/v1/prospeo/enrich-person` · ? cr · `prospeo.enrich_person` (unverified) — always first
-2. → **POST** `/v1/coldiq/find/work-email` · 1 cr · `coldiq.find.work_email` — only if step 1 empty
+2. → **POST** `/v1/limadata/find/work-email` · 1 cr · `limadata.find.work_email` — only if step 1 empty
 3. → **POST** `/v1/findymail/search/business-profile` · 1 cr · `findymail.search.business_profile` — only if above empty
 4. → **POST** `/v1/fullenrich/contact/enrich/bulk` · per result · `fullenrich.contact.enrich_bulk` — nuclear, async
 5. → **POST** `/v1/findymail/verify` · 1 cr · `findymail.verify` — on ALL found emails

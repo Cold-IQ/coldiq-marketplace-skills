@@ -22,11 +22,11 @@ targeting; the platform setup (LinkedIn/Meta/Google Ads Manager) stays in those 
 
 | Task | Method | Path | Credits | Endpoint ID | Notes |
 |------|--------|------|---------|-------------|-------|
-| Hashed email for ad targeting | POST | `/v1/coldiq/find/hashed-email` | 1 | `coldiq.find.hashed_email` | SHA-256 emails for matched audiences |
-| Resolve identity (social URLs) | POST | `/v1/coldiq/find/identity-resolution` | 2 | `coldiq.find.identity_resolution` | name+company/email → LinkedIn etc. |
-| Reverse-email → profile | POST | `/v1/coldiq/find/reverse-email-lookup` | 5 | `coldiq.find.reverse_email_lookup` | Enrich an engaged email |
-| Find work email (to hash) | POST | `/v1/coldiq/find/work-email` | 1 | `coldiq.find.work_email` | Get the email first if missing |
-| Enrich engaged account | POST | `/v1/coldiq/enrich/company` | 1 | `coldiq.enrich.company` | Firmographics for an engaging account |
+| Hashed email for ad targeting | POST | `/v1/limadata/find/hashed-email` | 1 | `limadata.find.hashed_email` | SHA-256 emails for matched audiences |
+| Resolve identity (social URLs) | POST | `/v1/limadata/find/identity-resolution` | 2 | `limadata.find.identity_resolution` | name+company/email → LinkedIn etc. |
+| Reverse-email → profile | POST | `/v1/limadata/find/reverse-email-lookup` | 5 | `limadata.find.reverse_email_lookup` | Enrich an engaged email |
+| Find work email (to hash) | POST | `/v1/limadata/find/work-email` | 1 | `limadata.find.work_email` | Get the email first if missing |
+| Enrich engaged account | POST | `/v1/limadata/enrich/company` | 1 | `limadata.enrich.company` | Firmographics for an engaging account |
 | Build the target company list | POST | `/v1/ai-ark/companies` | per result | `ai_ark.companies.search` | Source the ABM list |
 
 ## Build a matched audience (for ads)
@@ -34,9 +34,9 @@ targeting; the platform setup (LinkedIn/Meta/Google Ads Manager) stays in those 
 Ad platforms match custom audiences on **hashed emails**. From a target list:
 
 1. If you only have name+company, find the email first.
-   → **POST** `/v1/coldiq/find/work-email` · 1 cr · `coldiq.find.work_email`
+   → **POST** `/v1/limadata/find/work-email` · 1 cr · `limadata.find.work_email`
 2. Produce the SHA-256 hashed email the ad platform expects.
-   → **POST** `/v1/coldiq/find/hashed-email` · 1 cr · `coldiq.find.hashed_email`
+   → **POST** `/v1/limadata/find/hashed-email` · 1 cr · `limadata.find.hashed_email`
 3. Upload the hashes to LinkedIn/Meta/Google as a matched/custom audience (in the ad platform).
 
 > Company lists match at **95–100%** on LinkedIn vs **30–70%** for contact lists — prefer company
@@ -63,8 +63,8 @@ Use ad engagement to time outbound:
 | Pricing-page visit from ad | Priority outbound with offer | immediate |
 
 When you only have an engaging email or account, enrich it before reaching out:
-→ **POST** `/v1/coldiq/find/reverse-email-lookup` · 5 cr · `coldiq.find.reverse_email_lookup`
-→ **POST** `/v1/coldiq/find/identity-resolution` · 2 cr · `coldiq.find.identity_resolution`
+→ **POST** `/v1/limadata/find/reverse-email-lookup` · 5 cr · `limadata.find.reverse_email_lookup`
+→ **POST** `/v1/limadata/find/identity-resolution` · 2 cr · `limadata.find.identity_resolution`
 
 Coordinated ABM cadence: Wk1–2 awareness ads → Wk3–4 retarget engaged + personalized email →
 Wk5–6 case-study ads + calls referencing content → Wk7–8 CTA ads + demo offer.
