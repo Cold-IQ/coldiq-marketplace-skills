@@ -20,7 +20,9 @@ MARKETPLACE="coldiq"
 PLUGIN="coldiq"
 PLUGIN_REF="${PLUGIN}@${MARKETPLACE}"
 MCP_CMD="npx"
-MCP_ARGS_JSON='["-y","@coldiq/mcp@latest"]'
+MCP_PKG="@coldiq/mcp@latest"
+MCP_ARGS_JSON="[\"-y\",\"${MCP_PKG}\"]"
+API_BASE="https://api.coldiq.com"
 
 # --- pretty output ------------------------------------------------------------
 if [ -t 1 ] && command -v tput >/dev/null 2>&1 && [ "$(tput colors 2>/dev/null || echo 0)" -ge 8 ]; then
@@ -143,6 +145,21 @@ get_key() {
   [ -n "$KEY" ]
 }
 
+# Read-only probe that the key is actually live, before we write it into every
+# agent config on the machine. Costs no credits. Only a definitive rejection
+# (401/403) fails: anything else — no curl, offline, DNS blocked, upstream 5xx —
+# is inconclusive and must not block an otherwise fine install.
+verify_key() {
+  command -v curl >/dev/null 2>&1 || return 0
+  code="$(curl -sS -o /dev/null -w '%{http_code}' -m 10 \
+            -H "Authorization: Bearer ${KEY}" \
+            "${API_BASE}/v1/me/credits" </dev/null 2>/dev/null || true)"
+  case "$code" in
+    401|403) return 1 ;;
+    *)       return 0 ;;
+  esac
+}
+
 # Install skills into a skill-native agent via vercel-labs/skills.
 # `</dev/null` matters: on the `curl | bash` path stdin IS the script, and the
 # skills CLI drains stdin — see the note above main().
@@ -238,6 +255,12 @@ main() {
 
   get_key "$@" || { err "No API key provided. Re-run with: COLDIQ_API_KEY=your_key bash"; exit 1; }
 
+  if ! verify_key; then
+    err "That API key was rejected by ${API_BASE} — nothing was configured."
+    printf '%s\n' "  Copy a valid key from ${BOLD}https://coldiq.com/marketplace${RESET} ${DIM}(dashboard → API keys)${RESET}, then re-run."
+    exit 1
+  fi
+
   # --------------------------------------------------------------------------
   # Claude Code — native plugin (skills + MCP + keychain), via the plugin system
   # --------------------------------------------------------------------------
@@ -276,14 +299,36 @@ try{const d=JSON.parse(fs.readFileSync(p,"utf8"));
           ;;
       esac
     fi
+    # The plugin's .mcp.json binds COLDIQ_API_KEY to ${user_config.apiKey}, and
+    # that value only ever reaches the plugin through `plugin install --config`.
+    # Two CLI behaviours made a re-run unable to repair a keyless install:
+    # `plugin update` takes no --config at all, and `plugin install --config` is
+    # a silent no-op once the plugin exists. So an install that ever landed
+    # without a key stayed keyless forever — every re-run cheerfully reported
+    # "up to date" while the MCP server shipped an unresolved placeholder and
+    # 401'd on every tool call. There is no supported way to read the stored
+    # config back (sensitive values live in the OS keychain), so we can't detect
+    # the bad state — we unconditionally route the key through the install path
+    # instead. Uninstall + install is cheap (the marketplace clone is already
+    # local) and the net effect is idempotent.
     if claude plugin list --json </dev/null 2>/dev/null | grep -q "\"id\": *\"${PLUGIN_REF}\""; then
       claude plugin update "$PLUGIN_REF" </dev/null >/dev/null 2>&1 || true
-      ok "Plugin up to date (skills + MCP)."
+      claude plugin uninstall "$PLUGIN_REF" --scope user </dev/null >/dev/null 2>&1 || true
+    fi
+    if claude plugin install "$PLUGIN_REF" --config apiKey="$KEY" --scope user </dev/null >/dev/null 2>&1; then
+      # A previous run may have taken the standalone fallback below; the plugin
+      # now provides the same server, so drop the duplicate. No-op if absent.
+      claude mcp remove coldiq --scope user </dev/null >/dev/null 2>&1 || true
+      ok "Plugin installed with your API key (18 skills + MCP)."
     else
-      if claude plugin install "$PLUGIN_REF" --config apiKey="$KEY" --scope user </dev/null >/dev/null 2>&1; then
-        ok "Plugin installed (18 skills + MCP)."
+      # Older CLI without --config, or a rejected manifest. Restore the skills,
+      # then register the MCP server standalone so the tools still work.
+      claude plugin install "$PLUGIN_REF" --scope user </dev/null >/dev/null 2>&1 || true
+      if claude mcp add coldiq --scope user --env COLDIQ_API_KEY="$KEY" \
+           -- "$MCP_CMD" -y "$MCP_PKG" </dev/null >/dev/null 2>&1; then
+        warn "Plugin couldn't take the API key — registered the MCP server standalone instead."
       else
-        warn "Plugin install failed — run: claude plugin install ${PLUGIN_REF} --config apiKey=…"
+        warn "Couldn't wire the MCP server — run: claude plugin install ${PLUGIN_REF} --config apiKey=…"
       fi
     fi
     CONFIGURED="${CONFIGURED}\n  • ${BOLD}Claude Code${RESET}: 18 skills + MCP (restart or /reload-plugins)"
