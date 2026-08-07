@@ -125,6 +125,102 @@ function checkLinks(file, text) {
   }
 }
 
+const COPY_SKILL_RESOURCE_FILES = [
+  'copy-rules.md',
+  'campaign-patterns.md',
+  'exemplars.md',
+  'reply-copy.md',
+  'sequence-structures.md',
+  'subject-lines.md',
+  'prospect-reviewer.md',
+  'client-voice-reviewer.md',
+  'research-reviewer.md',
+  'coldiq-copy-reviewer.md',
+  'qc-reviewer.md',
+];
+
+function validateColdEmailCopySkill() {
+  const skillDir = join(SKILLS_DIR, 'cold-email-copy');
+  const skillFile = join(skillDir, 'SKILL.md');
+  if (!existsSync(skillFile)) {
+    errors.push('skills/cold-email-copy/SKILL.md: required copy skill is missing');
+    return;
+  }
+
+  const skillText = readFileSync(skillFile, 'utf8');
+  const expected = new Set(COPY_SKILL_RESOURCE_FILES);
+  const referenced = new Set(
+    [...skillText.matchAll(/resources\/([A-Za-z0-9._-]+\.md)/g)].map((match) => match[1]),
+  );
+
+  for (const name of COPY_SKILL_RESOURCE_FILES) {
+    if (!referenced.has(name)) {
+      errors.push(`skills/cold-email-copy/SKILL.md: missing required resource reference resources/${name}`);
+    }
+  }
+  for (const name of referenced) {
+    if (!expected.has(name)) {
+      errors.push(`skills/cold-email-copy/SKILL.md: unexpected resource reference resources/${name}`);
+    }
+  }
+
+  const files = [skillFile];
+  for (const name of COPY_SKILL_RESOURCE_FILES) {
+    const file = join(skillDir, 'resources', name);
+    if (!existsSync(file)) {
+      errors.push(`skills/cold-email-copy/resources/${name}: required copy resource is missing`);
+      continue;
+    }
+    files.push(file);
+  }
+
+  const reviewerOrder = [
+    'Prospect clarity',
+    'Client voice and requirements',
+    'Research and factual support',
+    'ColdIQ copy standards',
+    'QC last',
+  ];
+  let previous = -1;
+  for (const role of reviewerOrder) {
+    const current = skillText.indexOf(role);
+    if (current === -1) errors.push(`skills/cold-email-copy/SKILL.md: missing reviewer role '${role}'`);
+    else if (current <= previous) errors.push(`skills/cold-email-copy/SKILL.md: reviewer role '${role}' is out of order`);
+    previous = current;
+  }
+
+  const requiredWorkflowText = [
+    'one repair and run one final QC check',
+    '`needs_human_review`',
+    '`incomplete_review`',
+    '`insufficient_context`',
+    'Review mode: native-subagent-review',
+    'Review mode: single-agent-review',
+  ];
+  for (const phrase of requiredWorkflowText) {
+    if (!skillText.includes(phrase)) {
+      errors.push(`skills/cold-email-copy/SKILL.md: missing workflow contract '${phrase}'`);
+    }
+  }
+
+  const privateEvidencePatterns = [
+    { label: 'measured percentage', pattern: /\b\d+(?:\.\d+)?\s*%\b/ },
+    { label: 'measured campaign total', pattern: /\b(?:sent|sends|replies|responses|meetings|bookings|conversions)\s*[:=]?\s*\d+\b/i },
+    { label: 'campaign identifier', pattern: /\bcampaign\s*#\s*\d+\b/i },
+    { label: 'named client evidence', pattern: /\bclient\s+(?:name|result|campaign|launch)\s*:/i },
+    { label: 'private benchmark claim', pattern: /\b(?:our|client)\s+benchmarks?\b/i },
+  ];
+
+  for (const file of files) {
+    const text = readFileSync(file, 'utf8');
+    if (text.includes('\u2014')) errors.push(`${rel(file)}: U+2014 em dash is prohibited in the copy skill`);
+    for (const { label, pattern } of privateEvidencePatterns) {
+      if (pattern.test(text)) errors.push(`${rel(file)}: prohibited private evidence (${label})`);
+    }
+    checkDirectUrls(file, text);
+  }
+}
+
 const files = existsSync(SKILLS_DIR) ? walk(SKILLS_DIR) : [];
 let skillCount = 0;
 for (const file of files) {
@@ -140,6 +236,8 @@ for (const file of files) {
   checkDirectUrls(file, text);
   checkLinks(file, text);
 }
+
+validateColdEmailCopySkill();
 
 console.log(`\nScanned ${files.length} markdown files (${skillCount} SKILL.md) · catalog: ${CATALOG.endpoints.length} endpoints\n`);
 if (warnings.length) { console.log(`⚠️  ${warnings.length} warning(s):`); warnings.forEach((w) => console.log('   - ' + w)); console.log(''); }

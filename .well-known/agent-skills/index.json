@@ -34,9 +34,9 @@
     {
       "name": "cold-email-copy",
       "type": "skill-md",
-      "description": "Write cold email copy — subject lines, first lines, value props, CTAs, sequences, and segment-level personalization — using ColdIQ's proven frameworks and benchmarks. Use when drafting a cold email, writing subject lines, improving open or reply rates, building a 2-step sequence, creating A/B variants, or personalizing copy per segment. Triggers on \"write a cold email\", \"subject line\", \"first line\", \"value prop\", \"email CTA\", \"email sequence\", \"A/B test copy\", \"personalize at scale\", \"cold email template\". Do NOT use for the targeting/tension framework (see crawford-method), campaign operations/sending (see instantly-api / campaign-delivery), or signal sourcing (see signal-detection). This is a pure-copy skill — it makes no API calls.",
+      "description": "Write and review cold email subjects, first lines, value propositions, calls to action, two-email or three-email sequences, and positive reply copy. Use when drafting cold email copy, reviewing an email sequence, checking client voice, running copy QC, improving subject lines, or answering a positive reply. Do NOT use for audience sourcing, campaign sending, mailbox operations, open or click tracking, or claims that need unverified research.",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/cold-email-copy/SKILL.md",
-      "digest": "sha256:7917ef80eaf05ef73b99410abb3dc1d17c14e6abdf8a8586cc314fc2a6f7b1d4"
+      "digest": "sha256:2c0b57df7b403b1d7156a64c1cf6f558be1310015cdb1f8e0de9f7a3ac22b0e0"
     },
     {
       "name": "coldiq-search-enrich",

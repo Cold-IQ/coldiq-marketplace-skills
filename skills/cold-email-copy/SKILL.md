@@ -1,94 +1,112 @@
 ---
 name: cold-email-copy
 description: >
-  Write cold email copy — subject lines, first lines, value props, CTAs, sequences, and
-  segment-level personalization — using ColdIQ's proven frameworks and benchmarks. Use when
-  drafting a cold email, writing subject lines, improving open or reply rates, building a 2-step
-  sequence, creating A/B variants, or personalizing copy per segment. Triggers on "write a cold
-  email", "subject line", "first line", "value prop", "email CTA", "email sequence", "A/B test
-  copy", "personalize at scale", "cold email template". Do NOT use for the targeting/tension
-  framework (see crawford-method), campaign operations/sending (see instantly-api /
-  campaign-delivery), or signal sourcing (see signal-detection). This is a pure-copy skill — it
-  makes no API calls.
+  Write and review cold email subjects, first lines, value propositions, calls to action,
+  two-email or three-email sequences, and positive reply copy. Use when drafting cold email
+  copy, reviewing an email sequence, checking client voice, running copy QC, improving subject
+  lines, or answering a positive reply. Do NOT use for audience sourcing, campaign sending,
+  mailbox operations, open or click tracking, or claims that need unverified research.
 ---
 
-# Cold Email Copywriting
+# Cold Email Copy
 
-ColdIQ's copy frameworks and benchmarks. No API calls — pair with [crawford-method](../crawford-method/SKILL.md)
-for targeting and [campaign-delivery](../campaign-delivery/SKILL.md) to ship.
+Create concise, factual copy around one audience, one problem, one supported outcome, and one next step.
+This skill makes no API calls. Research can supply verified facts before drafting, but copy work
+must not invent them. Treat approved facts as a closed claim set. Do not turn a capability into an
+unsupplied benefit, reduction, improvement, or causal outcome. A possibility label does not make an
+unsupported product outcome safe.
 
-## 4-part anatomy
+Treat an offered artifact as closed context too. When the brief supplies only its name, offer it by
+that exact name. Do not invent its contents, coverage, usefulness, or effects.
 
-| Component | Job | Target |
-|-----------|-----|--------|
-| Subject line | Get opened | 3–5 words, looks internal |
-| Preview / first line | Get read | observation, pain, or industry hook |
-| Value prop | "Why care?" | 2–3 sentences max |
-| CTA | Get a reply | low-friction, interest-based |
+## Required context
 
-## Subject lines
+Collect these inputs before drafting:
 
-Short (3–5 words), clear (not clickbait), internal-looking (lowercase, no spammy punctuation),
-relevant. Formulas: observation→curiosity (`noticed {{trigger}} at {{company}}`),
-problem→conversation (`hiring reps`), value→relevance (`leads for {{company}}`).
-Good: `your audit`, `question about {{product}}`. Bad: `Last chance!`, `EXCLUSIVE DEAL INSIDE`.
+1. ICP and target segment.
+2. Recipient persona and responsibility.
+3. Reading level and language needs.
+4. Campaign angle and desired outcome.
+5. Client voice, banned phrases, and other instructions.
+6. Verified facts with a source for each factual claim.
 
-## First lines (3 types)
+Return `insufficient_context` when required client instructions or factual evidence is missing.
+Do not fill gaps with plausible claims.
 
-1. **Observation** (general): "saw you offer a free audit on your site."
-2. **Pain** (specific): "with {{company}} hiring a BDR, I assume top-of-funnel is a priority — here's a playbook."
-3. **Industry** (enterprise): tie to news/regulation ("with the new NIS2 regulations…").
+## Copy contract
 
-## Value props (3 styles)
+- Write two or three emails.
+- Use 75 to 90 words per email by default.
+- Use longer proof-heavy copy only when the user requests it and every proof point has a source.
+- Keep each sentence under 20 words.
+- Keep each subject line between three and five words.
+- Use one CTA per email.
+- Do not use the U+2014 em dash character.
+- Do not suggest open tracking or click tracking.
+- Use simple language for non-native or non-technical readers.
+- Treat replies as a separate format. Reply copy has no sequence word limit and no spintax.
+- Return Markdown by default. Create a DOCX only when the host supports files and the user asks for it.
 
-1. **Cost of the problem:** observation → what it's costing → specific number.
-2. **Peer proof:** observation → others like you are doing X → the result.
-3. **Specific outcome:** observation → the outcome → "want to see if it applies?"
+Use the detailed craft rules in [resources/copy-rules.md](resources/copy-rules.md), the approved
+campaign approaches in [resources/campaign-patterns.md](resources/campaign-patterns.md), and the
+new fictional composites in [resources/exemplars.md](resources/exemplars.md). Select a sequence from
+[resources/sequence-structures.md](resources/sequence-structures.md), then select subjects with
+[resources/subject-lines.md](resources/subject-lines.md). For a response to an interested prospect,
+use [resources/reply-copy.md](resources/reply-copy.md) instead of the sequence contract.
 
-Keep to 2–3 sentences. Use real numbers, not "I saw your LinkedIn post."
+## Draft and review workflow
 
-## CTAs
+Keep one canonical draft throughout the workflow.
 
-Interest-based (safest at scale): "Think this could help your team?" / "Worth exploring?"
-Value-first: "Want me to send a quick breakdown?" Routing: "Are you the right person for
-{{responsibility}}?" NEVER "Quick call?" / "Got 15 minutes?".
+1. Create the canonical draft from the approved context.
+2. Run Prospect clarity with [resources/prospect-reviewer.md](resources/prospect-reviewer.md).
+3. Run Client voice and requirements with [resources/client-voice-reviewer.md](resources/client-voice-reviewer.md).
+4. Run Research and factual support with [resources/research-reviewer.md](resources/research-reviewer.md).
+5. Run ColdIQ copy standards with [resources/coldiq-copy-reviewer.md](resources/coldiq-copy-reviewer.md).
+6. Revise in this order: prospect, client, research, ColdIQ standards.
+7. Run QC last with [resources/qc-reviewer.md](resources/qc-reviewer.md).
+8. If QC fails, make one repair and run one final QC check.
+9. If the second QC check fails, return `needs_human_review` with the blockers.
 
-## Top templates
+### Native host mode
 
-The Mirror (referral ceiling) · Do the Math (quantified) · The New Exec (first 90 days) ·
-Customer Reconnect (former champions) · Hiring End Users (job-posting triggered) · Account-Based
-(per-role) · 3rd-party Content Follow-up · No-Oriented Question (re-engagement) · Analogy Email ·
-Job Change.
+When the host can start subagents, start the four specialist reviewers as independent tasks.
+Start QC only after their findings are coordinated and the canonical draft is revised. Include real
+task IDs when the host provides them. Retry a failed native reviewer once. If it fails again, return
+`incomplete_review` and name the missing review. Do not claim a review completed without evidence.
 
-## Personalization at scale
+Report `Review mode: native-subagent-review`.
 
-- **Level 1 — variables:** `{{firstName}}`, `{{company}}`, `{{industry}}`, `{{employee_count}}` (table stakes).
-- **Level 2 — segment-level (the differentiator):** enrich → segment (vertical / size / trigger /
-  geo) → write variant copy per segment (2–3 subject lines, 1 opening, 1 value prop, 1 universal CTA).
-  Better effort-to-output than per-person personalization.
+### ColdIQ Chat and single-agent mode
 
-## Benchmarks & decisions
+When the host cannot start subagents, run the same four rubrics as labeled review passes inside one
+model response. Then revise and run the labeled QC pass. Never claim that separate agents or native
+subagents ran.
 
-| Metric | Target | Kill | Keep | Scale |
-|--------|--------|------|------|-------|
-| Open rate | 50%+ | | | |
-| Positive reply rate | 5–8% | <1% | 2–5% | >5% |
-| Emails / positive reply | | >5,000 | 1,000–3,000 | <1,000 |
-| Meeting book rate | 2–4% | | | |
+Report `Review mode: single-agent-review`.
 
-A/B: test 3 subject lines, track reply→meeting (not opens), kill underperformers after 200+
-sends/variant. The gap between worst and best variant is ~13× — testing matters.
+## Compact review rule
 
-## Principles
+- Keep one canonical draft.
+- Do not repeat the draft inside reviewer findings.
+- Limit each reviewer to five findings.
+- Make each finding one short sentence with a location, issue, and proposed change.
+- Quote no more than twelve draft words in one finding.
+- After coordination, return only the revised copy.
+- Let QC return checks and blockers without copying the draft.
+- Show the final copy once.
 
-70–90 words · 2-step sequences win · subject + preview = one thought · soft CTA > time ask ·
-segment > individual personalization · position yourself as a potential customer in the subject ·
-write for the 97% who won't reply · follow-ups only work if step 1 was solid.
+## Output
 
-Common B2B pain angles that consistently land: Referral Ceiling · Failed DIY Outbound · System
-vs. Leads · Scale Without Headcount.
+Return:
 
-## Common mistakes
+1. Review mode.
+2. Status: `complete`, `insufficient_context`, `incomplete_review`, or `needs_human_review`.
+3. A compact review summary for the four reviewers and QC.
+4. The final subjects and copy once.
+5. A short fact ledger when the copy contains factual claims.
 
-7+ word subjects · clickbait · same copy per persona · ALL CAPS / "FREE"/"OFFER" · making it
-about you · "Quick call?" · using a signal that fails the "So What?" test.
+Do not expose private campaign evidence. Public output can contain process rules, normative limits,
+and newly written fictional composite examples. It cannot contain measured campaign totals,
+response rates, conversion lifts, client identities, client results, launch findings, raw client
+copy, or facts derived from one client.
