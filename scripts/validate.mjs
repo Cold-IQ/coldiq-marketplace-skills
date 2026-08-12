@@ -127,6 +127,10 @@ function checkLinks(file, text) {
 
 const COPY_SKILL_RESOURCE_FILES = [
   'copy-rules.md',
+  'strategy-brief.md',
+  'audience-register.md',
+  'personalized-openers.md',
+  'ai-tropes.md',
   'campaign-patterns.md',
   'exemplars.md',
   'reply-copy.md',
@@ -190,6 +194,10 @@ function validateColdEmailCopySkill() {
   }
 
   const requiredWorkflowText = [
+    'STRATEGY BRIEF',
+    'Per-person openers or segment-level',
+    'Remove machine-writing tells before review',
+    'Never say that material is attached, linked, sent, or',
     'one repair and run one final QC check',
     '`needs_human_review`',
     '`incomplete_review`',
@@ -205,10 +213,12 @@ function validateColdEmailCopySkill() {
 
   const privateEvidencePatterns = [
     { label: 'measured percentage', pattern: /\b\d+(?:\.\d+)?\s*%\b/ },
+    { label: 'written measured percentage', pattern: /\b\d+(?:\.\d+)?\s*percent\b/i },
     { label: 'measured campaign total', pattern: /\b(?:sent|sends|replies|responses|meetings|bookings|conversions)\s*[:=]?\s*\d+\b/i },
     { label: 'campaign identifier', pattern: /\bcampaign\s*#\s*\d+\b/i },
     { label: 'named client evidence', pattern: /\bclient\s+(?:name|result|campaign|launch)\s*:/i },
     { label: 'private benchmark claim', pattern: /\b(?:our|client)\s+benchmarks?\b/i },
+    { label: 'internal project path', pattern: /(?:~\/\.[^/\s]+\/projects|[A-Z][A-Za-z]+ Intelligence\/|<[^>\s]+-project-slug>)/i },
   ];
 
   for (const file of files) {

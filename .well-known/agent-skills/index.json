@@ -34,9 +34,9 @@
     {
       "name": "cold-email-copy",
       "type": "skill-md",
-      "description": "Write and review cold email subjects, first lines, value propositions, calls to action, two-email or three-email sequences, and positive reply copy. Use when drafting cold email copy, reviewing an email sequence, checking client voice, running copy QC, improving subject lines, or answering a positive reply. Do NOT use for audience sourcing, campaign sending, mailbox operations, open or click tracking, or claims that need unverified research.",
+      "description": "Write and review ColdIQ cold-email sequences, strategy briefs, subject lines, personalized opening lines, calls to action, and positive reply copy. Use when writing or rewriting cold outbound copy, building a two-step or three-step sequence, turning a strategy into launch-ready copy, choosing the right audience register, or building personalized openers at volume. Do NOT use for audience sourcing, campaign sending, mailbox operations, open or click tracking, or claims that need unverified research.",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/cold-email-copy/SKILL.md",
-      "digest": "sha256:2c0b57df7b403b1d7156a64c1cf6f558be1310015cdb1f8e0de9f7a3ac22b0e0"
+      "digest": "sha256:2c13073eb067d522df38ea997cab78884adbbbf8718adf34579ae64bbd7a2696"
     },
     {
       "name": "coldiq-search-enrich",

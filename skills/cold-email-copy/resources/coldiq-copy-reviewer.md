@@ -9,6 +9,8 @@ Check:
 3. Each email has one CTA and adds a new angle.
 4. The language is simple, specific, and free of false familiarity or urgency.
 5. The copy has no U+2014 em dash and suggests no open or click tracking.
+6. The copy has no machine-writing tells listed in `ai-tropes.md`.
+7. Requested spintax keeps approved claim sentences byte-stable and contains no nested merge field.
 
 Longer proof-heavy copy passes only when the user requested it and every proof point is sourced.
 Return at most five findings. Each finding is one short sentence with a location, issue, and proposed
