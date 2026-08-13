@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Removed the competitor-specific skill and all competitor references from the active skill catalog.
+- Added an automated brand-safety check for skill paths and content.
 - Migrated Lima Data endpoint paths and IDs from `coldiq.*` / `/v1/coldiq/*` to
   `limadata.*` / `/v1/limadata/*`.
 - Corrected workplace ratings to `/v1/limadata/company/workplace-ratings` and removed the

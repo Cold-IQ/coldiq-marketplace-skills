@@ -11,7 +11,7 @@ the ColdIQ marketplace, so everything runs with one key and unified credits.
 ## Install
 
 ColdIQ ships two things: the **MCP server** (search / enrich / verify / signals tools) and the
-**18 GTM skills** (step-by-step playbooks). One command installs them into whichever agents you have.
+**17 GTM skills** (step-by-step playbooks). One command installs them into whichever agents you have.
 
 ### One command — install or update (any agent)
 
@@ -33,13 +33,13 @@ Get a key from your ColdIQ dashboard at <https://coldiq.com/marketplace> (→ AP
 
 | Agent | Skills | MCP tools | How |
 |---|---|---|---|
-| **Claude Code** | ✅ 18 (native, progressive) | ✅ | Plugin — key in OS keychain, auto-updates on restart |
-| **Cursor** | ✅ 18 (native Skills) | ✅ | `npx skills` + `~/.cursor/mcp.json` |
+| **Claude Code** | ✅ 17 (native, progressive) | ✅ | Plugin — key in OS keychain, auto-updates on restart |
+| **Cursor** | ✅ 17 (native Skills) | ✅ | `npx skills` + `~/.cursor/mcp.json` |
 | **Codex** | ✅ via MCP (`list_skills`) | ✅ | `codex mcp add` + `~/.codex/AGENTS.md` |
 | **Windsurf** | ✅ via MCP (`list_skills`) | ✅ | `~/.codeium/windsurf/mcp_config.json` |
 | **Cline** | ✅ via MCP (`list_skills`) | ✅ | VS Code `cline_mcp_settings.json` |
 
-Agents with a native skills loader (Claude Code, Cursor) load the 18 skills directly. **Every other
+Agents with a native skills loader (Claude Code, Cursor) load the 17 skills directly. **Every other
 agent gets them over the MCP**: the server exposes `list_skills` (the catalog) and `load_skill(name)`
 (the full playbook on demand), so installing the MCP is enough — no native loader required. One key,
 unified credits, base URL `https://api.coldiq.com`.
@@ -131,10 +131,10 @@ shared/            conventions, async-job pattern, credit optimization
 scripts/validate.mjs   offline linter
 ```
 
-## The skills (18)
+## The skills (17)
 
 **Search / enrich / lists:** coldiq-search-enrich (Lima Data; folder `lima-data-api`), apollo-search,
-contact-enrichment, clay-mastery, list-dedup, meta-ads-scraper.
+contact-enrichment, list-dedup, meta-ads-scraper.
 **Signals & strategy:** signal-detection, tam-scoring, icp-personas, website-visitors.
 **Outreach & infra:** instantly-api, email-infra, emailbison, ad-audiences, campaign-delivery.
 **Copy (methodology):** crawford-method, cold-email-copy. **Meetings:** fireflies-usage.
@@ -155,11 +155,12 @@ node scripts/validate.mjs
 ```
 
 Checks frontmatter, that every cited endpoint id resolves, table↔callout consistency,
-callout↔catalog method/path match, no stray direct-provider URLs, and prints the
+callout↔catalog method/path match, no prohibited competitor names in skills, no stray
+direct-provider URLs, and prints the
 Needs-Verification list (endpoints to confirm against the live API).
 
 ## Status
 
-All 18 skills lint clean. Endpoint paths/credits/auth are **best-effort from a pasted admin
+All 17 skills lint clean. Endpoint paths/credits/auth are **best-effort from a pasted admin
 catalog and unverified** — confirm against the live API before production. See the
 "Needs Verification" section of [endpoints/catalog.md](endpoints/catalog.md).

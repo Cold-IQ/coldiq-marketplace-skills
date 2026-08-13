@@ -19,6 +19,8 @@ jobs:
           node-version: 20
       - name: Lint skills (frontmatter, endpoint citations, links)
         run: node scripts/validate.mjs
+      - name: Test skill brand-safety rules
+        run: node --test tests/brand-safety.test.mjs
       - name: Per-skill resources/ are in sync with shared/ + endpoints/
         run: node scripts/sync-resources.mjs --check
       - name: Discovery index is up to date

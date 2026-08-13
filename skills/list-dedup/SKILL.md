@@ -20,7 +20,7 @@ calls.
 ## When to dedup
 
 - Before enrichment (never pay to enrich the same person twice)
-- After combining multiple sources (Apollo + ai-ark + Meta scrape + Clay)
+- After combining multiple sources (database search + enrichment + ad scrape)
 - After scoring (collapse duplicates, keep the highest-scored row)
 
 ## Primary key: LinkedIn URL (normalize first)

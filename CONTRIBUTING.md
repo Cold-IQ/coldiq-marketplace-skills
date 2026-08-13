@@ -22,7 +22,7 @@ When a workflow would call a provider directly, re-route it by this precedence:
    - Linkup → Lima Data `/v1/limadata/find/company-linkedin` + `/find/work-email*`
    - EmailBison / AirOps → `/v1/instantly/*` or `/v1/lemlist/*`
    - Fireflies → no equivalent; stays on Fireflies (MCP)
-   - Clay internal waterfall → a sequence of ColdIQ email-finder endpoints
+   - An internal enrichment waterfall → a sequence of ColdIQ email-finder endpoints
 5. **Always flag substitutions** — a `> Substitution:` blockquote in the skill **and** a `replaces`
    entry in `catalog.json`. Never swap silently.
 
