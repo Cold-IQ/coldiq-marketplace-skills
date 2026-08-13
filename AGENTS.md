@@ -34,7 +34,7 @@ waterfall on the first hit. Check balance with the `get_credit_balance` tool.
 For step-by-step playbooks — TAM building, Apollo search, contact-enrichment waterfalls,
 signal detection, ICP & personas, copywriting, campaign delivery, and more:
 
-- On **Claude Code** and **Cursor**, the 18 skills load natively on demand.
+- On **Claude Code** and **Cursor**, the 17 skills load natively on demand.
 - On **every other agent**, call the **`list_skills`** MCP tool to see the catalog, then
   **`load_skill("<name>")`** to read the full playbook before executing the task.
 

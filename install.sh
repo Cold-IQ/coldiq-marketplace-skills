@@ -3,7 +3,7 @@
 # ColdIQ — one-command installer & updater for AI coding agents.
 #
 # Installs the ColdIQ MCP server (search / enrich / verify / signals tools) and,
-# where the agent supports them, the 18 GTM skills — into whichever agents you
+# where the agent supports them, the 17 GTM skills — into whichever agents you
 # have: Claude Code, Cursor, Codex, Windsurf, Cline.
 #
 # Usage (install or update — safe to re-run):
@@ -258,12 +258,12 @@ try{const d=JSON.parse(fs.readFileSync(p,"utf8"));
     ok "Plugin up to date (skills + MCP)."
   else
     if claude plugin install "$PLUGIN_REF" --config apiKey="$KEY" --scope user >/dev/null 2>&1; then
-      ok "Plugin installed (18 skills + MCP)."
+      ok "Plugin installed (17 skills + MCP)."
     else
       warn "Plugin install failed — run: claude plugin install ${PLUGIN_REF} --config apiKey=…"
     fi
   fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Claude Code${RESET}: 18 skills + MCP (restart or /reload-plugins)"
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Claude Code${RESET}: 17 skills + MCP (restart or /reload-plugins)"
 fi
 
 # ============================================================================

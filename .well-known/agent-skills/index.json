@@ -25,13 +25,6 @@
       "digest": "sha256:9602c43e2744aaaeb08e6b19d89b503e1e835db30ce97c8ff18abe6c3d5b919b"
     },
     {
-      "name": "clay-mastery",
-      "type": "skill-md",
-      "description": "Architect Clay enrichment tables and re-express Clay's waterfalls as ColdIQ marketplace calls. Use when designing a Clay table layout, building an email/phone waterfall, ordering enrichment providers cheapest-first, writing Clayscript formulas, prompting Claygent, or deciding which enrichment to run. Triggers on \"Clay table\", \"Clay waterfall\", \"enrichment table\", \"Claygent prompt\", \"Clay formula\", \"column order\", \"conditional run\", \"provider order\", \"Clay credits\". Do NOT use for the email-finding waterfall details alone (see contact-enrichment), search/prospecting (see coldiq-search-enrich), or scoring (see tam-scoring).",
-      "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/clay-mastery/SKILL.md",
-      "digest": "sha256:1d444e6b08c92b08b200d10645003a5f625ae3ee7794a5fa4f624fb984f70a2b"
-    },
-    {
       "name": "cold-email-copy",
       "type": "skill-md",
       "description": "Write and review ColdIQ cold-email sequences, strategy briefs, subject lines, personalized opening lines, calls to action, and positive reply copy. Use when writing or rewriting cold outbound copy, building a two-step or three-step sequence, turning a strategy into launch-ready copy, choosing the right audience register, or building personalized openers at volume. Do NOT use for audience sourcing, campaign sending, mailbox operations, open or click tracking, or claims that need unverified research.",
@@ -48,9 +41,9 @@
     {
       "name": "contact-enrichment",
       "type": "skill-md",
-      "description": "Enrich contacts with LinkedIn URLs, verified work/personal emails, and phone numbers through the ColdIQ marketplace, layering providers cheapest-first. Use when finding emails for a list, building an email waterfall, verifying deliverability, finding phone numbers, resolving company LinkedIn URLs from domains, or enriching contacts before a campaign. Triggers on \"enrich contacts\", \"find emails\", \"email waterfall\", \"verify emails\", \"bounce check\", \"find phone numbers\", \"company LinkedIn URL\", \"enrich before campaign\", \"deliverability\". Do NOT use for prospecting/search to BUILD a list (see coldiq-search-enrich / apollo-search), Clay-specific UI setup (see clay-mastery), or list dedup (see list-dedup).",
+      "description": "Enrich contacts with LinkedIn URLs, verified work/personal emails, and phone numbers through the ColdIQ marketplace, layering providers cheapest-first. Use when finding emails for a list, building an email waterfall, verifying deliverability, finding phone numbers, resolving company LinkedIn URLs from domains, or enriching contacts before a campaign. Triggers on \"enrich contacts\", \"find emails\", \"email waterfall\", \"verify emails\", \"bounce check\", \"find phone numbers\", \"company LinkedIn URL\", \"enrich before campaign\", \"deliverability\". Do NOT use for prospecting/search to BUILD a list (see coldiq-search-enrich / apollo-search) or list dedup (see list-dedup).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/contact-enrichment/SKILL.md",
-      "digest": "sha256:3ed7f8f907cf3f8f3e8eb16c56c1d7aa65069e345a284e7cb8ee6a5ecd7bee5d"
+      "digest": "sha256:77520df7f4febab3974da740837773363f59c2351b1e92b84f230d183e67c668"
     },
     {
       "name": "crawford-method",
@@ -99,7 +92,7 @@
       "type": "skill-md",
       "description": "Deduplicate and clean contact/company lists before enrichment so you never pay ColdIQ credits twice for the same record. Use when combining lists from multiple sources, removing duplicate contacts or companies, normalizing LinkedIn URLs, applying per-company contact caps, or cross-referencing against a TAM. Triggers on \"dedup\", \"deduplicate\", \"remove duplicates\", \"clean the list\", \"combine sources\", \"merge lists\", \"contact cap per company\", \"normalize LinkedIn URLs\". Do NOT use for enrichment/email-finding (see contact-enrichment), search (see coldiq-search-enrich), or scoring (see tam-scoring).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/list-dedup/SKILL.md",
-      "digest": "sha256:d9040d09d70c4402575f098e3c7fc85ce0580a1396c00eed8ef938ec7fe10428"
+      "digest": "sha256:c47a851d1688162d4dc1c89eb556dfb82e982fe872a1b7c74c0dbe267cbb0b9e"
     },
     {
       "name": "meta-ads-scraper",

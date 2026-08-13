@@ -12,12 +12,14 @@
  *  5. Callout paths start with /v1/ or /dashboard/ and use a valid HTTP method.
  *  6. Internal markdown links to repo files resolve.
  *  7. Reports every cited endpoint whose catalog entry is verified:false (human punch-list).
+ *  8. Skill paths and files contain no prohibited competitor names.
  *
  * Usage: node scripts/validate.mjs   (exit 0 = clean, 1 = errors)
  */
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { findProhibitedNames } from './brand-safety.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SKILLS_DIR = join(ROOT, 'skills');
@@ -35,15 +37,15 @@ const errors = [];
 const warnings = [];
 const unverifiedCited = new Set();
 
-function walk(dir) {
+function walk(dir, includeResources = false) {
   const out = [];
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
     // resources/ holds bundled supporting docs (copies of canonical shared/
     // and endpoints/ files synced by sync-resources.mjs), not skill bodies —
     // they aren't linted for endpoint citations. Validate the canonical sources.
-    if (name === 'resources') continue;
-    if (statSync(p).isDirectory()) out.push(...walk(p));
+    if (!includeResources && name === 'resources') continue;
+    if (statSync(p).isDirectory()) out.push(...walk(p, includeResources));
     else if (name.endsWith('.md')) out.push(p);
   }
   return out;
@@ -232,6 +234,17 @@ function validateColdEmailCopySkill() {
 }
 
 const files = existsSync(SKILLS_DIR) ? walk(SKILLS_DIR) : [];
+const allSkillFiles = existsSync(SKILLS_DIR) ? walk(SKILLS_DIR, true) : [];
+
+for (const file of allSkillFiles) {
+  const relativePath = rel(file);
+  const text = readFileSync(file, 'utf8');
+  for (const name of findProhibitedNames(relativePath))
+    errors.push(`${relativePath}: prohibited competitor name '${name}' in path`);
+  for (const name of findProhibitedNames(text))
+    errors.push(`${relativePath}: prohibited competitor name '${name}' in content`);
+}
+
 let skillCount = 0;
 for (const file of files) {
   const text = readFileSync(file, 'utf8');

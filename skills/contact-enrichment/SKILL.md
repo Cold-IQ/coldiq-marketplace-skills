@@ -7,8 +7,8 @@ description: >
   LinkedIn URLs from domains, or enriching contacts before a campaign. Triggers on "enrich
   contacts", "find emails", "email waterfall", "verify emails", "bounce check", "find phone
   numbers", "company LinkedIn URL", "enrich before campaign", "deliverability". Do NOT use for
-  prospecting/search to BUILD a list (see coldiq-search-enrich / apollo-search), Clay-specific UI
-  setup (see clay-mastery), or list dedup (see list-dedup).
+  prospecting/search to BUILD a list (see coldiq-search-enrich / apollo-search) or list dedup
+  (see list-dedup).
 ---
 
 # Contact Enrichment

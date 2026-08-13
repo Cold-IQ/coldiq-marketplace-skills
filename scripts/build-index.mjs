@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Generate .well-known/agent-skills/index.json — the discovery index for the
- * 18 skills. Two consumers:
+ * 17 skills. Two consumers:
  *   1. The ColdIQ MCP server (@coldiq/mcp) fetches it to power list_skills /
  *      load_skill, so loader-less agents (Codex, Windsurf, Cline) get skills
  *      over the MCP they already have installed.
