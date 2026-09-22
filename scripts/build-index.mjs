@@ -2,7 +2,7 @@
 /**
  * Generate .well-known/agent-skills/index.json — the discovery index for the
  * 17 skills. Two consumers:
- *   1. The ColdIQ MCP server (@coldiq/mcp) fetches it to power list_skills /
+ *   1. The hosted ColdIQ MCP server (https://mcp.coldiq.com/mcp) fetches it to power list_skills /
  *      load_skill, so loader-less agents (Codex, Windsurf, Cline) get skills
  *      over the MCP they already have installed.
  *   2. The open agent-skills ecosystem (skills.sh / npx skills) can discover us.

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- The MCP server is now the hosted ColdIQ MCP at `https://mcp.coldiq.com/mcp` with OAuth sign-in:
+  the Claude Code plugin, `install.sh` (Claude Code, Cursor, Codex, Windsurf, Cline), README, and
+  AGENTS.md no longer install the retired `npx @coldiq/mcp` package or ask for an API key.
+  `install.sh` replaces an existing `@coldiq/mcp` entry.
 - Removed the competitor-specific skill and all competitor references from the active skill catalog.
 - Added an automated brand-safety check for skill paths and content.
 - Migrated Lima Data endpoint paths and IDs from `coldiq.*` / `/v1/coldiq/*` to

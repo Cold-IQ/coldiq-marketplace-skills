@@ -2,16 +2,13 @@
 #
 # ColdIQ — one-command installer & updater for AI coding agents.
 #
-# Installs the ColdIQ MCP server (search / enrich / verify / signals tools) and,
-# where the agent supports them, the 17 GTM skills — into whichever agents you
-# have: Claude Code, Cursor, Codex, Windsurf, Cline.
+# Connects the hosted ColdIQ MCP server (https://mcp.coldiq.com/mcp — search /
+# enrich / verify / signals tools) and, where the agent supports them, the 17 GTM
+# skills — into whichever agents you have: Claude Code, Cursor, Codex, Windsurf,
+# Cline. Each agent signs in with your ColdIQ account (OAuth); no API key needed.
 #
 # Usage (install or update — safe to re-run):
 #   curl -fsSL https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/install.sh | bash
-#
-# Provide your key non-interactively (skips the prompt):
-#   curl -fsSL .../install.sh | COLDIQ_API_KEY=ck_live_xxx bash
-#   curl -fsSL .../install.sh | bash -s -- ck_live_xxx
 
 set -uo pipefail
 
@@ -19,8 +16,7 @@ REPO="Cold-IQ/coldiq-marketplace-skills"
 MARKETPLACE="coldiq"
 PLUGIN="coldiq"
 PLUGIN_REF="${PLUGIN}@${MARKETPLACE}"
-MCP_CMD="npx"
-MCP_ARGS_JSON='["-y","@coldiq/mcp@latest"]'
+MCP_URL="https://mcp.coldiq.com/mcp"
 
 # --- pretty output ------------------------------------------------------------
 if [ -t 1 ] && command -v tput >/dev/null 2>&1 && [ "$(tput colors 2>/dev/null || echo 0)" -ge 8 ]; then
@@ -36,7 +32,6 @@ err()   { printf '%s\n' "${RED}✗${RESET} $*" >&2; }
 step()  { printf '\n%s\n' "${BOLD}$*${RESET}"; }
 
 CONFIGURED=""   # human-readable list for the summary
-KEY=""
 
 printf '\n%s\n' "${BOLD}ColdIQ — installer for AI coding agents${RESET}"
 
@@ -45,18 +40,20 @@ JSON_TOOL=""
 if command -v python3 >/dev/null 2>&1; then JSON_TOOL="python3"
 elif command -v node >/dev/null 2>&1; then JSON_TOOL="node"; fi
 
-# Merge the coldiq MCP server (with the API key) into a {mcpServers:{...}} JSON
-# config at $1, preserving everything else. Writes atomically and chmod 600
-# (the file holds a credential). Returns: 0 wrote · 1 no JSON tool · 3 the
-# existing file isn't valid JSON object — left UNTOUCHED so we never clobber a
-# user's other MCP servers; the caller warns them to add it manually.
+# Merge the coldiq MCP server entry ($2, a JSON object — each agent names the
+# URL field differently) into a {mcpServers:{...}} JSON config at $1, replacing
+# any older coldiq entry (e.g. the retired `npx @coldiq/mcp` one) and preserving
+# everything else. Writes atomically and chmod 600 (the file may hold other
+# servers' credentials). Returns: 0 wrote · 1 no JSON tool · 3 the existing file
+# isn't valid JSON object — left UNTOUCHED so we never clobber a user's other MCP
+# servers; the caller warns them to add it manually.
 write_json_mcp() {
-  cfg="$1"
+  cfg="$1"; entry="$2"
   case "$JSON_TOOL" in
     python3)
-      python3 - "$cfg" "$KEY" "$MCP_CMD" "$MCP_ARGS_JSON" <<'PY'
+      python3 - "$cfg" "$entry" <<'PY'
 import json, sys, pathlib, os
-cfg, key, cmd, args = sys.argv[1], sys.argv[2], sys.argv[3], json.loads(sys.argv[4])
+cfg, entry = sys.argv[1], json.loads(sys.argv[2])
 p = pathlib.Path(cfg)
 d = {}
 if p.exists():
@@ -70,7 +67,7 @@ if p.exists():
             sys.exit(3)
 servers = d.get("mcpServers")
 if not isinstance(servers, dict): servers = {}
-servers["coldiq"] = {"command": cmd, "args": args, "env": {"COLDIQ_API_KEY": key}}
+servers["coldiq"] = entry
 d["mcpServers"] = servers
 p.parent.mkdir(parents=True, exist_ok=True)
 tmp = str(p) + ".coldiq.tmp"
@@ -84,7 +81,7 @@ PY
     node)
       node -e '
 const fs=require("fs"),path=require("path");
-const [cfg,key,cmd,args]=[process.argv[1],process.argv[2],process.argv[3],JSON.parse(process.argv[4])];
+const [cfg,entry]=[process.argv[1],JSON.parse(process.argv[2])];
 let d={};
 if(fs.existsSync(cfg)){
   const raw=fs.readFileSync(cfg,"utf8");
@@ -94,13 +91,13 @@ if(fs.existsSync(cfg)){
   }
 }
 if(typeof d.mcpServers!=="object"||d.mcpServers===null)d.mcpServers={};
-d.mcpServers.coldiq={command:cmd,args:args,env:{COLDIQ_API_KEY:key}};
+d.mcpServers.coldiq=entry;
 fs.mkdirSync(path.dirname(cfg),{recursive:true});
 const tmp=cfg+".coldiq.tmp";
 fs.writeFileSync(tmp,JSON.stringify(d,null,2)+"\n");
 fs.renameSync(tmp,cfg);                                      // atomic
 try{ fs.chmodSync(cfg,0o600); }catch(e){}
-' "$cfg" "$KEY" "$MCP_CMD" "$MCP_ARGS_JSON"
+' "$cfg" "$entry"
       ;;
     *) return 1 ;;
   esac
@@ -108,8 +105,8 @@ try{ fs.chmodSync(cfg,0o600); }catch(e){}
 
 # Write the MCP config for an agent and report the outcome (dedups the call sites).
 configure_mcp_json() {
-  label="$1"; path="$2"
-  write_json_mcp "$path"; rc=$?
+  label="$1"; path="$2"; entry="$3"
+  write_json_mcp "$path" "$entry"; rc=$?
   if [ "$rc" -eq 0 ]; then
     ok "MCP server written to ${path/#$HOME/\~}"
   elif [ "$rc" -eq 3 ]; then
@@ -118,24 +115,6 @@ configure_mcp_json() {
   else
     warn "No python3 or node found — couldn't write ${label} MCP config."
   fi
-}
-
-# Read the API key from env / first arg / interactive prompt. Stored in $KEY.
-get_key() {
-  [ -n "$KEY" ] && return 0
-  KEY="${COLDIQ_API_KEY:-}"
-  [ "$#" -ge 1 ] && [ -n "${1:-}" ] && KEY="$1"
-  if [ -z "$KEY" ] && [ -r /dev/tty ]; then
-    printf '\n%s\n' "${BOLD}Enter your ColdIQ API key${RESET} ${DIM}(create one at https://coldiq.com/marketplace → API keys)${RESET}"
-    printf 'API key: '
-    trap 'stty echo </dev/tty 2>/dev/null || true' EXIT INT TERM
-    stty -echo </dev/tty 2>/dev/null || true
-    IFS= read -r KEY </dev/tty || true
-    stty echo </dev/tty 2>/dev/null || true
-    trap - EXIT INT TERM
-    printf '\n'
-  fi
-  [ -n "$KEY" ]
 }
 
 # Install skills into a skill-native agent via vercel-labs/skills.
@@ -213,10 +192,13 @@ if ! $HAS_CLAUDE && ! $HAS_CURSOR && ! $HAS_CODEX && ! $HAS_WINDSURF && ! $HAS_C
   exit 1
 fi
 
-get_key "$@" || { err "No API key provided. Re-run with: COLDIQ_API_KEY=your_key bash"; exit 1; }
+# The hosted MCP signs in with OAuth. A key passed the old way is not used.
+if [ -n "${COLDIQ_API_KEY:-}" ] || [ -n "${1:-}" ]; then
+  info "An API key is no longer needed — each agent signs in with your ColdIQ account."
+fi
 
 # ============================================================================
-# Claude Code — native plugin (skills + MCP + keychain), via the plugin system
+# Claude Code — native plugin (skills + hosted MCP), via the plugin system
 # ============================================================================
 if $HAS_CLAUDE; then
   step "Claude Code"
@@ -257,13 +239,22 @@ try{const d=JSON.parse(fs.readFileSync(p,"utf8"));
     claude plugin update "$PLUGIN_REF" >/dev/null 2>&1 || true
     ok "Plugin up to date (skills + MCP)."
   else
-    if claude plugin install "$PLUGIN_REF" --config apiKey="$KEY" --scope user >/dev/null 2>&1; then
+    if claude plugin install "$PLUGIN_REF" --scope user >/dev/null 2>&1; then
       ok "Plugin installed (17 skills + MCP)."
     else
-      warn "Plugin install failed — run: claude plugin install ${PLUGIN_REF} --config apiKey=…"
+      warn "Plugin install failed — run: claude plugin install ${PLUGIN_REF}"
     fi
   fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Claude Code${RESET}: 17 skills + MCP (restart or /reload-plugins)"
+  # The plugin now carries the MCP server. Drop a standalone user-scope server
+  # that still runs the retired `npx @coldiq/mcp` package.
+  if claude mcp get coldiq 2>/dev/null | grep -q '@coldiq/mcp'; then
+    if claude mcp remove coldiq --scope user >/dev/null 2>&1; then
+      ok "Removed the retired @coldiq/mcp server (the plugin replaces it)."
+    else
+      warn "Remove the retired server manually: claude mcp remove coldiq"
+    fi
+  fi
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Claude Code${RESET}: 17 skills + MCP (restart, then /mcp → plugin:coldiq:coldiq → Authenticate)"
 fi
 
 # ============================================================================
@@ -271,9 +262,9 @@ fi
 # ============================================================================
 if $HAS_CURSOR; then
   step "Cursor"
-  configure_mcp_json Cursor "$HOME/.cursor/mcp.json"
+  configure_mcp_json Cursor "$HOME/.cursor/mcp.json" "{\"url\":\"${MCP_URL}\"}"
   if install_skills cursor; then ok "skills installed (~/.agents/skills — Cursor reads this)"; fi
-  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cursor${RESET}: skills + MCP (approve the server in Settings → MCP)"
+  CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cursor${RESET}: skills + MCP (enable the server in Settings → MCP, then sign in)"
 fi
 
 # ============================================================================
@@ -284,20 +275,23 @@ if $HAS_CODEX; then
   codex_toml="${CODEX_HOME:-$HOME/.codex}/config.toml"
   codex_done=false
   if command -v codex >/dev/null 2>&1; then
-    if codex mcp list 2>/dev/null | grep -qi 'coldiq'; then
+    if codex mcp get coldiq 2>/dev/null | grep -qF "$MCP_URL"; then
       codex_done=true; ok "MCP server already configured in ~/.codex/config.toml"
-    elif codex mcp add coldiq --env COLDIQ_API_KEY="$KEY" -- npx -y @coldiq/mcp@latest >/dev/null 2>&1; then
-      codex_done=true; ok "MCP server added to ~/.codex/config.toml"
+    else
+      # Replace an older coldiq entry (the retired `npx @coldiq/mcp` one).
+      codex mcp remove coldiq >/dev/null 2>&1 || true
+      # `codex mcp add --url` starts the OAuth sign-in when the server offers it,
+      # so its output (the sign-in link) stays visible.
+      codex mcp add coldiq --url "$MCP_URL" || true
+      if codex mcp get coldiq 2>/dev/null | grep -qF "$MCP_URL"; then
+        codex_done=true; ok "MCP server added to ~/.codex/config.toml (sign in later with: codex mcp login coldiq)"
+      fi
     fi
-    [ -f "$codex_toml" ] && { chmod 600 "$codex_toml" 2>/dev/null || true; }  # holds the key
   fi
   if ! $codex_done; then
-    warn "Couldn't run 'codex mcp add' — add this to ~/.codex/config.toml manually:"
+    warn "Couldn't run 'codex mcp add' — add this to ~/.codex/config.toml manually, then run 'codex mcp login coldiq':"
     printf '%s\n' "    ${DIM}[mcp_servers.coldiq]${RESET}"
-    printf '%s\n' "    ${DIM}command = \"npx\"${RESET}"
-    printf '%s\n' "    ${DIM}args = [\"-y\", \"@coldiq/mcp@latest\"]${RESET}"
-    printf '%s\n' "    ${DIM}[mcp_servers.coldiq.env]${RESET}"
-    printf '%s\n' "    ${DIM}COLDIQ_API_KEY = \"<your key>\"${RESET}"
+    printf '%s\n' "    ${DIM}url = \"${MCP_URL}\"${RESET}"
   fi
   if upsert_agents_md "${CODEX_HOME:-$HOME/.codex}/AGENTS.md"; then
     ok "ColdIQ guidance + skill instructions added to ~/.codex/AGENTS.md"
@@ -310,7 +304,7 @@ fi
 # ============================================================================
 if $HAS_WINDSURF; then
   step "Windsurf"
-  configure_mcp_json Windsurf "$HOME/.codeium/windsurf/mcp_config.json"
+  configure_mcp_json Windsurf "$HOME/.codeium/windsurf/mcp_config.json" "{\"serverUrl\":\"${MCP_URL}\"}"
   CONFIGURED="${CONFIGURED}\n  • ${BOLD}Windsurf${RESET}: MCP tools + skills via list_skills (refresh MCP servers in Cascade)"
 fi
 
@@ -319,7 +313,7 @@ fi
 # ============================================================================
 if $HAS_CLINE; then
   step "Cline"
-  configure_mcp_json Cline "$CLINE_DIR/cline_mcp_settings.json"
+  configure_mcp_json Cline "$CLINE_DIR/cline_mcp_settings.json" "{\"type\":\"streamableHttp\",\"url\":\"${MCP_URL}\"}"
   CONFIGURED="${CONFIGURED}\n  • ${BOLD}Cline${RESET}: MCP tools + skills via list_skills"
 fi
 
@@ -328,6 +322,6 @@ fi
 # ============================================================================
 printf '\n%s\n' "${GREEN}${BOLD}ColdIQ is ready.${RESET}"
 printf '%b\n' "$CONFIGURED"
-printf '\n%s\n' "  ${DIM}One key, unified credits, base URL https://api.coldiq.com${RESET}"
+printf '\n%s\n' "  ${DIM}Hosted MCP ${MCP_URL} — sign in with your ColdIQ account the first time each agent connects.${RESET}"
 printf '%s\n' "  ${DIM}Re-run this command any time to update.${RESET}"
 printf '\n'
