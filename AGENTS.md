@@ -1,9 +1,11 @@
 <!-- BEGIN COLDIQ -->
 # ColdIQ
 
-You have access to the **ColdIQ MCP server** — B2B go-to-market data tools that run
-through one API key with unified credits (base URL `https://api.coldiq.com`). The key is
-already configured; you do not need to ask the user for it.
+You have access to the **ColdIQ MCP server** (`https://mcp.coldiq.com/mcp`) — B2B
+go-to-market data tools with unified credits. It signs in with the user's ColdIQ account
+over OAuth; do not ask the user for an API key. If a tool reports that the server is not
+authenticated, ask the user to sign in to the `coldiq` MCP server from their agent's MCP
+settings (Codex: `codex mcp login coldiq`).
 
 ## Tools available (via MCP)
 

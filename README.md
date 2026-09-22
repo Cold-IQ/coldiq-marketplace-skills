@@ -10,8 +10,9 @@ the ColdIQ marketplace, so everything runs with one key and unified credits.
 
 ## Install
 
-ColdIQ ships two things: the **MCP server** (search / enrich / verify / signals tools) and the
-**17 GTM skills** (step-by-step playbooks). One command installs them into whichever agents you have.
+ColdIQ ships two things: the **hosted MCP server** at `https://mcp.coldiq.com/mcp` (search / enrich /
+verify / signals tools) and the **17 GTM skills** (step-by-step playbooks). One command installs them
+into whichever agents you have.
 
 ### One command — install or update (any agent)
 
@@ -19,21 +20,17 @@ ColdIQ ships two things: the **MCP server** (search / enrich / verify / signals 
 curl -fsSL https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/install.sh | bash
 ```
 
-It detects your installed agents (Claude Code, Cursor, Codex, Windsurf, Cline), wires the MCP server
-into each, installs the skills where the agent supports them, and prompts once for your ColdIQ API key.
-**Re-run the same command any time to update.** Pass the key non-interactively if you prefer:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/install.sh | COLDIQ_API_KEY=your_key bash
-```
-
-Get a key from your ColdIQ dashboard at <https://coldiq.com/marketplace> (→ API keys).
+It detects your installed agents (Claude Code, Cursor, Codex, Windsurf, Cline), connects each to the
+hosted MCP server, and installs the skills where the agent supports them. There is no API key to paste:
+each agent signs in with your ColdIQ account (OAuth) the first time it connects. It also replaces an
+older `npx @coldiq/mcp` setup — that standalone package is retired. **Re-run the same command any
+time to update.**
 
 ### What each agent gets
 
 | Agent | Skills | MCP tools | How |
 |---|---|---|---|
-| **Claude Code** | ✅ 17 (native, progressive) | ✅ | Plugin — key in OS keychain, auto-updates on restart |
+| **Claude Code** | ✅ 17 (native, progressive) | ✅ | Plugin — OAuth sign-in, auto-updates on restart |
 | **Cursor** | ✅ 17 (native Skills) | ✅ | `npx skills` + `~/.cursor/mcp.json` |
 | **Codex** | ✅ via MCP (`list_skills`) | ✅ | `codex mcp add` + `~/.codex/AGENTS.md` |
 | **Windsurf** | ✅ via MCP (`list_skills`) | ✅ | `~/.codeium/windsurf/mcp_config.json` |
@@ -41,8 +38,8 @@ Get a key from your ColdIQ dashboard at <https://coldiq.com/marketplace> (→ AP
 
 Agents with a native skills loader (Claude Code, Cursor) load the 17 skills directly. **Every other
 agent gets them over the MCP**: the server exposes `list_skills` (the catalog) and `load_skill(name)`
-(the full playbook on demand), so installing the MCP is enough — no native loader required. One key,
-unified credits, base URL `https://api.coldiq.com`.
+(the full playbook on demand), so installing the MCP is enough — no native loader required. One
+account, unified credits, hosted at `https://mcp.coldiq.com/mcp`.
 
 ### Manual setup (per agent)
 
@@ -51,11 +48,17 @@ unified credits, base URL `https://api.coldiq.com`.
 
 ```bash
 claude plugin marketplace add Cold-IQ/coldiq-marketplace-skills
-claude plugin install coldiq@coldiq --config apiKey=YOUR_COLDIQ_API_KEY
+claude plugin install coldiq@coldiq
 ```
 
-Restart Claude Code (or `/reload-plugins`). Skills are namespaced `coldiq:<name>` (e.g.
-`coldiq:apollo-search`) and activate from their `description` triggers.
+Restart Claude Code (or `/reload-plugins`), then run `/mcp`, pick `plugin:coldiq:coldiq`, and
+choose **Authenticate** to sign in with your ColdIQ account. Skills are namespaced `coldiq:<name>`
+(e.g. `coldiq:apollo-search`) and activate from their `description` triggers.
+
+MCP only, without the plugin:
+```bash
+claude mcp add --transport http --scope user coldiq https://mcp.coldiq.com/mcp
+```
 
 **Updates are automatic.** The installer enables startup auto-update; the plugin has no pinned version
 (it tracks the git commit SHA), so **each push to `main` reaches you on the next restart**. Update on
@@ -70,16 +73,12 @@ Skills:
 ```bash
 npx skills add Cold-IQ/coldiq-marketplace-skills --agent cursor --global --yes
 ```
-MCP — add to `~/.cursor/mcp.json` (then approve the server in Settings → MCP). The installer
-writes your key inline (`chmod 600`); to keep it out of the file instead, set `COLDIQ_API_KEY` in
-your environment and use `"${env:COLDIQ_API_KEY}"`:
+MCP — add to `~/.cursor/mcp.json`, then enable the server in Settings → MCP and sign in:
 ```json
 {
   "mcpServers": {
     "coldiq": {
-      "command": "npx",
-      "args": ["-y", "@coldiq/mcp@latest"],
-      "env": { "COLDIQ_API_KEY": "YOUR_COLDIQ_API_KEY" }
+      "url": "https://mcp.coldiq.com/mcp"
     }
   }
 }
@@ -90,8 +89,9 @@ your environment and use `"${env:COLDIQ_API_KEY}"`:
 <summary><b>Codex</b> — MCP + AGENTS.md</summary>
 
 ```bash
-codex mcp add coldiq --env COLDIQ_API_KEY=YOUR_KEY -- npx -y @coldiq/mcp@latest
+codex mcp add coldiq --url https://mcp.coldiq.com/mcp
 ```
+This starts the sign-in; run `codex mcp login coldiq` to sign in again later.
 Codex has no skills loader, so add the [`AGENTS.md`](AGENTS.md) block (covers the tools + the
 batch-don't-loop workflow) to `~/.codex/AGENTS.md`. The installer does this for you.
 </details>
@@ -99,11 +99,16 @@ batch-don't-loop workflow) to `~/.codex/AGENTS.md`. The installer does this for 
 <details>
 <summary><b>Windsurf / Cline</b> — MCP</summary>
 
-Add the same `{ "mcpServers": { "coldiq": … } }` block (see Cursor above) to:
 - **Windsurf:** `~/.codeium/windsurf/mcp_config.json`
+  ```json
+  { "mcpServers": { "coldiq": { "serverUrl": "https://mcp.coldiq.com/mcp" } } }
+  ```
 - **Cline:** its `cline_mcp_settings.json` (VS Code globalStorage)
+  ```json
+  { "mcpServers": { "coldiq": { "type": "streamableHttp", "url": "https://mcp.coldiq.com/mcp" } } }
+  ```
 
-Then refresh MCP servers in the agent.
+Then refresh MCP servers in the agent and sign in with your ColdIQ account.
 </details>
 
 <details>
@@ -112,9 +117,10 @@ Then refresh MCP servers in the agent.
 `npx skills add Cold-IQ/coldiq-marketplace-skills --agent '*'` installs the skills to ~70 agents
 (via [vercel-labs/skills](https://github.com/vercel-labs/skills) — a third-party CLI fetched with
 `npx`; review before running). Each skill is a self-contained folder under `skills/` (`SKILL.md` +
-its own `resources/`), so it installs cleanly anywhere. For MCP, point your client at
-`npx -y @coldiq/mcp@latest` with `COLDIQ_API_KEY` in its environment — and any MCP client can also
-call the `list_skills` / `load_skill` tools to use the playbooks without a native skills loader.
+its own `resources/`), so it installs cleanly anywhere. For MCP, point any client
+that supports remote Streamable HTTP servers with OAuth at `https://mcp.coldiq.com/mcp` — and any MCP
+client can also call the `list_skills` / `load_skill` tools to use the playbooks without a native
+skills loader.
 </details>
 
 ## Layout

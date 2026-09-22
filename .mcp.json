@@ -1,11 +1,8 @@
 {
   "mcpServers": {
     "coldiq": {
-      "command": "npx",
-      "args": ["-y", "@coldiq/mcp@latest"],
-      "env": {
-        "COLDIQ_API_KEY": "${user_config.apiKey}"
-      }
+      "type": "http",
+      "url": "https://mcp.coldiq.com/mcp"
     }
   }
 }
