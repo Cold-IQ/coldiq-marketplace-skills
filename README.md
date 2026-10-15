@@ -31,12 +31,13 @@ time to update.**
 | Agent | Skills | MCP tools | How |
 |---|---|---|---|
 | **Claude Code** | ✅ 17 (native, progressive) | ✅ | Plugin — OAuth sign-in, auto-updates on restart |
+| **Grok Build** | ✅ 17 (native, from the plugin) | ✅ | Plugin (`.grok-plugin/`), OAuth sign-in |
 | **Cursor** | ✅ 17 (native Skills) | ✅ | `npx skills` + `~/.cursor/mcp.json` |
 | **Codex** | ✅ via MCP (`list_skills`) | ✅ | `codex mcp add` + `~/.codex/AGENTS.md` |
 | **Windsurf** | ✅ via MCP (`list_skills`) | ✅ | `~/.codeium/windsurf/mcp_config.json` |
 | **Cline** | ✅ via MCP (`list_skills`) | ✅ | VS Code `cline_mcp_settings.json` |
 
-Agents with a native skills loader (Claude Code, Cursor) load the 17 skills directly. **Every other
+Agents with a native skills loader (Claude Code, Grok Build, Cursor) load the 17 skills directly. **Every other
 agent gets them over the MCP**: the server exposes `list_skills` (the catalog) and `load_skill(name)`
 (the full playbook on demand), so installing the MCP is enough — no native loader required. One
 account, unified credits, hosted at `https://mcp.coldiq.com/mcp`.
@@ -64,6 +65,26 @@ claude mcp add --transport http --scope user coldiq https://mcp.coldiq.com/mcp
 (it tracks the git commit SHA), so **each push to `main` reaches you on the next restart**. Update on
 demand with `claude plugin marketplace update coldiq && claude plugin update coldiq@coldiq`; disable via
 `/plugin` → Marketplaces → `coldiq` → Disable auto-update.
+</details>
+
+<details>
+<summary><b>Grok Build</b> plugin</summary>
+
+```bash
+grok plugin install https://github.com/Cold-IQ/coldiq-marketplace-skills.git
+```
+
+Or, once it is listed, open `/plugin` in Grok Build, search for **ColdIQ**, and install. The plugin
+bundles the 17 skills and the hosted MCP server (`.grok-plugin/plugin.json`, `.mcp.json`). On first
+use, open `/mcp`, select `coldiq`, and press `i`: Grok opens the ColdIQ sign-in in your browser. No
+API key is needed and nothing should be pasted into chat.
+
+Network endpoints: `https://mcp.coldiq.com/mcp` (Streamable HTTP), its OAuth 2.1 endpoints
+(`/authorize`, `/oauth/token`, `/oauth/register`, with PKCE and dynamic client registration) and
+discovery metadata (`/.well-known/oauth-authorization-server`,
+`/.well-known/oauth-protected-resource`), and `https://login.coldiq.com` for the human sign-in.
+Credentials: a ColdIQ account. Free tools cost nothing; paid lookups use your ColdIQ credits and
+each result shows the credits charged.
 </details>
 
 <details>
