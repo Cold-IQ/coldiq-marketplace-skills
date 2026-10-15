@@ -1,0 +1,30 @@
+{
+  "name": "coldiq",
+  "displayName": "ColdIQ",
+  "version": "1.0.0",
+  "description": "ColdIQ B2B prospecting via the hosted ColdIQ MCP server at mcp.coldiq.com. Find companies and decision makers, verified emails and phone numbers, and buying signals across 40+ data providers, plus 17 GTM skills (TAM scoring, enrichment waterfalls, cold email copy, campaign loading). Sign in with your ColdIQ account on first connect; no API key needed.",
+  "author": {
+    "name": "ColdIQ"
+  },
+  "publisher": "ColdIQ",
+  "homepage": "https://coldiq.com/marketplace",
+  "repository": "https://github.com/Cold-IQ/coldiq-marketplace-skills",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "category": "sales",
+  "keywords": [
+    "coldiq",
+    "coldiq mcp",
+    "coldiq marketplace",
+    "coldiq prospecting",
+    "coldiq enrichment"
+  ],
+  "tags": [
+    "sales",
+    "prospecting",
+    "enrichment",
+    "lead-generation"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Grok Build and Cursor plugin manifests: `.grok-plugin/plugin.json`, `.cursor-plugin/plugin.json`
+  and `assets/logo.svg`, so the same 17 skills and the hosted MCP install with
+  `grok plugin install` and can be listed in the xAI and Cursor marketplaces.
 - The MCP server is now the hosted ColdIQ MCP at `https://mcp.coldiq.com/mcp` with OAuth sign-in:
   the Claude Code plugin, `install.sh` (Claude Code, Cursor, Codex, Windsurf, Cline), README, and
   AGENTS.md no longer install the retired `npx @coldiq/mcp` package or ask for an API key.
