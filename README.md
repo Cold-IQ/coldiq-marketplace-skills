@@ -76,7 +76,7 @@ grok plugin install https://github.com/Cold-IQ/coldiq-marketplace-skills.git
 
 Or, once it is listed, open `/plugin` in Grok Build, search for **ColdIQ**, and install. The plugin
 bundles the 17 skills and the hosted MCP server (`.grok-plugin/plugin.json`, `.mcp.json`). On first
-use, open `/mcp`, select `coldiq`, and press `i`: Grok opens the ColdIQ sign-in in your browser. No
+use, open `/mcps`, select `coldiq`, and press `i`: Grok opens the ColdIQ sign-in in your browser. No
 API key is needed and nothing should be pasted into chat.
 
 Network endpoints: `https://mcp.coldiq.com/mcp` (Streamable HTTP), its OAuth 2.1 endpoints
