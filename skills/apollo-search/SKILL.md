@@ -8,43 +8,58 @@ description: >
   filters", "build a TAM", "search companies", "search people", "enrich org", "enrich
   people", "find companies by technology", "employee count range", "intent topics". Do NOT
   use for Lima Data or large-scale ai-ark search (see coldiq-search-enrich), email-finding
-  waterfalls (see contact-enrichment), or campaign sending (see instantly-api).
+  waterfalls (see contact-enrichment), or campaign sending (see instantly-api). Works ONLY
+  with the user's own Apollo API key connected in ColdIQ (Settings → Connect your tools):
+  ColdIQ does not resell Apollo data, so never offer this skill to a user without that key.
 ---
 
 # Apollo Search
 
 Search Apollo's 210M+ contacts and 35M+ companies to build targeted lists, then enrich them —
-through ColdIQ's resold Apollo endpoints `/v1/apollo/*` (same Apollo filter semantics, one ColdIQ
+through ColdIQ's Apollo endpoints `/v1/apollo/*` (same Apollo filter semantics, one ColdIQ
 key). Use Apollo to BUILD the list (search + filter); use
 [coldiq-search-enrich](../lima-data-api/SKILL.md) to ENRICH it with emails.
 
+## Requires your own Apollo key
+
+ColdIQ does **not** resell Apollo. Every `/v1/apollo/*` call runs on the user's **own** Apollo
+account and costs **0 ColdIQ credits** (it uses the user's Apollo credits and plan). The user
+connects the key once in ColdIQ → Settings → Connect your tools → Apollo.
+
+- No key connected → every Apollo call answers `400` ("requires your own Apollo API key"). Do not
+  retry and do not price it: tell the user to connect their key, or use
+  [coldiq-search-enrich](../lima-data-api/SKILL.md) (ColdIQ data, AI Ark) instead.
+- A rejected key → `400` "reconnect your Apollo account". ColdIQ never falls back to its own key.
+- The ColdIQ waterfalls (`find_email`, `find_people`, `enrich_*`) reach Apollo only for a user who
+  connected a key; for everyone else they skip it silently.
+
 ## ColdIQ Marketplace Endpoints
 
-| Task | Method | Path | Credits | Endpoint ID | Notes |
+| Task | Method | Path | ColdIQ credits | Endpoint ID | Notes |
 |------|--------|------|---------|-------------|-------|
-| Search people | POST | `/v1/apollo/people/search` | 1 | `apollo.people.search` | Titles, seniority, location, company |
-| Search organizations | POST | `/v1/apollo/organizations/search` | 1 | `apollo.organizations.search` | Industry, size, location |
-| Enrich one person | POST | `/v1/apollo/people/match` | 1 | `apollo.people.match` | Name/email/LinkedIn → full profile |
-| Bulk enrich people (≤10) | POST | `/v1/apollo/people/bulk-match` | 1/person | `apollo.people.bulk_match` | 10 per call |
-| Enrich one org | POST | `/v1/apollo/organizations/enrich` | 1 | `apollo.organizations.enrich` | Full firmographics by domain |
-| Bulk enrich orgs (≤10) | POST | `/v1/apollo/organizations/bulk-enrich` | 1/org | `apollo.organizations.bulk_enrich` | Stripped data — see gotcha |
-| Org info by Apollo ID | POST | `/v1/apollo/organizations/info` | 1 | `apollo.organizations.info` | |
+| Search people | POST | `/v1/apollo/people/search` | 0 (your Apollo key) | `apollo.people.search` | Titles, seniority, location, company |
+| Search organizations | POST | `/v1/apollo/organizations/search` | 0 (your Apollo key) | `apollo.organizations.search` | Industry, size, location |
+| Enrich one person | POST | `/v1/apollo/people/match` | 0 (your Apollo key) | `apollo.people.match` | Name/email/LinkedIn → full profile |
+| Bulk enrich people (≤10) | POST | `/v1/apollo/people/bulk-match` | 0 (your Apollo key) | `apollo.people.bulk_match` | 10 per call |
+| Enrich one org | POST | `/v1/apollo/organizations/enrich` | 0 (your Apollo key) | `apollo.organizations.enrich` | Full firmographics by domain |
+| Bulk enrich orgs (≤10) | POST | `/v1/apollo/organizations/bulk-enrich` | 0 (your Apollo key) | `apollo.organizations.bulk_enrich` | Stripped data — see gotcha |
+| Org info by Apollo ID | POST | `/v1/apollo/organizations/info` | 0 (your Apollo key) | `apollo.organizations.info` | |
 
 ## Standard Workflow: Search Then Enrich
 
 1. Search people with filters (returns IDs + basic info, not emails).
-   → **POST** `/v1/apollo/people/search` · 1 cr · `apollo.people.search`
+   → **POST** `/v1/apollo/people/search` · 0 ColdIQ cr (your Apollo key) · `apollo.people.search`
    ```json
    { "person_titles": ["VP Sales", "Head of Growth"], "person_seniorities": ["vp", "director"],
      "organization_num_employees_ranges": ["51,200"], "per_page": 100, "page": 1 }
    ```
 2. Collect IDs from the results.
 3. Bulk enrich in groups of 10 (never one-by-one).
-   → **POST** `/v1/apollo/people/bulk-match` · 1/person · `apollo.people.bulk_match`
+   → **POST** `/v1/apollo/people/bulk-match` · 0 ColdIQ cr (your Apollo key) · `apollo.people.bulk_match`
 4. You now have emails, phones, LinkedIn URLs, and employment history.
 
 For full company firmographics use single-org enrich, not bulk:
-→ **POST** `/v1/apollo/organizations/enrich` · 1 cr · `apollo.organizations.enrich`
+→ **POST** `/v1/apollo/organizations/enrich` · 0 ColdIQ cr (your Apollo key) · `apollo.organizations.enrich`
 
 ## Top Filters
 
@@ -91,7 +106,7 @@ Too many (>10,000)? add funding stage or department headcount.
 
 | Need | Best |
 |------|------|
-| Large-scale company search, 65+ filters | Apollo (`apollo.organizations.search`) |
+| Large-scale company search, 65+ filters | Apollo, only with your own Apollo key (`apollo.organizations.search`) |
 | Very large people lists, per-result pricing | ai-ark (`ai_ark.people.search`, see coldiq-search-enrich) |
 | Niche/new companies not in databases | Exa (`exa.search`) |
 | Enrich known contact → email | coldiq-search-enrich waterfall |

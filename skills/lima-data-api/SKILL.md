@@ -127,7 +127,7 @@ To turn a list of LinkedIn profile URLs into full profiles, use
 |------|------|-----|
 | People at specific companies | `limadata.prospect.people.filter` | Sales-Nav-style filters, batch support |
 | Very large people lists | `ai_ark.people.search` | 500M profiles, per-result pricing |
-| Apollo-specific filter semantics | apollo-search skill | Apollo's 65+ filters / intent topics |
+| Apollo-specific filter semantics | apollo-search skill | Apollo's 65+ filters / intent topics; only if the user connected their own Apollo key |
 | Enrich known contact → email | `limadata.find.work_email*` | 1 cr name+domain, 3 cr LinkedIn |
 | Company firmographics in one call | `limadata.enrich.company` | Funding, revenue, tech stack together |
 | Web / AI research | `limadata.search.web`, `limadata.research.ai_search` | 0.1–0.3 cr |

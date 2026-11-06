@@ -37,7 +37,7 @@ contact + signal + exclusion filters). Validate filter values for free:
 
 **Phase 5 — List building (costs credits).** Build the TAM from the criteria.
 → **POST** `/v1/ai-ark/companies` · per result · `ai_ark.companies.search`
-→ **POST** `/v1/apollo/organizations/search` · 1 cr · `apollo.organizations.search`
+→ **POST** `/v1/apollo/organizations/search` · 0 ColdIQ cr, only with the user's own Apollo key (else skip) · `apollo.organizations.search`
 Layer in signals (see [signal-detection](../signal-detection/SKILL.md)):
 → **GET** `/v1/signalbase/funding-signals` · ? cr · `signalbase.funding_signals` (unverified)
 

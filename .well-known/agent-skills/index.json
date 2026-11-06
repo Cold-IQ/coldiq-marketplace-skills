@@ -13,16 +13,16 @@
     {
       "name": "apollo-search",
       "type": "skill-md",
-      "description": "Build targeted account and contact lists with Apollo's database through the ColdIQ marketplace. Use when searching companies or people with Apollo's filter semantics (titles, seniority, employee ranges, industries, technologies, intent), enriching people or organizations, or building a TAM from Apollo. Triggers on \"Apollo search\", \"Apollo filters\", \"build a TAM\", \"search companies\", \"search people\", \"enrich org\", \"enrich people\", \"find companies by technology\", \"employee count range\", \"intent topics\". Do NOT use for Lima Data or large-scale ai-ark search (see coldiq-search-enrich), email-finding waterfalls (see contact-enrichment), or campaign sending (see instantly-api).",
+      "description": "Build targeted account and contact lists with Apollo's database through the ColdIQ marketplace. Use when searching companies or people with Apollo's filter semantics (titles, seniority, employee ranges, industries, technologies, intent), enriching people or organizations, or building a TAM from Apollo. Triggers on \"Apollo search\", \"Apollo filters\", \"build a TAM\", \"search companies\", \"search people\", \"enrich org\", \"enrich people\", \"find companies by technology\", \"employee count range\", \"intent topics\". Do NOT use for Lima Data or large-scale ai-ark search (see coldiq-search-enrich), email-finding waterfalls (see contact-enrichment), or campaign sending (see instantly-api). Works ONLY with the user's own Apollo API key connected in ColdIQ (Settings → Connect your tools): ColdIQ does not resell Apollo data, so never offer this skill to a user without that key.",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/apollo-search/SKILL.md",
-      "digest": "sha256:ec7b5d752a5060655341d9980c3c4264a7a462facc9eeae58a3f65696ede6c92"
+      "digest": "sha256:24c5c3fd15e35ceff494f6c8f34b0ac94a01dba8fcc0cff22415319ffbca6c93"
     },
     {
       "name": "campaign-delivery",
       "type": "skill-md",
       "description": "Build an outbound campaign end-to-end with a proven 9-phase system, orchestrating the other skills and their ColdIQ endpoints at each phase. Use when running a full campaign from scratch, planning the build order, knowing what comes before what (copy before list), or coordinating TAM → scoring → enrichment → copy → load. Triggers on \"build a campaign\", \"campaign from scratch\", \"full outbound pipeline\", \"9-phase\", \"campaign checklist\", \"what order\", \"kick off a campaign\". Do NOT use for a single sub-step in isolation (use the specific skill: apollo-search, tam-scoring, contact-enrichment, cold-email-copy, instantly-api) or pure copy frameworks (see crawford-method / cold-email-copy).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/campaign-delivery/SKILL.md",
-      "digest": "sha256:9602c43e2744aaaeb08e6b19d89b503e1e835db30ce97c8ff18abe6c3d5b919b"
+      "digest": "sha256:e0643a6b4d1e601ee98b8c6fed413e95576b1e36d5d42231d412809ce39d410c"
     },
     {
       "name": "cold-email-copy",
@@ -36,7 +36,7 @@
       "type": "skill-md",
       "description": "Search and enrich people and companies with Lima Data through the ColdIQ marketplace API. Use when finding work or personal emails, finding phone numbers, enriching a person or company, prospecting contacts by title/seniority/location, Sales-Navigator-style filtering, batch enrichment, LinkedIn-URL lookups, or monitoring people/companies for changes. Triggers on \"find email\", \"work email\", \"personal email\", \"find phone\", \"enrich person\", \"enrich company\", \"prospect people\", \"prospect companies\", \"search people\", \"search companies\", \"batch enrich\", \"find people at company\", \"LinkedIn lookup\", \"Sales Navigator list\". Do NOT use for sending campaigns (see instantly-api / emailbison), Apollo-specific filter semantics (see apollo-search), pure list dedup (see list-dedup), or buying-signal discovery (see signal-detection).",
       "url": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/skills/lima-data-api/SKILL.md",
-      "digest": "sha256:6a22e137d264ea419da89d12afa48dad5aa2c04d7ac129210914af75f4e075f9"
+      "digest": "sha256:4bcb935cdd22c1b902c70e0612abce764ec85508ddac24091ad4633dc21c66bb"
     },
     {
       "name": "contact-enrichment",
