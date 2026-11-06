@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **apollo-search** — ColdIQ no longer resells Apollo. The skill now says it works only with the
+  user's own Apollo API key connected in ColdIQ (Settings → Connect your tools), at 0 ColdIQ
+  credits; without a key every `/v1/apollo/*` call answers 400, so the agent must not offer it.
+  Catalog: the 7 `apollo.*` entries show 0 credits and the own-key note. Other skills that point to
+  Apollo (`campaign-delivery`, `lima-data-api`) say the same.
+
+## Unreleased
+
 - Grok Build and Cursor plugin manifests: `.grok-plugin/plugin.json`, `.cursor-plugin/plugin.json`
   and `assets/logo.svg`, so the same 17 skills and the hosted MCP install with
   `grok plugin install` and can be listed in the xAI and Cursor marketplaces.

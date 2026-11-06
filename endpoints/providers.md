@@ -45,7 +45,7 @@ If you previously called these providers directly, here's the ColdIQ marketplace
 | Direct provider | ColdIQ route |
 |-----------------|--------------|
 | Lima Data | resold `/v1/limadata/*` (+ `/v1/ai-ark/*` for big search) |
-| Apollo | resold `/v1/apollo/*` |
+| Apollo | `/v1/apollo/*`, only on the user's own Apollo key (not resold, 0 ColdIQ credits) |
 | Instantly | resold `/v1/instantly/*` (BYOK) |
 | Linkup | Lima Data `/v1/limadata/find/company-linkedin` + `/find/work-email*` |
 | Email waterfall providers | resold `/v1/prospeo/*`, `/v1/findymail/*`, `/v1/fullenrich/*` |

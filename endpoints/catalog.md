@@ -24,13 +24,13 @@ Generated from `catalog.json` (v2026.07.23). Base URL `https://api.coldiq.com`. 
 
 | Method | Path | Credits | Endpoint ID | Summary |
 |---|---|---|---|---|
-| POST | `/v1/apollo/people/search` | 1 | `apollo.people.search` | Search people in Apollo's global DB by title, seniority, location, company |
-| POST | `/v1/apollo/organizations/search` | 1 | `apollo.organizations.search` | Search organizations in Apollo by industry, size, location |
-| POST | `/v1/apollo/people/match` | 1 | `apollo.people.match` | Enrich a person by name, email, LinkedIn URL, or company |
-| POST | `/v1/apollo/people/bulk-match` | per_result | `apollo.people.bulk_match` | Enrich up to 10 people in one request (1 cr/person) |
-| POST | `/v1/apollo/organizations/enrich` | 1 | `apollo.organizations.enrich` | Enrich an organization by domain (size, funding, tech stack) |
-| POST | `/v1/apollo/organizations/bulk-enrich` | per_result | `apollo.organizations.bulk_enrich` | Enrich up to 10 organizations by domain (1 cr/org) |
-| POST | `/v1/apollo/organizations/info` | 1 | `apollo.organizations.info` | Get complete organization info by Apollo ID |
+| POST | `/v1/apollo/people/search` | 0 | `apollo.people.search` | Search people in Apollo's global DB by title, seniority, location, company (requires your own Apollo key; 0 ColdIQ credits) |
+| POST | `/v1/apollo/organizations/search` | 0 | `apollo.organizations.search` | Search organizations in Apollo by industry, size, location (requires your own Apollo key; 0 ColdIQ credits) |
+| POST | `/v1/apollo/people/match` | 0 | `apollo.people.match` | Enrich a person by name, email, LinkedIn URL, or company (requires your own Apollo key; 0 ColdIQ credits) |
+| POST | `/v1/apollo/people/bulk-match` | 0 | `apollo.people.bulk_match` | Enrich up to 10 people in one request (requires your own Apollo key; 0 ColdIQ credits) |
+| POST | `/v1/apollo/organizations/enrich` | 0 | `apollo.organizations.enrich` | Enrich an organization by domain (size, funding, tech stack) (requires your own Apollo key; 0 ColdIQ credits) |
+| POST | `/v1/apollo/organizations/bulk-enrich` | 0 | `apollo.organizations.bulk_enrich` | Enrich up to 10 organizations by domain (requires your own Apollo key; 0 ColdIQ credits) |
+| POST | `/v1/apollo/organizations/info` | 0 | `apollo.organizations.info` | Get complete organization info by Apollo ID (requires your own Apollo key; 0 ColdIQ credits) |
 
 ## builtwith
 
