@@ -12,6 +12,13 @@
       "description": "ColdIQ GTM skills + the hosted ColdIQ MCP server. Prospecting, enrichment, signals, copy, and campaign workflows with your ColdIQ account.",
       "category": "integrations",
       "tags": ["gtm", "prospecting", "sales", "enrichment", "mcp"]
+    },
+    {
+      "name": "coldiq-mcp",
+      "source": "./plugins/coldiq-mcp",
+      "description": "Only the hosted ColdIQ MCP server, without the skills. Sign in to ColdIQ; no API key.",
+      "category": "integrations",
+      "tags": ["gtm", "prospecting", "sales", "enrichment", "mcp"]
     }
   ]
 }

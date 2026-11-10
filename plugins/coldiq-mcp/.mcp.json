@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "coldiq": {
+      "type": "http",
+      "url": "https://mcp.coldiq.com/mcp"
+    }
+  }
+}

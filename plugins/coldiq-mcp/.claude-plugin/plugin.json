@@ -1,0 +1,14 @@
+{
+  "name": "coldiq-mcp",
+  "description": "The hosted ColdIQ MCP server (https://mcp.coldiq.com/mcp) and nothing else: no skills. Search companies and people, find and verify emails, and run enrichment with your ColdIQ account. You sign in to ColdIQ; no API key.",
+  "author": {
+    "name": "ColdIQ",
+    "url": "https://coldiq.com"
+  },
+  "homepage": "https://coldiq.com/marketplace",
+  "privacyPolicyUrl": "https://coldiq.com/legal/privacy",
+  "icon": "./.claude-plugin/icon.png",
+  "repository": "https://github.com/Cold-IQ/coldiq-marketplace-skills",
+  "license": "MIT",
+  "keywords": ["gtm", "prospecting", "sales", "enrichment", "coldiq", "mcp"]
+}

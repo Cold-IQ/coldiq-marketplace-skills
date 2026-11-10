@@ -68,6 +68,25 @@ demand with `claude plugin marketplace update coldiq && claude plugin update col
 </details>
 
 <details>
+<summary><b>Claude app or Claude Code</b> — only the MCP (plugin <code>coldiq-mcp</code>)</summary>
+
+The `coldiq-mcp` plugin in this marketplace holds only the hosted MCP server, without the skills.
+
+In the Claude app, open
+[`claude://claude.ai/customize/plugins/new?marketplace=Cold-IQ%2Fcoldiq-marketplace-skills&plugin=coldiq-mcp`](claude://claude.ai/customize/plugins/new?marketplace=Cold-IQ%2Fcoldiq-marketplace-skills&plugin=coldiq-mcp):
+the "Add marketplace" form opens with this repository filled in. Add it, install **coldiq-mcp**, then
+sign in to ColdIQ when Claude asks.
+
+In Claude Code:
+```bash
+claude plugin marketplace add Cold-IQ/coldiq-marketplace-skills
+claude plugin install coldiq-mcp@coldiq
+```
+
+Then run `/mcp`, pick `plugin:coldiq-mcp:coldiq`, and choose **Authenticate**.
+</details>
+
+<details>
 <summary><b>Grok Build</b> plugin</summary>
 
 ```bash
