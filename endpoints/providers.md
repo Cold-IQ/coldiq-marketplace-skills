@@ -17,7 +17,9 @@ The ColdIQ marketplace (`api.coldiq.com`) exposes ~39 provider groups. Two kinds
 ## Resold — data (pay per call)
 
 `limadata`, `apollo`, `prospeo`, `fullenrich`, `findymail`, `wiza`, `icypeas`, `pdl`, `sumble`, `linkupapi`,
-`companyenrich`, `blitzapi`, `builtwith`, `openmart`, `influencers-club`.
+`companyenrich`, `builtwith`, `openmart`, `influencers-club`.
+
+`blitzapi` is not resold: it runs only on the user's own BlitzAPI key (0 ColdIQ credits).
 
 ## Resold — signals & jobs
 
@@ -46,6 +48,7 @@ If you previously called these providers directly, here's the ColdIQ marketplace
 |-----------------|--------------|
 | Lima Data | resold `/v1/limadata/*` (+ `/v1/ai-ark/*` for big search) |
 | Apollo | `/v1/apollo/*`, only on the user's own Apollo key (not resold, 0 ColdIQ credits) |
+| BlitzAPI | `/v1/blitzapi/*`, only on the user's own BlitzAPI key (not resold, 0 ColdIQ credits) |
 | Instantly | resold `/v1/instantly/*` (BYOK) |
 | Linkup | Lima Data `/v1/limadata/find/company-linkedin` + `/find/work-email*` |
 | Email waterfall providers | resold `/v1/prospeo/*`, `/v1/findymail/*`, `/v1/fullenrich/*` |
