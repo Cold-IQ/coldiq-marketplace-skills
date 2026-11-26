@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.coldiq/mcp",
+  "title": "ColdIQ",
+  "description": "B2B GTM data marketplace: find & verify emails, enrich people & companies, signals, and GTM skills.",
+  "version": "1.0.0",
+  "websiteUrl": "https://coldiq.com/mcp",
+  "repository": {
+    "url": "https://github.com/Cold-IQ/coldiq-marketplace-skills",
+    "source": "github",
+    "id": "1263931966"
+  },
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/Cold-IQ/coldiq-marketplace-skills/main/assets/logo.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": ["any"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.coldiq.com/mcp"
+    }
+  ]
+}
